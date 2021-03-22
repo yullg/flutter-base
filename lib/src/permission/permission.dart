@@ -20,7 +20,7 @@ class PermissionSupport {
     var permissionStatus = await permission.request();
     if (permissionStatus.isGranted) {
       return true;
-    } else if (gotoAppSettings) {
+    } else if (gotoAppSettings && (permissionStatus.isPermanentlyDenied || permissionStatus.isRestricted)) {
       await showDialog(
         context: context,
         builder: (context) => AlertDialog(
