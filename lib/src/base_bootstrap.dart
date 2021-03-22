@@ -3,12 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'app/config.dart';
 import 'app/directory_manager.dart';
 import 'app/file_manager.dart';
+import 'app/logger_manager.dart';
 import 'app/shared_preferences_manager.dart';
 
 class BaseBootstrap {
-  static Future<void> initialize(BuildContext context,
-      {String configBaseName = "application", String? configVariantName}) async {
-    await Config.initialize(configBaseName, configVariantName);
+  static Future<void> initialize(BuildContext context, {String? defaultConfigFile, String? variantConfigFile}) async {
+    await Config.initialize(defaultConfigFile, variantConfigFile);
+    await LoggerManager.initialize();
     await DirectoryManager.initialize();
     await FileManager.initialize();
     await SharedPreferenceManager.initialize();
@@ -18,6 +19,7 @@ class BaseBootstrap {
     await SharedPreferenceManager.destroy();
     await FileManager.destroy();
     await DirectoryManager.destroy();
+    await LoggerManager.destroy();
     await Config.destroy();
   }
 

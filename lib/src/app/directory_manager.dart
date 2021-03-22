@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-
-import 'config.dart';
 
 enum DirectoryType { data, files, cache }
 
@@ -26,11 +23,11 @@ class DirectoryManager {
 
   static Directory directory(DirectoryType directoryType) {
     if (DirectoryType.data == directoryType) {
-      return Directory(p.join(_dataDir!.path, BaseConfig.subDirectory ?? "file_manager_data"));
+      return dataDir;
     } else if (DirectoryType.files == directoryType) {
-      return Directory(p.join(_filesDir!.path, BaseConfig.subDirectory ?? "file_manager_data"));
+      return filesDir;
     } else if (DirectoryType.cache == directoryType) {
-      return Directory(p.join(_cacheDir!.path, BaseConfig.subDirectory ?? "file_manager_data"));
+      return cacheDir;
     }
     throw UnsupportedError("[ directoryType = $directoryType ]");
   }

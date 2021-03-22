@@ -46,19 +46,17 @@ class MimeTypeHelper {
   }
 
   static String? getMimeTypeFromUrl(String url) {
-    if (url != null && url.length > 0) {
-      int query = url.lastIndexOf('?');
-      if (query > 0) {
-        url = url.substring(0, query);
-      }
-      int filenamePos = url.lastIndexOf('/');
-      String filename = 0 <= filenamePos ? url.substring(filenamePos + 1) : url;
-      if (filename.length > 0) {
-        int dotPos = filename.lastIndexOf('.');
-        if (0 <= dotPos) {
-          String extension = filename.substring(dotPos + 1);
-          return extensionToMimeType(extension);
-        }
+    int query = url.lastIndexOf('?');
+    if (query > 0) {
+      url = url.substring(0, query);
+    }
+    int filenamePos = url.lastIndexOf('/');
+    String filename = filenamePos >= 0 ? url.substring(filenamePos + 1) : url;
+    if (filename.length > 0) {
+      int dotPos = filename.lastIndexOf('.');
+      if (dotPos >= 0) {
+        String extension = filename.substring(dotPos + 1);
+        return extensionToMimeType(extension);
       }
     }
     return null;
@@ -72,7 +70,7 @@ class MimeTypeHelper {
   }
 
   static void _initialize() {
-    if (_initialized ?? false) return;
+    if (_initialized) return;
     _loadEntry("application/andrew-inset", "ez");
     _loadEntry("application/dsptype", "tsp");
     _loadEntry("application/futuresplash", "spl");

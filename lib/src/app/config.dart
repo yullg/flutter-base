@@ -8,65 +8,57 @@ import '../logger/logger.dart';
 final Logger _logger = Logger("base.app.config");
 
 class Config {
-  static dynamic? _defaultSource;
-  static dynamic? _variantSource;
+  static dynamic _defaultSource;
+  static dynamic _variantSource;
 
-  static Future<void> initialize(String? baseName, String? variantName) async {
-    String? sourceJsonDefault, sourceJsonVariant;
+  static Future<void> initialize(String? defaultConfigFile, String? variantConfigFile) async {
     try {
-      try {
-        if (baseName != null) {
-          sourceJsonDefault = await rootBundle.loadString("assets/$baseName.json");
-        }
-      } finally {
-        if (baseName != null && variantName != null) {
-          sourceJsonVariant = await rootBundle.loadString("assets/$baseName-$variantName.json");
-        }
+      String? sourceJsonDefault, sourceJsonVariant;
+      if (defaultConfigFile != null) {
+        sourceJsonDefault = await rootBundle.loadString(defaultConfigFile);
       }
-    } catch (e) {} finally {
-      _logger.warn(
-          "Load config file [$baseName/$variantName : ${sourceJsonDefault?.length ?? -1}/${sourceJsonVariant?.length ?? -1}]");
-    }
-    try {
-      if (StringHelper.hasText(sourceJsonDefault)) _defaultSource = jsonDecode(sourceJsonDefault!);
+      if (variantConfigFile != null) {
+        sourceJsonVariant = await rootBundle.loadString(variantConfigFile);
+      }
+      if (StringHelper.hasText(sourceJsonDefault)) {
+        _defaultSource = jsonDecode(sourceJsonDefault!);
+      }
+      if (StringHelper.hasText(sourceJsonVariant)) {
+        _variantSource = jsonDecode(sourceJsonVariant!);
+      }
     } catch (e, s) {
-      _logger.error("Unable to decode default config [$baseName]", e, s);
-    }
-    try {
-      if (StringHelper.hasText(sourceJsonVariant)) _variantSource = jsonDecode(sourceJsonVariant!);
-    } catch (e, s) {
-      _logger.error("Unable to decode variant config [$baseName/$variantName]", e, s);
+      _logger.error("Config initialize failed [ default: $defaultConfigFile, variant: $variantConfigFile ]", e, s);
     }
     await BaseConfig.load();
   }
 
   static dynamic? find(ParseResult parse(dynamic source, SourceType type)) {
-    try {
-      if (_variantSource != null) {
-        ParseResult result_parse_variant = parse(_variantSource, SourceType.variant_source);
-        if (result_parse_variant.complete) {
-          return result_parse_variant.result;
+    if (_variantSource != null) {
+      try {
+        ParseResult parseResult = parse(_variantSource, SourceType.variant_source);
+        if (parseResult.complete) {
+          return parseResult.result;
         }
+      } catch (e, s) {
+        _logger.warn("Unable to parse variant config", e, s);
       }
-    } catch (e, s) {
-      _logger.debug("Unable to parse variant config", e, s);
     }
-    try {
-      if (_defaultSource != null) {
-        ParseResult result_parse_default = parse(_defaultSource, SourceType.default_source);
-        if (result_parse_default.complete) {
-          return result_parse_default.result;
+    if (_defaultSource != null) {
+      try {
+        ParseResult parseResult = parse(_defaultSource, SourceType.default_source);
+        if (parseResult.complete) {
+          return parseResult.result;
         }
+      } catch (e, s) {
+        _logger.debug("Unable to parse default config", e, s);
       }
-    } catch (e, s) {
-      _logger.debug("Unable to parse default config", e, s);
     }
     return null;
   }
 
-  static dynamic findUntilNotNull(dynamic? parse(dynamic source)) {
+  static dynamic findUntilNotNull(dynamic parse(dynamic source)) {
     return find((source, type) {
-      dynamic? result = parse(source);
+      dynamic result = parse(source);
       return ParseResult(result != null, result);
     });
   }
@@ -84,29 +76,37 @@ enum SourceType { default_source, variant_source }
 
 class ParseResult {
   final bool complete;
-  final dynamic? result;
+  final dynamic result;
 
   ParseResult(this.complete, this.result);
 }
 
 class BaseConfig {
   static String? _appName;
-  static String? _subDirectory;
+  static String? _fileManagerDirectory;
   static num? _screen_width;
   static num? _screen_height;
   static bool? _screen_allowFontScaling;
+  static bool? _logger_consoleEnabled;
+  static String? _logger_consoleLevel;
+  static bool? _logger_fileEnabled;
+  static String? _logger_fileLevel;
 
   static Future<void> load() async {
     _appName = Config.findUntilNotNull((source) => source["appName"]);
-    _subDirectory = Config.findUntilNotNull((source) => source["subDirectory"]);
+    _fileManagerDirectory = Config.findUntilNotNull((source) => source["fileManagerDirectory"]);
     _screen_width = Config.findUntilNotNull((source) => source["screen"]["width"]);
     _screen_height = Config.findUntilNotNull((source) => source["screen"]["height"]);
     _screen_allowFontScaling = Config.findUntilNotNull((source) => source["screen"]["allowFontScaling"]);
+    _logger_consoleEnabled = Config.findUntilNotNull((source) => source["logger"]["consoleEnabled"]);
+    _logger_consoleLevel = Config.findUntilNotNull((source) => source["logger"]["consoleLevel"]);
+    _logger_fileEnabled = Config.findUntilNotNull((source) => source["logger"]["fileEnabled"]);
+    _logger_fileLevel = Config.findUntilNotNull((source) => source["logger"]["fileLevel"]);
   }
 
   static String? get appName => _appName;
 
-  static String? get subDirectory => _subDirectory;
+  static String? get fileManagerDirectory => _fileManagerDirectory;
 
   static num? get screen_width => _screen_width;
 
@@ -114,12 +114,24 @@ class BaseConfig {
 
   static bool? get screen_allowFontScaling => _screen_allowFontScaling;
 
+  static bool? get logger_consoleEnabled => _logger_consoleEnabled;
+
+  static String? get logger_consoleLevel => _logger_consoleLevel;
+
+  static bool? get logger_fileEnabled => _logger_fileEnabled;
+
+  static String? get logger_fileLevel => _logger_fileLevel;
+
   static Future<void> reset() async {
     _appName = null;
-    _subDirectory = null;
+    _fileManagerDirectory = null;
     _screen_width = null;
     _screen_height = null;
     _screen_allowFontScaling = null;
+    _logger_consoleEnabled = null;
+    _logger_consoleLevel = null;
+    _logger_fileEnabled = null;
+    _logger_fileLevel = null;
   }
 
   BaseConfig._();

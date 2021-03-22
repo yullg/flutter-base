@@ -17,7 +17,15 @@ class FileManager {
   }
 
   static File keyToFile(String key) {
-    return File(p.join(DirectoryManager.directory(directoryType(key)).path, key.substring(key.indexOf("_") + 1)));
+    return File(p.join(_directory(directoryType(key)).path, key.substring(key.indexOf("_") + 1)));
+  }
+
+  static DirectoryType directoryType(String key) {
+    return EnumHelper.parseString(DirectoryType.values, key.substring(0, key.indexOf("_")))!;
+  }
+
+  static FileType fileType(String key) {
+    return EnumHelper.parseString(FileType.values, key.substring(key.lastIndexOf(".") + 1))!;
   }
 
   static Future<String> copyIn(File file, DirectoryType directoryType, FileType fileType, [String? name]) async {
@@ -34,12 +42,9 @@ class FileManager {
     return key;
   }
 
-  static DirectoryType directoryType(String key) {
-    return EnumHelper.parseString(DirectoryType.values, key.substring(0, key.indexOf("_")))!;
-  }
-
-  static FileType fileType(String key) {
-    return EnumHelper.parseString(FileType.values, key.substring(key.lastIndexOf(".") + 1))!;
+  static Directory _directory(DirectoryType directoryType) {
+    return Directory(
+        p.join(DirectoryManager.directory(directoryType).path, BaseConfig.fileManagerDirectory ?? "file_manager_data"));
   }
 
   static Future<void> destroy() async {}

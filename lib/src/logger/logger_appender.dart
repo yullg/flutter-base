@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../helper/enum_helper.dart';
-import 'logger_transit.dart';
+import 'logger_conveyer.dart';
 
 abstract class LoggerAppender {
   final Level _level;
@@ -9,10 +9,8 @@ abstract class LoggerAppender {
   LoggerAppender(this._level);
 
   void output(LogEvent logEvent) {
-    if (_level != null && logEvent.level != null) {
-      if (logEvent.level.index < _level.index) {
-        return;
-      }
+    if (logEvent.level.index < _level.index) {
+      return;
     }
     doOutput(logEvent);
   }
@@ -21,8 +19,8 @@ abstract class LoggerAppender {
 
   String stringifyLogEvent(LogEvent logEvent) {
     StringBuffer result = StringBuffer();
-    result.write("${logEvent.loggerName ?? '---'}    ");
-    result.write("${logEvent.time?.toIso8601String() ?? '---'}    ");
+    result.write("${logEvent.loggerName}    ");
+    result.write("${logEvent.time.toIso8601String()}    ");
     result.write("${EnumHelper.format(logEvent.level) ?? '---'}    ");
     result.write("${logEvent.message ?? '---'}    ");
     result.writeln("${logEvent.error ?? '---'}    ");

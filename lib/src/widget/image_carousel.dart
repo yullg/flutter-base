@@ -22,7 +22,7 @@ class ImageCarouselWidget extends StatefulWidget {
 
 class _ImageCarouselWidgetState extends State<ImageCarouselWidget> {
   late int index;
-  late Timer timer;
+  Timer? timer;
 
   @override
   void initState() {

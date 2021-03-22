@@ -24,14 +24,15 @@ class BadgeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (count == null) {
-      return SizedBox.shrink();
-    } else if (count <= 0) {
+    if (count <= 0) {
       return Container(
         width: dotDiameter,
         height: dotDiameter,
         decoration: BoxDecoration(
-            color: backgroundColor, shape: BoxShape.circle, border: Border.all(color: borderColor, width: borderWidth)),
+          color: backgroundColor,
+          shape: BoxShape.circle,
+          border: Border.all(color: borderColor, width: borderWidth),
+        ),
       );
     } else {
       var data = count <= overflowCount ? "$count" : "$overflowCount+";
@@ -55,34 +56,5 @@ class BadgeWidget extends StatelessWidget {
         );
       }
     }
-  }
-}
-
-class BadgedWidget extends StatelessWidget {
-  final BadgeWidget badge;
-  final Widget child;
-  final double left;
-  final double top;
-  final double right;
-  final double bottom;
-
-  BadgedWidget({Key? key,required this.left,required this.top,required this.right,required this.bottom,required this.badge, required this.child})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (badge == null) return child;
-    return Stack(
-      children: <Widget>[
-        child,
-        Positioned(
-          left: left,
-          top: top,
-          right: right,
-          bottom: bottom,
-          child: badge,
-        ),
-      ],
-    );
   }
 }

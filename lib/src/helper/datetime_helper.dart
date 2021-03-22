@@ -33,7 +33,7 @@ class DateTimeHelper {
     } else {
       timeString = "${diff.inDays.abs() ~/ 356} 年";
     }
-    if (!(withoutPrefixOrSuffix ?? false)) {
+    if (!withoutPrefixOrSuffix) {
       if (diff.isNegative) {
         timeString = "$timeString后";
       } else {
