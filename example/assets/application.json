@@ -1,0 +1,10 @@
+{
+  "rootDirectory": "/yullg/example",
+  "logger": {
+    "consoleEnabled": true,
+    "consoleLevel": "trace",
+    "fileEnabled": true,
+    "fileLevel": "info",
+    "fileDirectory": "/log"
+  }
+}
