@@ -5,7 +5,6 @@ export 'src/app/directory_manager.dart';
 export 'src/app/file_manager.dart';
 export 'src/app/shared_preferences_manager.dart';
 export 'src/base_bootstrap.dart';
-export 'src/core/base_plugin_channel.dart';
 export 'src/core/podo.dart';
 export 'src/ffmpeg/ffmpeg_support.dart';
 export 'src/ffmpeg/ffprobe_support.dart';
