@@ -21,5 +21,6 @@ export 'src/logger/logger.dart';
 export 'src/permission/permission.dart';
 export 'src/widget/badge.dart';
 export 'src/widget/image_carousel.dart';
+export 'src/widget/infinite_list.dart';
 export 'src/widget/limit_back.dart';
 export 'src/widget/screen_adapter.dart';
