@@ -49,4 +49,9 @@ class Podo {
     });
     return result;
   }
+
+  @override
+  String toString() {
+    return 'Podo $_map';
+  }
 }
