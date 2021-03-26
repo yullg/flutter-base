@@ -40,7 +40,7 @@ class _InfiniteListWidgetState extends State<InfiniteListWidget> {
   }
 }
 
-enum _Status { idle, loading, finished }
+enum _Status { idle, loading, finished, failed }
 
 abstract class InfiniteListController<T> extends ChangeNotifier {
   final List<T> _dataList = [];
@@ -62,6 +62,8 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
           } else {
             return finishedWidgetBuilder(context);
           }
+        case _Status.failed:
+          return failedWidgetBuilder(context);
       }
     }
   }
@@ -77,7 +79,7 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
         _status = _Status.finished;
       }
     } catch (e) {
-      _status = _Status.idle;
+      _status = _Status.failed;
     } finally {
       notifyListeners();
     }
@@ -100,6 +102,18 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
         ),
       );
 
+  Widget noneWidgetBuilder(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("暂无数据", style: TextStyle(color: Colors.black54)),
+        ],
+      ),
+    );
+  }
+
   Widget finishedWidgetBuilder(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
@@ -114,13 +128,13 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
     );
   }
 
-  Widget noneWidgetBuilder(BuildContext context) {
+  Widget failedWidgetBuilder(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("暂无数据", style: TextStyle(color: Colors.black54)),
+          Text("加载失败 请刷新重试", style: TextStyle(color: Colors.black54)),
         ],
       ),
     );
