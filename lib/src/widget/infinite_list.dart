@@ -46,12 +46,6 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
   final List<T> _dataList = [];
   _Status _status = _Status.idle;
 
-  Future<void> onRefresh() async {
-    _dataList.clear();
-    _status = _Status.idle;
-    notifyListeners();
-  }
-
   Widget _itemBuilder(BuildContext context, int index) {
     if (index < _dataList.length) {
       return dataToWidget(context, index, _dataList[index]);
@@ -63,7 +57,11 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
         case _Status.loading:
           return loadingWidgetBuilder(context);
         case _Status.finished:
-          return finishedWidgetBuilder(context);
+          if (_dataList.isEmpty) {
+            return noneWidgetBuilder(context);
+          } else {
+            return finishedWidgetBuilder(context);
+          }
       }
     }
   }
@@ -88,32 +86,41 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
   Widget separatorWidgetBuilder(BuildContext context, int index) => SizedBox(height: 1);
 
   Widget loadingWidgetBuilder(BuildContext context) => Padding(
-        padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+        padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "加载中...",
-              style: TextStyle(
-                color: Colors.black54,
-              ),
+            SizedBox(
+              width: 10,
+              height: 10,
+              child: CircularProgressIndicator(strokeWidth: 1, valueColor: AlwaysStoppedAnimation(Colors.black38)),
             ),
+            Text("  加载中...", style: TextStyle(color: Colors.black38)),
           ],
         ),
       );
 
   Widget finishedWidgetBuilder(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+      padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
-            "我是有底线的",
-            style: TextStyle(
-              color: Colors.black54,
-            ),
-          ),
+          Container(width: 25, height: 1, color: Colors.black26),
+          Text("  我是有底线的  ", style: TextStyle(color: Colors.black38)),
+          Container(width: 25, height: 1, color: Colors.black26),
+        ],
+      ),
+    );
+  }
+
+  Widget noneWidgetBuilder(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("暂无数据", style: TextStyle(color: Colors.black54)),
         ],
       ),
     );
