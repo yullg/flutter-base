@@ -6,6 +6,7 @@ export 'src/app/file_manager.dart';
 export 'src/app/shared_preferences_manager.dart';
 export 'src/base_bootstrap.dart';
 export 'src/core/podo.dart';
+export 'src/core/returned_result.dart';
 export 'src/ffmpeg/ffmpeg_support.dart';
 export 'src/ffmpeg/ffprobe_support.dart';
 export 'src/helper/Exif_helper.dart';
