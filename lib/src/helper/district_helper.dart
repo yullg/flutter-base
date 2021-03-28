@@ -4,7 +4,7 @@ import '../bean/district.dart';
 
 class DistrictHelper {
   static final List<District> _districts =
-      List<District>.unmodifiable(jsonDecode(json).map((e) => District(
+      List<District>.unmodifiable(jsonDecode(_json).map((e) => District(
             id: e["id"],
             pid: e["pid"],
             level: e["level"],
@@ -42,7 +42,8 @@ class DistrictHelper {
   DistrictHelper._();
 }
 
-final json = r'''
+// version : 20200311
+final _json = r'''
 [ {
   "level" : 1,
   "name" : "北京",
