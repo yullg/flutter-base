@@ -3,54 +3,39 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../helper/string_helper.dart';
-import '../logger/logger.dart';
-
-final Logger _logger = Logger("base.app.config");
 
 class Config {
   static dynamic _defaultSource;
   static dynamic _variantSource;
 
   static Future<void> initialize(String? defaultConfigFile, String? variantConfigFile) async {
-    try {
-      String? sourceJsonDefault, sourceJsonVariant;
-      if (defaultConfigFile != null) {
-        sourceJsonDefault = await rootBundle.loadString(defaultConfigFile);
-      }
-      if (variantConfigFile != null) {
-        sourceJsonVariant = await rootBundle.loadString(variantConfigFile);
-      }
-      if (StringHelper.hasText(sourceJsonDefault)) {
-        _defaultSource = jsonDecode(sourceJsonDefault!);
-      }
-      if (StringHelper.hasText(sourceJsonVariant)) {
-        _variantSource = jsonDecode(sourceJsonVariant!);
-      }
-    } catch (e, s) {
-      _logger.error("Config initialize failed [ default: $defaultConfigFile, variant: $variantConfigFile ]", e, s);
+    String? sourceJsonDefault, sourceJsonVariant;
+    if (defaultConfigFile != null) {
+      sourceJsonDefault = await rootBundle.loadString(defaultConfigFile);
+    }
+    if (variantConfigFile != null) {
+      sourceJsonVariant = await rootBundle.loadString(variantConfigFile);
+    }
+    if (StringHelper.hasText(sourceJsonDefault)) {
+      _defaultSource = jsonDecode(sourceJsonDefault!);
+    }
+    if (StringHelper.hasText(sourceJsonVariant)) {
+      _variantSource = jsonDecode(sourceJsonVariant!);
     }
     await BaseConfig.load();
   }
 
-  static dynamic? find(ParseResult parse(dynamic source, SourceType type)) {
+  static dynamic find(ParseResult parse(dynamic source, SourceType type)) {
     if (_variantSource != null) {
-      try {
-        ParseResult parseResult = parse(_variantSource, SourceType.variant_source);
-        if (parseResult.complete) {
-          return parseResult.result;
-        }
-      } catch (e, s) {
-        _logger.warn("Unable to parse variant config", e, s);
+      ParseResult parseResult = parse(_variantSource, SourceType.variant_source);
+      if (parseResult.complete) {
+        return parseResult.result;
       }
     }
     if (_defaultSource != null) {
-      try {
-        ParseResult parseResult = parse(_defaultSource, SourceType.default_source);
-        if (parseResult.complete) {
-          return parseResult.result;
-        }
-      } catch (e, s) {
-        _logger.debug("Unable to parse default config", e, s);
+      ParseResult parseResult = parse(_defaultSource, SourceType.default_source);
+      if (parseResult.complete) {
+        return parseResult.result;
       }
     }
     return null;
