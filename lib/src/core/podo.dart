@@ -3,6 +3,8 @@ class Podo {
 
   Podo() : _map = {};
 
+  Podo.clone(Podo podo) : _map = Map.of(podo._map);
+
   Podo.of(Map<String, dynamic> map) : _map = Map.of(map);
 
   Iterable<MapEntry<String, dynamic>> get attributes => _map.entries;
@@ -17,11 +19,11 @@ class Podo {
 
   Iterable<dynamic> get values => _map.values;
 
+  bool containsName(String name) => _map.containsKey(name);
+
   dynamic get(String name) => _map[name];
 
   void set(String name, dynamic value) => _map[name] = value;
-
-  Podo clone() => Podo.of(_map);
 
   @override
   bool operator ==(Object other) {
