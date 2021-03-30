@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../app/config.dart';
+import '../app/config_manager.dart';
 
 class PermissionSupport {
   static Future<bool> requestPermissions(BuildContext context, Iterable<Permission> permissions,

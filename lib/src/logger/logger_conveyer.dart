@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../app/config.dart';
+import '../app/config_manager.dart';
 import '../helper/enum_helper.dart';
 import 'logger_appender.dart';
 

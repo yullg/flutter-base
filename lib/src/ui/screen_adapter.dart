@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
 
-import '../app/config.dart';
+import '../app/config_manager.dart';
 
 class ScreenAdapterWidget extends StatelessWidget {
   final Widget Function() builder;

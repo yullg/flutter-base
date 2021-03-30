@@ -1,6 +1,4 @@
-export 'package:flutter_screenutil/flutter_screenutil.dart';
-
-export 'src/app/config.dart';
+export 'src/app/config_manager.dart';
 export 'src/app/directory_manager.dart';
 export 'src/app/file_manager.dart';
 export 'src/app/shared_preferences_manager.dart';

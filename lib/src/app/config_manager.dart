@@ -4,7 +4,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import '../helper/string_helper.dart';
 
-class Config {
+class ConfigManager {
   static dynamic _defaultSource;
   static dynamic _variantSource;
 
@@ -54,7 +54,7 @@ class Config {
     _variantSource = null;
   }
 
-  Config._();
+  ConfigManager._();
 }
 
 enum SourceType { default_source, variant_source }
@@ -78,15 +78,15 @@ class BaseConfig {
   static String? _logger_fileLevel;
 
   static Future<void> load() async {
-    _appName = Config.findUntilNotNull((source) => source["appName"]);
-    _fileManagerDirectory = Config.findUntilNotNull((source) => source["fileManagerDirectory"]);
-    _screen_width = Config.findUntilNotNull((source) => source["screen"]["width"]);
-    _screen_height = Config.findUntilNotNull((source) => source["screen"]["height"]);
-    _screen_allowFontScaling = Config.findUntilNotNull((source) => source["screen"]["allowFontScaling"]);
-    _logger_consoleEnabled = Config.findUntilNotNull((source) => source["logger"]["consoleEnabled"]);
-    _logger_consoleLevel = Config.findUntilNotNull((source) => source["logger"]["consoleLevel"]);
-    _logger_fileEnabled = Config.findUntilNotNull((source) => source["logger"]["fileEnabled"]);
-    _logger_fileLevel = Config.findUntilNotNull((source) => source["logger"]["fileLevel"]);
+    _appName = ConfigManager.findUntilNotNull((source) => source["appName"]);
+    _fileManagerDirectory = ConfigManager.findUntilNotNull((source) => source["fileManagerDirectory"]);
+    _screen_width = ConfigManager.findUntilNotNull((source) => source["screen"]["width"]);
+    _screen_height = ConfigManager.findUntilNotNull((source) => source["screen"]["height"]);
+    _screen_allowFontScaling = ConfigManager.findUntilNotNull((source) => source["screen"]["allowFontScaling"]);
+    _logger_consoleEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]["consoleEnabled"]);
+    _logger_consoleLevel = ConfigManager.findUntilNotNull((source) => source["logger"]["consoleLevel"]);
+    _logger_fileEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]["fileEnabled"]);
+    _logger_fileLevel = ConfigManager.findUntilNotNull((source) => source["logger"]["fileLevel"]);
   }
 
   static String? get appName => _appName;
