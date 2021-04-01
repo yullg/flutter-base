@@ -25,7 +25,7 @@ class FFmpegSupport {
       if (0 == execution.returnCode) {
         completer.complete();
       } else {
-        completer.completeError(StateError("FFmpeg exec failure [${execution.returnCode}]"));
+        completer.completeError(Exception("[ returnCode = ${execution.returnCode} ]"));
       }
     });
     return completer.future;
@@ -53,7 +53,7 @@ class FFmpegSupport {
       if (0 == execution.returnCode) {
         completer.complete();
       } else {
-        completer.completeError(StateError("FFmpeg exec failure [${execution.returnCode}]"));
+        completer.completeError(Exception("[ returnCode = ${execution.returnCode} ]"));
       }
     });
     return completer.future;
@@ -81,7 +81,7 @@ class FFmpegSupport {
       if (0 == execution.returnCode) {
         completer.complete();
       } else {
-        completer.completeError(StateError("FFmpeg exec failure [${execution.returnCode}]"));
+        completer.completeError(Exception("[ returnCode = ${execution.returnCode} ]"));
       }
     });
     return completer.future;
@@ -107,7 +107,7 @@ class FFmpegSupport {
       if (0 == execution.returnCode) {
         completer.complete();
       } else {
-        completer.completeError(StateError("FFmpeg exec failure [${execution.returnCode}]"));
+        completer.completeError(Exception("[ returnCode = ${execution.returnCode} ]"));
       }
     });
     return completer.future;
