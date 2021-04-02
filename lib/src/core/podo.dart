@@ -7,8 +7,6 @@ class Podo {
 
   Podo.of(Map<String, dynamic> map) : _map = Map.of(map);
 
-  Iterable<MapEntry<String, dynamic>> get attributes => _map.entries;
-
   bool get isEmpty => _map.isEmpty;
 
   bool get isNotEmpty => _map.isNotEmpty;
@@ -24,6 +22,8 @@ class Podo {
   dynamic get(String name) => _map[name];
 
   void set(String name, dynamic value) => _map[name] = value;
+
+  Map<String, dynamic> unwrap() => Map.unmodifiable(_map);
 
   @override
   bool operator ==(Object other) {
