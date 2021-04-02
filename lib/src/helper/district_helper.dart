@@ -3,14 +3,13 @@ import 'dart:convert';
 import '../bean/district.dart';
 
 class DistrictHelper {
-  static final List<District> _districts =
-      List<District>.unmodifiable(jsonDecode(_json).map((e) => District(
-            id: e["id"],
-            pid: e["pid"],
-            level: e["level"],
-            name: e["name"] ?? e["fullname"],
-            fullname: e["fullname"] ?? e["name"],
-          )));
+  static final List<District> _districts = List<District>.unmodifiable(jsonDecode(_json).map((e) => District(
+        id: e["id"],
+        pid: e["pid"],
+        level: e["level"],
+        name: e["name"],
+        fullname: e["fullname"],
+      )));
 
   static get districts => _districts;
 
@@ -43,7 +42,7 @@ class DistrictHelper {
 }
 
 // version : 20200329
-final _json=r'''
+final _json = r'''
 [ {
   "level" : 1,
   "name" : "北京",
