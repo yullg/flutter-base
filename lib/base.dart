@@ -3,6 +3,7 @@ export 'src/app/directory_manager.dart';
 export 'src/app/file_manager.dart';
 export 'src/app/shared_preferences_manager.dart';
 export 'src/base_bootstrap.dart';
+export 'src/bean/coordinate.dart';
 export 'src/bean/district.dart';
 export 'src/bean/sex.dart';
 export 'src/core/podo.dart';
