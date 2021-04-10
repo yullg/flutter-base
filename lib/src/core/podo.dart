@@ -1,11 +1,15 @@
+const EMPTY_PODO = Podo._({});
+
 class Podo {
   final Map<String, dynamic> _map;
 
-  Podo() : _map = {};
+  const Podo._(Map<String, dynamic> map) : _map = map;
 
-  Podo.clone(Podo podo) : _map = Map.of(podo._map);
+  Podo() : this._({});
 
-  Podo.of(Map<String, dynamic> map) : _map = Map.of(map);
+  Podo.clone(Podo podo) : this._(Map.of(podo._map));
+
+  Podo.of(Map<String, dynamic> map) : this._(Map.of(map));
 
   bool get isEmpty => _map.isEmpty;
 
