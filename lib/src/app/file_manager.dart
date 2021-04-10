@@ -42,9 +42,12 @@ class FileManager {
     return key;
   }
 
+  static Future<void> delete(String key) async {
+    keyToFile(key).deleteSync();
+  }
+
   static Directory _directory(DirectoryType directoryType) {
-    return Directory(
-        p.join(DirectoryManager.directory(directoryType).path, BaseConfig.fileManagerDirectory ?? "file_manager_data"));
+    return Directory(p.join(DirectoryManager.directory(directoryType).path, BaseConfig.fileManagerDirectory ?? "file_manager_data"));
   }
 
   static Future<void> destroy() async {}
