@@ -28,6 +28,10 @@ class FileManager {
     return EnumHelper.parseString(FileType.values, key.substring(key.lastIndexOf(".") + 1))!;
   }
 
+  static String name(String key) {
+    return key.substring(key.indexOf("_") + 1, key.lastIndexOf("."));
+  }
+
   static Future<String> copyIn(File file, DirectoryType directoryType, FileType fileType, [String? name]) async {
     String key = newKey(directoryType, fileType, name);
     File destFile = keyToFile(key);
