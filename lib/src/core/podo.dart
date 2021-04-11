@@ -48,30 +48,6 @@ class Podo {
     return result ?? false;
   }
 
-  bool valueEquals(Object other) {
-    bool? result;
-    if (identical(this, other)) {
-      result = true;
-    } else if (other is Podo && runtimeType == other.runtimeType) {
-      for (var entry in _map.entries) {
-        if (entry.value != other._map[entry.key]) {
-          result = false;
-          break;
-        }
-      }
-      if (result == null) {
-        for (var entry in other._map.entries) {
-          if (entry.value != _map[entry.key]) {
-            result = false;
-            break;
-          }
-        }
-      }
-      result ??= true;
-    }
-    return result ?? false;
-  }
-
   @override
   int get hashCode {
     int result = 0;
