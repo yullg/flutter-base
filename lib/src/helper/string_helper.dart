@@ -11,5 +11,13 @@ class StringHelper {
 
   static bool hasNotText(String? str) => !hasText(str);
 
+  static bool equals(String? strA, String? strB, {bool trim = true}) {
+    if (trim) {
+      return (strA?.trim() ?? "") == (strB?.trim() ?? "");
+    } else {
+      return (strA ?? "") == (strB ?? "");
+    }
+  }
+
   StringHelper._();
 }
