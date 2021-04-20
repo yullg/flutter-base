@@ -366,3 +366,51 @@ class _SmartDisableTextButtonState extends State<SmartDisableTextButton> {
     throw ArgumentError();
   }
 }
+
+class SmartDisableButton extends StatefulWidget {
+  final Widget child;
+  final Widget? disabledChild;
+  final AsyncCallback? onPressed;
+  final AsyncCallback? onLongPress;
+
+  SmartDisableButton({Key? key, required this.child, this.disabledChild, this.onPressed, this.onLongPress}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SmartDisableButtonState();
+}
+
+class _SmartDisableButtonState extends State<SmartDisableButton> {
+  bool disabled = false;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget child = widget.child, disabledChild = widget.disabledChild ?? widget.child;
+    AsyncCallback? onPressed = widget.onPressed, onLongPress = widget.onLongPress;
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        child: disabled ? disabledChild : child,
+        onTap: disabled || onPressed == null
+            ? null
+            : () {
+                setState(() => disabled = true);
+                onPressed().whenComplete(() {
+                  if (mounted) {
+                    setState(() => disabled = false);
+                  }
+                });
+              },
+        onLongPress: disabled || onLongPress == null
+            ? null
+            : () {
+                setState(() => disabled = true);
+                onLongPress().whenComplete(() {
+                  if (mounted) {
+                    setState(() => disabled = false);
+                  }
+                });
+              },
+      ),
+    );
+  }
+}
