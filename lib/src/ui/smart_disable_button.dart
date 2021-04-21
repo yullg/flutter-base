@@ -389,7 +389,7 @@ class _SmartDisableButtonState extends State<SmartDisableButton> {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        child: disabled ? disabledChild : child,
+        child: disabled || (onPressed == null && onLongPress == null) ? disabledChild : child,
         onTap: disabled || onPressed == null
             ? null
             : () {
