@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class SmartDisableElevatedButton extends StatefulWidget {
+class SmartElevatedButton extends StatefulWidget {
   final AsyncCallback? onPressed;
   final AsyncCallback? onLongPress;
   final ButtonStyle? style;
@@ -9,13 +9,16 @@ class SmartDisableElevatedButton extends StatefulWidget {
   final bool autofocus;
   final Clip clipBehavior;
   final Widget? child;
+  final Widget? lockedChild;
   final Widget? disabledChild;
   final Widget? icon;
+  final Widget? lockedIcon;
   final Widget? disabledIcon;
   final Widget? label;
+  final Widget? lockedLabel;
   final Widget? disabledLabel;
 
-  SmartDisableElevatedButton(
+  SmartElevatedButton(
       {Key? key,
       this.onPressed,
       this.onLongPress,
@@ -24,15 +27,18 @@ class SmartDisableElevatedButton extends StatefulWidget {
       this.autofocus = false,
       this.clipBehavior = Clip.none,
       required Widget child,
+      this.lockedChild,
       this.disabledChild})
       : this.child = child,
         this.icon = null,
+        this.lockedIcon = null,
         this.disabledIcon = null,
         this.label = null,
+        this.lockedLabel = null,
         this.disabledLabel = null,
         super(key: key);
 
-  SmartDisableElevatedButton.icon(
+  SmartElevatedButton.icon(
       {Key? key,
       this.onPressed,
       this.onLongPress,
@@ -41,21 +47,24 @@ class SmartDisableElevatedButton extends StatefulWidget {
       this.autofocus = false,
       this.clipBehavior = Clip.none,
       required Widget icon,
+      this.lockedIcon,
       this.disabledIcon,
       required Widget label,
+      this.lockedLabel,
       this.disabledLabel})
-      : this.child = null,
-        this.disabledChild = null,
-        this.icon = icon,
+      : this.icon = icon,
         this.label = label,
+        this.child = null,
+        this.lockedChild = null,
+        this.disabledChild = null,
         super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SmartDisableElevatedButtonState();
+  State<StatefulWidget> createState() => _SmartElevatedButtonState();
 }
 
-class _SmartDisableElevatedButtonState extends State<SmartDisableElevatedButton> {
-  bool disabled = false;
+class _SmartElevatedButtonState extends State<SmartElevatedButton> {
+  bool locked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,24 +76,28 @@ class _SmartDisableElevatedButtonState extends State<SmartDisableElevatedButton>
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,
         clipBehavior: widget.clipBehavior,
-        child: disabled ? widget.disabledChild ?? child : child,
-        onPressed: disabled || onPressed == null
+        child: onPressed == null && onLongPress == null
+            ? widget.disabledChild ?? child
+            : locked
+                ? widget.lockedChild ?? child
+                : child,
+        onPressed: locked || onPressed == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onPressed().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
-        onLongPress: disabled || onLongPress == null
+        onLongPress: locked || onLongPress == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onLongPress().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
@@ -95,25 +108,33 @@ class _SmartDisableElevatedButtonState extends State<SmartDisableElevatedButton>
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,
         clipBehavior: widget.clipBehavior,
-        icon: disabled ? widget.disabledIcon ?? icon : icon,
-        label: disabled ? widget.disabledLabel ?? label : label,
-        onPressed: disabled || onPressed == null
+        icon: onPressed == null && onLongPress == null
+            ? widget.disabledIcon ?? icon
+            : locked
+                ? widget.lockedIcon ?? icon
+                : icon,
+        label: onPressed == null && onLongPress == null
+            ? widget.disabledLabel ?? label
+            : locked
+                ? widget.lockedLabel ?? label
+                : label,
+        onPressed: locked || onPressed == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onPressed().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
-        onLongPress: disabled || onLongPress == null
+        onLongPress: locked || onLongPress == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onLongPress().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
@@ -123,7 +144,7 @@ class _SmartDisableElevatedButtonState extends State<SmartDisableElevatedButton>
   }
 }
 
-class SmartDisableOutlinedButton extends StatefulWidget {
+class SmartOutlinedButton extends StatefulWidget {
   final AsyncCallback? onPressed;
   final AsyncCallback? onLongPress;
   final ButtonStyle? style;
@@ -131,13 +152,16 @@ class SmartDisableOutlinedButton extends StatefulWidget {
   final bool autofocus;
   final Clip clipBehavior;
   final Widget? child;
+  final Widget? lockedChild;
   final Widget? disabledChild;
   final Widget? icon;
+  final Widget? lockedIcon;
   final Widget? disabledIcon;
   final Widget? label;
+  final Widget? lockedLabel;
   final Widget? disabledLabel;
 
-  SmartDisableOutlinedButton(
+  SmartOutlinedButton(
       {Key? key,
       this.onPressed,
       this.onLongPress,
@@ -146,15 +170,18 @@ class SmartDisableOutlinedButton extends StatefulWidget {
       this.autofocus = false,
       this.clipBehavior = Clip.none,
       required Widget child,
+      this.lockedChild,
       this.disabledChild})
       : this.child = child,
         this.icon = null,
+        this.lockedIcon = null,
         this.disabledIcon = null,
         this.label = null,
+        this.lockedLabel = null,
         this.disabledLabel = null,
         super(key: key);
 
-  SmartDisableOutlinedButton.icon(
+  SmartOutlinedButton.icon(
       {Key? key,
       this.onPressed,
       this.onLongPress,
@@ -163,21 +190,24 @@ class SmartDisableOutlinedButton extends StatefulWidget {
       this.autofocus = false,
       this.clipBehavior = Clip.none,
       required Widget icon,
+      this.lockedIcon,
       this.disabledIcon,
       required Widget label,
+      this.lockedLabel,
       this.disabledLabel})
       : this.child = null,
+        this.lockedChild = null,
         this.disabledChild = null,
         this.icon = icon,
         this.label = label,
         super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SmartDisableOutlinedButtonState();
+  State<StatefulWidget> createState() => _SmartOutlinedButtonState();
 }
 
-class _SmartDisableOutlinedButtonState extends State<SmartDisableOutlinedButton> {
-  bool disabled = false;
+class _SmartOutlinedButtonState extends State<SmartOutlinedButton> {
+  bool locked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -189,24 +219,28 @@ class _SmartDisableOutlinedButtonState extends State<SmartDisableOutlinedButton>
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,
         clipBehavior: widget.clipBehavior,
-        child: disabled ? widget.disabledChild ?? child : child,
-        onPressed: disabled || onPressed == null
+        child: onPressed == null && onLongPress == null
+            ? widget.disabledChild ?? child
+            : locked
+                ? widget.lockedChild ?? child
+                : child,
+        onPressed: locked || onPressed == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onPressed().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
-        onLongPress: disabled || onLongPress == null
+        onLongPress: locked || onLongPress == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onLongPress().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
@@ -217,25 +251,33 @@ class _SmartDisableOutlinedButtonState extends State<SmartDisableOutlinedButton>
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,
         clipBehavior: widget.clipBehavior,
-        icon: disabled ? widget.disabledIcon ?? icon : icon,
-        label: disabled ? widget.disabledLabel ?? label : label,
-        onPressed: disabled || onPressed == null
+        icon: onPressed == null && onLongPress == null
+            ? widget.disabledIcon ?? icon
+            : locked
+                ? widget.lockedIcon ?? icon
+                : icon,
+        label: onPressed == null && onLongPress == null
+            ? widget.disabledLabel ?? label
+            : locked
+                ? widget.lockedLabel ?? label
+                : label,
+        onPressed: locked || onPressed == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onPressed().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
-        onLongPress: disabled || onLongPress == null
+        onLongPress: locked || onLongPress == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onLongPress().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
@@ -245,7 +287,7 @@ class _SmartDisableOutlinedButtonState extends State<SmartDisableOutlinedButton>
   }
 }
 
-class SmartDisableTextButton extends StatefulWidget {
+class SmartTextButton extends StatefulWidget {
   final AsyncCallback? onPressed;
   final AsyncCallback? onLongPress;
   final ButtonStyle? style;
@@ -253,13 +295,16 @@ class SmartDisableTextButton extends StatefulWidget {
   final bool autofocus;
   final Clip clipBehavior;
   final Widget? child;
+  final Widget? lockedChild;
   final Widget? disabledChild;
   final Widget? icon;
+  final Widget? lockedIcon;
   final Widget? disabledIcon;
   final Widget? label;
+  final Widget? lockedLabel;
   final Widget? disabledLabel;
 
-  SmartDisableTextButton(
+  SmartTextButton(
       {Key? key,
       this.onPressed,
       this.onLongPress,
@@ -268,15 +313,18 @@ class SmartDisableTextButton extends StatefulWidget {
       this.autofocus = false,
       this.clipBehavior = Clip.none,
       required Widget child,
+      this.lockedChild,
       this.disabledChild})
       : this.child = child,
         this.icon = null,
+        this.lockedIcon = null,
         this.disabledIcon = null,
         this.label = null,
+        this.lockedLabel = null,
         this.disabledLabel = null,
         super(key: key);
 
-  SmartDisableTextButton.icon(
+  SmartTextButton.icon(
       {Key? key,
       this.onPressed,
       this.onLongPress,
@@ -285,21 +333,24 @@ class SmartDisableTextButton extends StatefulWidget {
       this.autofocus = false,
       this.clipBehavior = Clip.none,
       required Widget icon,
+      this.lockedIcon,
       this.disabledIcon,
       required Widget label,
+      this.lockedLabel,
       this.disabledLabel})
       : this.child = null,
+        this.lockedChild = null,
         this.disabledChild = null,
         this.icon = icon,
         this.label = label,
         super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SmartDisableTextButtonState();
+  State<StatefulWidget> createState() => _SmartTextButtonState();
 }
 
-class _SmartDisableTextButtonState extends State<SmartDisableTextButton> {
-  bool disabled = false;
+class _SmartTextButtonState extends State<SmartTextButton> {
+  bool locked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -311,24 +362,28 @@ class _SmartDisableTextButtonState extends State<SmartDisableTextButton> {
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,
         clipBehavior: widget.clipBehavior,
-        child: disabled ? widget.disabledChild ?? child : child,
-        onPressed: disabled || onPressed == null
+        child: onPressed == null && onLongPress == null
+            ? widget.disabledChild ?? child
+            : locked
+                ? widget.lockedChild ?? child
+                : child,
+        onPressed: locked || onPressed == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onPressed().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
-        onLongPress: disabled || onLongPress == null
+        onLongPress: locked || onLongPress == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onLongPress().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
@@ -339,25 +394,33 @@ class _SmartDisableTextButtonState extends State<SmartDisableTextButton> {
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,
         clipBehavior: widget.clipBehavior,
-        icon: disabled ? widget.disabledIcon ?? icon : icon,
-        label: disabled ? widget.disabledLabel ?? label : label,
-        onPressed: disabled || onPressed == null
+        icon: onPressed == null && onLongPress == null
+            ? widget.disabledIcon ?? icon
+            : locked
+                ? widget.lockedIcon ?? icon
+                : icon,
+        label: onPressed == null && onLongPress == null
+            ? widget.disabledLabel ?? label
+            : locked
+                ? widget.lockedLabel ?? label
+                : label,
+        onPressed: locked || onPressed == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onPressed().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
-        onLongPress: disabled || onLongPress == null
+        onLongPress: locked || onLongPress == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onLongPress().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
@@ -367,46 +430,51 @@ class _SmartDisableTextButtonState extends State<SmartDisableTextButton> {
   }
 }
 
-class SmartDisableButton extends StatefulWidget {
+class SmartButton extends StatefulWidget {
   final Widget child;
+  final Widget? lockedChild;
   final Widget? disabledChild;
   final AsyncCallback? onPressed;
   final AsyncCallback? onLongPress;
 
-  SmartDisableButton({Key? key, required this.child, this.disabledChild, this.onPressed, this.onLongPress}) : super(key: key);
+  SmartButton({Key? key, required this.child, this.lockedChild, this.disabledChild, this.onPressed, this.onLongPress}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SmartDisableButtonState();
+  State<StatefulWidget> createState() => _SmartButtonState();
 }
 
-class _SmartDisableButtonState extends State<SmartDisableButton> {
-  bool disabled = false;
+class _SmartButtonState extends State<SmartButton> {
+  bool locked = false;
 
   @override
   Widget build(BuildContext context) {
-    Widget child = widget.child, disabledChild = widget.disabledChild ?? widget.child;
+    Widget child = widget.child;
     AsyncCallback? onPressed = widget.onPressed, onLongPress = widget.onLongPress;
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        child: disabled || (onPressed == null && onLongPress == null) ? disabledChild : child,
-        onTap: disabled || onPressed == null
+        child: onPressed == null && onLongPress == null
+            ? widget.disabledChild ?? child
+            : locked
+                ? widget.lockedChild ?? child
+                : child,
+        onTap: locked || onPressed == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onPressed().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
-        onLongPress: disabled || onLongPress == null
+        onLongPress: locked || onLongPress == null
             ? null
             : () {
-                setState(() => disabled = true);
+                setState(() => locked = true);
                 onLongPress().whenComplete(() {
                   if (mounted) {
-                    setState(() => disabled = false);
+                    setState(() => locked = false);
                   }
                 });
               },
