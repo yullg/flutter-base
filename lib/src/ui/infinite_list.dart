@@ -26,7 +26,7 @@ class _InfiniteListWidgetState extends State<InfiniteListWidget> {
         value: controller,
         child: Consumer<InfiniteListController>(
           builder: (context, controller, child) => ListView.separated(
-            itemCount: controller._dataList.length + 1,
+            itemCount: controller._dataBuffer._datas.length + 1,
             itemBuilder: controller._itemBuilder,
             separatorBuilder: controller.separatorWidgetBuilder,
           ),
@@ -65,7 +65,7 @@ class _InfiniteSliverListWidgetState extends State<InfiniteSliverListWidget> {
           builder: (context, controller, child) => SliverList(
             delegate: SliverChildBuilderDelegate(
               controller._itemBuilder,
-              childCount: controller._dataList.length + 1,
+              childCount: controller._dataBuffer._datas.length + 1,
             ),
           ),
         ),
@@ -80,13 +80,19 @@ class _InfiniteSliverListWidgetState extends State<InfiniteSliverListWidget> {
 
 enum _Status { idle, loading, finished, failed }
 
+class DataBuffer<T> {
+  final List<T> _datas = [];
+}
+
 abstract class InfiniteListController<T> extends ChangeNotifier {
-  final List<T> _dataList = [];
+  final DataBuffer<T> _dataBuffer;
   _Status _status = _Status.idle;
 
+  InfiniteListController({DataBuffer<T>? dataBuffer}) : _dataBuffer = dataBuffer ?? DataBuffer<T>();
+
   Widget _itemBuilder(BuildContext context, int index) {
-    if (index < _dataList.length) {
-      return dataToWidget(context, index, _dataList[index]);
+    if (index < _dataBuffer._datas.length) {
+      return dataToWidget(context, index, _dataBuffer._datas[index]);
     } else {
       switch (_status) {
         case _Status.idle:
@@ -95,7 +101,7 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
         case _Status.loading:
           return loadingWidgetBuilder(context);
         case _Status.finished:
-          if (_dataList.isEmpty) {
+          if (_dataBuffer._datas.isEmpty) {
             return noneWidgetBuilder(context);
           } else {
             return finishedWidgetBuilder(context);
@@ -109,9 +115,9 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
   Future<void> _loadMoreData() async {
     try {
       _status = _Status.loading;
-      List<T>? moreData = await loadMoreData(_dataList.isEmpty);
+      List<T>? moreData = await loadMoreData(_dataBuffer._datas.length);
       if (moreData != null) {
-        _dataList.addAll(moreData);
+        _dataBuffer._datas.addAll(moreData);
         _status = _Status.idle;
       } else {
         _status = _Status.finished;
@@ -178,7 +184,7 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
     );
   }
 
-  Future<List<T>?> loadMoreData(bool initial);
+  Future<List<T>?> loadMoreData(int offset);
 
   Widget dataToWidget(BuildContext context, int index, T data);
 }
