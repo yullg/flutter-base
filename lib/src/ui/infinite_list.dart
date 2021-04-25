@@ -40,6 +40,44 @@ class _InfiniteListWidgetState extends State<InfiniteListWidget> {
   }
 }
 
+class InfiniteSliverListWidget extends StatefulWidget {
+  final InfiniteListControllerBuilder controllerBuilder;
+
+  InfiniteSliverListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _InfiniteSliverListWidgetState();
+}
+
+class _InfiniteSliverListWidgetState extends State<InfiniteSliverListWidget> {
+  late final InfiniteListController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controllerBuilder();
+  }
+
+  @override
+  Widget build(BuildContext context) => ChangeNotifierProvider.value(
+        value: controller,
+        child: Consumer<InfiniteListController>(
+          builder: (context, controller, child) => SliverList(
+            delegate: SliverChildBuilderDelegate(
+              controller._itemBuilder,
+              childCount: controller._dataList.length + 1,
+            ),
+          ),
+        ),
+      );
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+}
+
 enum _Status { idle, loading, finished, failed }
 
 abstract class InfiniteListController<T> extends ChangeNotifier {
@@ -71,7 +109,7 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
   Future<void> _loadMoreData() async {
     try {
       _status = _Status.loading;
-      List<T>? moreData = await loadMoreData();
+      List<T>? moreData = await loadMoreData(_dataList.isEmpty);
       if (moreData != null) {
         _dataList.addAll(moreData);
         _status = _Status.idle;
@@ -140,7 +178,7 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
     );
   }
 
-  Future<List<T>?> loadMoreData();
+  Future<List<T>?> loadMoreData(bool initial);
 
   Widget dataToWidget(BuildContext context, int index, T data);
 }
