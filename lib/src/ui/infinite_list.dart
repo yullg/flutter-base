@@ -165,7 +165,7 @@ abstract class InfiniteListController<T> extends ChangeNotifier {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(width: 25, height: 1, color: Colors.black26),
-          Text("  我是有底线的  ", style: TextStyle(color: Colors.black38)),
+          Text("  已加载全部  ", style: TextStyle(color: Colors.black38)),
           Container(width: 25, height: 1, color: Colors.black26),
         ],
       ),
