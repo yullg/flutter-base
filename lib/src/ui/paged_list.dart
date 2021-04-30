@@ -81,7 +81,9 @@ class _PagedSliverListWidgetState extends State<PagedSliverListWidget> {
 enum _Status { idle, loading, finished, failed }
 
 class DataBuffer<T> {
-  final List<T> _datas = [];
+  final List<T> _datas;
+
+  DataBuffer([Iterable<T>? datas]) : _datas = [...?datas];
 }
 
 abstract class PagedListController<T> extends ChangeNotifier {
