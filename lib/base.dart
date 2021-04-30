@@ -25,7 +25,7 @@ export 'src/permission/permission.dart';
 export 'src/ui/badge.dart';
 export 'src/ui/district_pick.dart';
 export 'src/ui/image_carousel.dart';
-export 'src/ui/infinite_list.dart';
+export 'src/ui/paged_list.dart';
 export 'src/ui/limit_back.dart';
 export 'src/ui/screen_adapter.dart';
 export 'src/ui/sex_pick.dart';

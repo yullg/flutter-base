@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-typedef InfiniteListControllerBuilder = InfiniteListController Function();
+typedef PagedListControllerBuilder = PagedListController Function();
 
-class InfiniteListWidget extends StatefulWidget {
-  final InfiniteListControllerBuilder controllerBuilder;
+class PagedListWidget extends StatefulWidget {
+  final PagedListControllerBuilder controllerBuilder;
 
-  InfiniteListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
+  PagedListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _InfiniteListWidgetState();
+  State<StatefulWidget> createState() => _PagedListWidgetState();
 }
 
-class _InfiniteListWidgetState extends State<InfiniteListWidget> {
-  late InfiniteListController controller;
+class _PagedListWidgetState extends State<PagedListWidget> {
+  late PagedListController controller;
 
   @override
   void initState() {
@@ -24,7 +24,7 @@ class _InfiniteListWidgetState extends State<InfiniteListWidget> {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider.value(
         value: controller,
-        child: Consumer<InfiniteListController>(
+        child: Consumer<PagedListController>(
           builder: (context, controller, child) => ListView.separated(
             itemCount: controller._dataBuffer._datas.length + 1,
             itemBuilder: controller._itemBuilder,
@@ -40,17 +40,17 @@ class _InfiniteListWidgetState extends State<InfiniteListWidget> {
   }
 }
 
-class InfiniteSliverListWidget extends StatefulWidget {
-  final InfiniteListControllerBuilder controllerBuilder;
+class PagedSliverListWidget extends StatefulWidget {
+  final PagedListControllerBuilder controllerBuilder;
 
-  InfiniteSliverListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
+  PagedSliverListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _InfiniteSliverListWidgetState();
+  State<StatefulWidget> createState() => _PagedSliverListWidgetState();
 }
 
-class _InfiniteSliverListWidgetState extends State<InfiniteSliverListWidget> {
-  late final InfiniteListController controller;
+class _PagedSliverListWidgetState extends State<PagedSliverListWidget> {
+  late final PagedListController controller;
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class _InfiniteSliverListWidgetState extends State<InfiniteSliverListWidget> {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider.value(
         value: controller,
-        child: Consumer<InfiniteListController>(
+        child: Consumer<PagedListController>(
           builder: (context, controller, child) => SliverList(
             delegate: SliverChildBuilderDelegate(
               controller._itemBuilder,
@@ -84,11 +84,11 @@ class DataBuffer<T> {
   final List<T> _datas = [];
 }
 
-abstract class InfiniteListController<T> extends ChangeNotifier {
+abstract class PagedListController<T> extends ChangeNotifier {
   final DataBuffer<T> _dataBuffer;
   _Status _status = _Status.idle;
 
-  InfiniteListController({DataBuffer<T>? dataBuffer}) : _dataBuffer = dataBuffer ?? DataBuffer<T>();
+  PagedListController({DataBuffer<T>? dataBuffer}) : _dataBuffer = dataBuffer ?? DataBuffer<T>();
 
   Widget _itemBuilder(BuildContext context, int index) {
     if (index < _dataBuffer._datas.length) {
