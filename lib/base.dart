@@ -6,6 +6,7 @@ export 'src/base_bootstrap.dart';
 export 'src/bean/district.dart';
 export 'src/bean/geo_point.dart';
 export 'src/bean/sex.dart';
+export 'src/core/exceptions.dart';
 export 'src/core/optional.dart';
 export 'src/core/podo.dart';
 export 'src/ffmpeg/ffmpeg_support.dart';
