@@ -1,7 +1,8 @@
-import 'package:base/base.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../helper/toast_helper.dart';
 
 class FutureWidget<T> extends StatefulWidget {
   final bool refreshable;
@@ -39,7 +40,7 @@ class _FutureState<T> extends State<FutureWidget<T>> {
                 Text("加载失败 请刷新重试", style: TextStyle(fontSize: 46.sp, color: Colors.grey)),
               ],
             );
-            return widget.refreshable ? _refreshableWidget(child) : child;
+            return widget.refreshable ? refreshableWidget(child) : child;
           } else if (!snapshot.hasData) {
             Widget child = Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +51,7 @@ class _FutureState<T> extends State<FutureWidget<T>> {
                 Text("暂无数据 请刷新重试", style: TextStyle(fontSize: 46.sp, color: Colors.grey)),
               ],
             );
-            return widget.refreshable ? _refreshableWidget(child) : child;
+            return widget.refreshable ? refreshableWidget(child) : child;
           } else {
             Widget child = widget.valueWidgetBuilder(context, snapshot.data!, null);
             return widget.refreshable
@@ -67,7 +68,7 @@ class _FutureState<T> extends State<FutureWidget<T>> {
         },
       );
 
-  Widget _refreshableWidget(Widget child) => LayoutBuilder(
+  Widget refreshableWidget(Widget child) => LayoutBuilder(
         builder: (context, constraints) => RefreshIndicator(
           onRefresh: () async {
             future = widget.asyncValueGetter();
