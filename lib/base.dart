@@ -25,6 +25,7 @@ export 'src/logger/logger.dart';
 export 'src/permission/permission.dart';
 export 'src/ui/badge.dart';
 export 'src/ui/district_pick.dart';
+export 'src/ui/future_widget.dart';
 export 'src/ui/image_carousel.dart';
 export 'src/ui/image_view.dart';
 export 'src/ui/limit_back.dart';
