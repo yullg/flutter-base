@@ -30,6 +30,7 @@ export 'src/ui/image_carousel.dart';
 export 'src/ui/image_view.dart';
 export 'src/ui/limit_back.dart';
 export 'src/ui/paged_list.dart';
+export 'src/ui/predicate_widget.dart';
 export 'src/ui/screen_adapter.dart';
 export 'src/ui/sex_pick.dart';
 export 'src/ui/smart_button.dart';
