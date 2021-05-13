@@ -432,12 +432,23 @@ class _SmartTextButtonState extends State<SmartTextButton> {
 
 class SmartButton extends StatefulWidget {
   final Widget child;
+  final bool containedInkWell;
+  final BoxShape highlightShape;
   final Widget? lockedChild;
   final Widget? disabledChild;
   final AsyncCallback? onPressed;
   final AsyncCallback? onLongPress;
 
-  SmartButton({Key? key, required this.child, this.lockedChild, this.disabledChild, this.onPressed, this.onLongPress}) : super(key: key);
+  SmartButton(
+      {Key? key,
+      required this.child,
+      this.containedInkWell = false,
+      this.highlightShape = BoxShape.circle,
+      this.lockedChild,
+      this.disabledChild,
+      this.onPressed,
+      this.onLongPress})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SmartButtonState();
@@ -450,35 +461,34 @@ class _SmartButtonState extends State<SmartButton> {
   Widget build(BuildContext context) {
     Widget child = widget.child;
     AsyncCallback? onPressed = widget.onPressed, onLongPress = widget.onLongPress;
-    return Material(
-      type: MaterialType.transparency,
-      child: InkWell(
-        child: onPressed == null && onLongPress == null
-            ? widget.disabledChild ?? child
-            : locked
-                ? widget.lockedChild ?? child
-                : child,
-        onTap: locked || onPressed == null
-            ? null
-            : () {
-                setState(() => locked = true);
-                onPressed().whenComplete(() {
-                  if (mounted) {
-                    setState(() => locked = false);
-                  }
-                });
-              },
-        onLongPress: locked || onLongPress == null
-            ? null
-            : () {
-                setState(() => locked = true);
-                onLongPress().whenComplete(() {
-                  if (mounted) {
-                    setState(() => locked = false);
-                  }
-                });
-              },
-      ),
+    return InkResponse(
+      containedInkWell: widget.containedInkWell,
+      highlightShape: widget.highlightShape,
+      child: onPressed == null && onLongPress == null
+          ? widget.disabledChild ?? child
+          : locked
+              ? widget.lockedChild ?? child
+              : child,
+      onTap: locked || onPressed == null
+          ? null
+          : () {
+              setState(() => locked = true);
+              onPressed().whenComplete(() {
+                if (mounted) {
+                  setState(() => locked = false);
+                }
+              });
+            },
+      onLongPress: locked || onLongPress == null
+          ? null
+          : () {
+              setState(() => locked = true);
+              onLongPress().whenComplete(() {
+                if (mounted) {
+                  setState(() => locked = false);
+                }
+              });
+            },
     );
   }
 }
