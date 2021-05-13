@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../app/config_manager.dart';
 
 class PermissionSupport {
-  static Future<bool> requestPermissions(BuildContext context, Iterable<Permission> permissions,
-      {bool gotoAppSettings = true}) async {
+  static Future<bool> requestPermissions(BuildContext context, Iterable<Permission> permissions, {bool gotoAppSettings = true}) async {
     for (Permission permission in permissions) {
       if (await requestPermission(context, permission, gotoAppSettings: gotoAppSettings)) {
         continue;
@@ -15,8 +15,7 @@ class PermissionSupport {
     return true;
   }
 
-  static Future<bool> requestPermission(BuildContext context, Permission permission,
-      {bool gotoAppSettings = true}) async {
+  static Future<bool> requestPermission(BuildContext context, Permission permission, {bool gotoAppSettings = true}) async {
     var permissionStatus = await permission.request();
     if (permissionStatus.isGranted) {
       return true;
@@ -74,7 +73,7 @@ class PermissionSupport {
               child: Text("去设置"),
               onPressed: () {
                 Navigator.pop(context);
-                openAppSettings();
+                Geolocator.openLocationSettings();
               },
             ),
           ],
