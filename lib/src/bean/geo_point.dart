@@ -3,7 +3,7 @@ class GeoPoint {
   final double longitude;
   final double? altitude;
 
-  GeoPoint({required this.latitude, required this.longitude, this.altitude});
+  const GeoPoint({required this.latitude, required this.longitude, this.altitude});
 
   @override
   bool operator ==(Object other) =>
@@ -22,3 +22,5 @@ class GeoPoint {
     return 'GeoPoint{latitude: $latitude, longitude: $longitude, altitude: $altitude}';
   }
 }
+
+const GP_TIANANMEN = const GeoPoint(latitude: 39.909187, longitude: 116.397451);

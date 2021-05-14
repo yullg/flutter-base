@@ -5,12 +5,7 @@ class District {
   final String name;
   final String fullname;
 
-  District(
-      {required this.id,
-      this.pid,
-      required this.level,
-      required this.name,
-      required this.fullname});
+  const District({required this.id, this.pid, required this.level, required this.name, required this.fullname});
 
   @override
   bool operator ==(Object other) =>
@@ -24,8 +19,7 @@ class District {
           fullname == other.fullname;
 
   @override
-  int get hashCode =>
-      id.hashCode ^ pid.hashCode ^ level.hashCode ^ name.hashCode ^ fullname.hashCode;
+  int get hashCode => id.hashCode ^ pid.hashCode ^ level.hashCode ^ name.hashCode ^ fullname.hashCode;
 
   @override
   String toString() {
