@@ -23,7 +23,7 @@ export 'src/helper/uri_helper.dart';
 export 'src/helper/uuid_helper.dart';
 export 'src/logger/logger.dart';
 export 'src/permission/permission.dart';
-export 'src/ui/badge.dart';
+export 'src/ui/badge_widget.dart';
 export 'src/ui/district_pick.dart';
 export 'src/ui/future_widget.dart';
 export 'src/ui/image_carousel.dart';

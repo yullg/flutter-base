@@ -10,7 +10,7 @@ class BadgeWidget extends StatelessWidget {
   final Color borderColor;
   final double borderWidth;
 
-  BadgeWidget(
+  const BadgeWidget(
       {Key? key,
       required this.count,
       this.overflowCount = 99,
@@ -39,10 +39,7 @@ class BadgeWidget extends StatelessWidget {
       if (data.length <= 2) {
         return Container(
           padding: EdgeInsets.all(1),
-          decoration: BoxDecoration(
-              color: backgroundColor,
-              shape: BoxShape.circle,
-              border: Border.all(color: borderColor, width: borderWidth)),
+          decoration: BoxDecoration(color: backgroundColor, shape: BoxShape.circle, border: Border.all(color: borderColor, width: borderWidth)),
           child: Text(data, style: TextStyle(color: color, fontSize: fontSize)),
         );
       } else {
