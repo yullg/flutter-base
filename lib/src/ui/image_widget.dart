@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
-class ImageView extends StatelessWidget {
+class ImageWidget extends StatelessWidget {
   final ImageProvider<Object> imageProvider;
   final BoxDecoration backgroundDecoration;
   final LoadingBuilder loadingBuilder;
@@ -10,7 +10,7 @@ class ImageView extends StatelessWidget {
   final double maxScale;
   final double minScale;
 
-  ImageView(
+  ImageWidget(
       {Key? key,
       required this.imageProvider,
       this.backgroundDecoration = _defaultBackgroundDecoration,

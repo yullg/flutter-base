@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../bean/sex.dart';
 
-class SexAndAgeWidget extends StatelessWidget {
+class SexAgeWidget extends StatelessWidget {
   final Sex sex;
   final int age;
 
-  const SexAndAgeWidget(this.sex, this.age, {Key? key}) : super(key: key);
+  const SexAgeWidget(this.sex, this.age, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

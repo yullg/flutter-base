@@ -8,17 +8,17 @@ import '../helper/toast_helper.dart';
 
 typedef VideoPlayerControllerBuilder = VideoPlayerController Function();
 
-class VideoView extends StatefulWidget {
+class VideoWidget extends StatefulWidget {
   final VideoPlayerControllerBuilder controllerBuilder;
   final BoxDecoration backgroundDecoration;
 
-  VideoView({Key? key, required this.controllerBuilder, this.backgroundDecoration = _defaultBackgroundDecoration}) : super(key: key);
+  VideoWidget({Key? key, required this.controllerBuilder, this.backgroundDecoration = _defaultBackgroundDecoration}) : super(key: key);
 
   @override
-  State createState() => _VideoViewState();
+  State createState() => _VideoWidgetState();
 }
 
-class _VideoViewState extends State<VideoView> {
+class _VideoWidgetState extends State<VideoWidget> {
   late VideoPlayerController videoPlayerController;
 
   @override
