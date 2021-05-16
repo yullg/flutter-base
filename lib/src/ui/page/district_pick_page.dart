@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../bean/district.dart';
-import '../helper/district_helper.dart';
+import '../../bean/district.dart';
+import '../../core/optional.dart';
+import '../../helper/district_helper.dart';
 
 class DistrictPickPage extends StatefulWidget {
   final String title;
@@ -23,7 +25,6 @@ class _DistrictPickPageState extends State<DistrictPickPage> {
         backgroundColor: Colors.grey[100],
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          centerTitle: true,
           leading: BackButton(onPressed: onBackClick),
           title: Text(parentDistrict?.fullname ?? widget.title),
         ),
@@ -38,12 +39,11 @@ class _DistrictPickPageState extends State<DistrictPickPage> {
                     child: InkWell(
                       child: Container(
                         padding: EdgeInsets.all(15),
-                        child: Text(district.fullname),
+                        child: Text(district.fullname, style: TextStyle(fontSize: 42.sp)),
                       ),
                       onTap: () {
-                        if (district.level >= widget.maxLevel ||
-                            !DistrictHelper.hasSubDistrict(district.id)) {
-                          Navigator.pop(context, district);
+                        if (district.level >= widget.maxLevel || !DistrictHelper.hasSubDistrict(district.id)) {
+                          Navigator.pop(context, Optional(district));
                         } else {
                           setState(() => parentDistrict = district);
                         }
@@ -62,10 +62,10 @@ class _DistrictPickPageState extends State<DistrictPickPage> {
   }
 
   void onBackClick() {
-    if (parentDistrict == null) {
-      Navigator.pop(context);
+    if (parentDistrict != null) {
+      setState(() => parentDistrict = DistrictHelper.findDistrict(parentDistrict!.pid));
     } else {
-      setState(() => parentDistrict = DistrictHelper.findDistrict(parentDistrict?.pid));
+      Navigator.pop(context);
     }
   }
 }

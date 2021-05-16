@@ -430,6 +430,77 @@ class _SmartTextButtonState extends State<SmartTextButton> {
   }
 }
 
+class SmartIconButton extends StatefulWidget {
+  final double iconSize;
+  final EdgeInsetsGeometry padding;
+  final Widget icon;
+  final Widget? lockedIcon;
+  final Widget? disabledIcon;
+  final Color? color;
+  final Color? focusColor;
+  final Color? hoverColor;
+  final Color? highlightColor;
+  final Color? splashColor;
+  final Color? disabledColor;
+  final String? tooltip;
+  final AsyncCallback? onPressed;
+
+  SmartIconButton(
+      {Key? key,
+      this.iconSize = 24.0,
+      this.padding = const EdgeInsets.all(8.0),
+      required this.icon,
+      this.lockedIcon,
+      this.disabledIcon,
+      this.color,
+      this.focusColor,
+      this.hoverColor,
+      this.highlightColor,
+      this.splashColor,
+      this.disabledColor,
+      this.tooltip,
+      this.onPressed})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SmartIconButtonState();
+}
+
+class _SmartIconButtonState extends State<SmartIconButton> {
+  bool locked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    AsyncCallback? onPressed = widget.onPressed;
+    return IconButton(
+      iconSize: widget.iconSize,
+      padding: widget.padding,
+      color: widget.color,
+      focusColor: widget.focusColor,
+      hoverColor: widget.hoverColor,
+      highlightColor: widget.highlightColor,
+      splashColor: widget.splashColor,
+      disabledColor: widget.disabledColor,
+      tooltip: widget.tooltip,
+      icon: onPressed == null
+          ? widget.disabledIcon ?? widget.icon
+          : locked
+              ? widget.lockedIcon ?? widget.icon
+              : widget.icon,
+      onPressed: locked || onPressed == null
+          ? null
+          : () {
+              setState(() => locked = true);
+              onPressed().whenComplete(() {
+                if (mounted) {
+                  setState(() => locked = false);
+                }
+              });
+            },
+    );
+  }
+}
+
 class SmartButton extends StatefulWidget {
   final Widget child;
   final bool containedInkWell;
@@ -459,16 +530,15 @@ class _SmartButtonState extends State<SmartButton> {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = widget.child;
     AsyncCallback? onPressed = widget.onPressed, onLongPress = widget.onLongPress;
     return InkResponse(
       containedInkWell: widget.containedInkWell,
       highlightShape: widget.highlightShape,
       child: onPressed == null && onLongPress == null
-          ? widget.disabledChild ?? child
+          ? widget.disabledChild ?? widget.child
           : locked
-              ? widget.lockedChild ?? child
-              : child,
+              ? widget.lockedChild ?? widget.child
+              : widget.child,
       onTap: locked || onPressed == null
           ? null
           : () {
