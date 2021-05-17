@@ -35,7 +35,7 @@ class _DateInputPageState extends State<DateInputPage> {
     return ChangeNotifierProvider.value(
       value: dateTimeValueNotifier,
       child: Scaffold(
-        backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(widget.title),
