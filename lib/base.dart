@@ -30,6 +30,7 @@ export 'src/ui/image_carousel_widget.dart';
 export 'src/ui/image_widget.dart';
 export 'src/ui/infinite_rotating_widget.dart';
 export 'src/ui/limit_back_widget.dart';
+export 'src/ui/page/date_input_page.dart';
 export 'src/ui/page/district_input_page.dart';
 export 'src/ui/page/sex_input_page.dart';
 export 'src/ui/page/text_input_page.dart';

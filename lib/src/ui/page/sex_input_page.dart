@@ -7,7 +7,7 @@ import '../../core/optional.dart';
 import '../infinite_rotating_widget.dart';
 import '../smart_button.dart';
 
-typedef SexSubmit = Future<bool> Function(BuildContext context, Sex? sex);
+typedef SexSubmit = Future<bool> Function(BuildContext context, Sex? value);
 
 class SexInputPage extends StatefulWidget {
   final String title;

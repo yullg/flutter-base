@@ -8,7 +8,7 @@ import '../../helper/district_helper.dart';
 import '../infinite_rotating_widget.dart';
 import '../smart_button.dart';
 
-typedef DistrictSubmit = Future<bool> Function(BuildContext context, District? district);
+typedef DistrictSubmit = Future<bool> Function(BuildContext context, District? value);
 
 class DistrictInputPage extends StatefulWidget {
   final String title;

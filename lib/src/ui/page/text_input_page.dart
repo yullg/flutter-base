@@ -6,7 +6,7 @@ import '../../core/optional.dart';
 import '../infinite_rotating_widget.dart';
 import '../smart_button.dart';
 
-typedef TextSubmit = Future<bool> Function(BuildContext context, String? text);
+typedef TextSubmit = Future<bool> Function(BuildContext context, String? value);
 
 class TextInputPage extends StatefulWidget {
   final String title;
