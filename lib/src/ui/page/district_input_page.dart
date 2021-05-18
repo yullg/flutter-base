@@ -123,8 +123,9 @@ class _DistrictInputPageState extends State<DistrictInputPage> {
   }
 
   void onBackClick() {
-    District? parentDistrict = DistrictHelper.findDistrict(districtValueNotifier.value?.pid);
-    if (parentDistrict != null) {
+    var selectedDistrict = districtValueNotifier.value;
+    if (selectedDistrict != null) {
+      var parentDistrict = DistrictHelper.findDistrict(selectedDistrict.pid);
       districtValueNotifier.value = parentDistrict;
     } else {
       Navigator.pop(context);
