@@ -1,3 +1,4 @@
+export 'src/app/cache_manager.dart';
 export 'src/app/config_manager.dart';
 export 'src/app/directory_manager.dart';
 export 'src/app/file_manager.dart';

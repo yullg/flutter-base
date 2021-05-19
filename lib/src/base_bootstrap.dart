@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import 'app/cache_manager.dart';
 import 'app/config_manager.dart';
 import 'app/directory_manager.dart';
 import 'app/file_manager.dart';
@@ -13,9 +14,11 @@ class BaseBootstrap {
     await DirectoryManager.initialize();
     await FileManager.initialize();
     await SharedPreferenceManager.initialize();
+    await CacheManager.initialize();
   }
 
   static Future<void> destroy() async {
+    await CacheManager.destroy();
     await SharedPreferenceManager.destroy();
     await FileManager.destroy();
     await DirectoryManager.destroy();
