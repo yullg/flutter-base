@@ -19,6 +19,61 @@ class CommentModel {
   CommentModel({required this.id, this.pid, required this.userId, this.userNickname, this.userProfilePicture, this.content, required this.time});
 }
 
+class CommentListWidget extends StatelessWidget {
+  final List<CommentModel> _comments = [];
+  final ValueChanged<CommentModel>? onCommentPressed;
+  final ValueChanged<CommentModel>? onCommentLongPressed;
+  final ValueChanged<CommentModel>? onCommentMenuPressed;
+  final ValueChanged<CommentModel>? onCommentUserPressed;
+  final ValueChanged<CommentModel>? onCommentParentUserPressed;
+
+  CommentListWidget(List<CommentModel> comments,
+      {Key? key,
+      this.onCommentPressed,
+      this.onCommentLongPressed,
+      this.onCommentMenuPressed,
+      this.onCommentUserPressed,
+      this.onCommentParentUserPressed})
+      : super(key: key) {
+    for (CommentModel comment in comments) {
+      if (comment.pid == null) {
+        _fillChildren(comment, comments, comment._children);
+        _comments.add(comment);
+      }
+    }
+    this._comments.sort((a, b) => a.time.compareTo(b.time));
+    this._comments.forEach((comment) => comment._children.sort((a, b) => a.time.compareTo(b.time)));
+  }
+
+  @override
+  Widget build(BuildContext context) => ListView.builder(
+        itemCount: _comments.length,
+        itemBuilder: (context, index) => Container(
+          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _commentToWidget(context, _comments[index], onCommentPressed, onCommentLongPressed, onCommentMenuPressed, onCommentUserPressed,
+                  onCommentParentUserPressed),
+              Padding(
+                padding: EdgeInsets.only(left: 40),
+                child: _SubCommentList(_comments[index]._children,
+                    onCommentPressed: onCommentPressed,
+                    onCommentLongPressed: onCommentLongPressed,
+                    onCommentMenuPressed: onCommentMenuPressed,
+                    onCommentUserPressed: onCommentUserPressed,
+                    onCommentParentUserPressed: onCommentParentUserPressed),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
 class CommentSliverListWidget extends StatelessWidget {
   final List<CommentModel> _comments = [];
   final ValueChanged<CommentModel>? onCommentPressed;
