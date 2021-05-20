@@ -80,13 +80,13 @@ class BaseConfig {
   static Future<void> load() async {
     _appName = ConfigManager.findUntilNotNull((source) => source["appName"]);
     _fileManagerDirectory = ConfigManager.findUntilNotNull((source) => source["fileManagerDirectory"]);
-    _globalCacheManager_cacheKey = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]["cacheKey"]);
-    _globalCacheManager_stalePeriod = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]["stalePeriod"]);
-    _globalCacheManager_maxNrOfCacheObjects = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]["maxNrOfCacheObjects"]);
-    _logger_consoleEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]["consoleEnabled"]);
-    _logger_consoleLevel = ConfigManager.findUntilNotNull((source) => source["logger"]["consoleLevel"]);
-    _logger_fileEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]["fileEnabled"]);
-    _logger_fileLevel = ConfigManager.findUntilNotNull((source) => source["logger"]["fileLevel"]);
+    _globalCacheManager_cacheKey = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]?["cacheKey"]);
+    _globalCacheManager_stalePeriod = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]?["stalePeriod"]);
+    _globalCacheManager_maxNrOfCacheObjects = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]?["maxNrOfCacheObjects"]);
+    _logger_consoleEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]?["consoleEnabled"]);
+    _logger_consoleLevel = ConfigManager.findUntilNotNull((source) => source["logger"]?["consoleLevel"]);
+    _logger_fileEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]?["fileEnabled"]);
+    _logger_fileLevel = ConfigManager.findUntilNotNull((source) => source["logger"]?["fileLevel"]);
   }
 
   static String? get appName => _appName;
