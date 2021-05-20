@@ -35,9 +35,13 @@ class CommentListWidget extends StatelessWidget {
       this.onCommentUserPressed,
       this.onCommentParentUserPressed})
       : super(key: key) {
+    comments.forEach((comment) {
+      comment._parent = null;
+      comment._children.clear();
+    });
     for (CommentModel comment in comments) {
       if (comment.pid == null) {
-        _fillChildren(comment, comments, comment._children);
+        _fillParentAndChildren(comment, comments, comment._children);
         _comments.add(comment);
       }
     }
@@ -90,9 +94,13 @@ class CommentSliverListWidget extends StatelessWidget {
       this.onCommentUserPressed,
       this.onCommentParentUserPressed})
       : super(key: key) {
+    comments.forEach((comment) {
+      comment._parent = null;
+      comment._children.clear();
+    });
     for (CommentModel comment in comments) {
       if (comment.pid == null) {
-        _fillChildren(comment, comments, comment._children);
+        _fillParentAndChildren(comment, comments, comment._children);
         _comments.add(comment);
       }
     }
@@ -188,12 +196,12 @@ class _SubCommentListState extends State<_SubCommentList> {
       );
 }
 
-void _fillChildren(CommentModel parent, List<CommentModel> comments, List<CommentModel> children) {
+void _fillParentAndChildren(CommentModel parent, List<CommentModel> comments, List<CommentModel> children) {
   for (CommentModel comment in comments) {
     if (comment.pid == parent.id) {
       comment._parent = parent;
       children.add(comment);
-      _fillChildren(comment, comments, children);
+      _fillParentAndChildren(comment, comments, children);
     }
   }
 }
