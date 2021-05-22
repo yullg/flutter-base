@@ -143,9 +143,9 @@ abstract class PagedListController<T> extends ChangeNotifier {
             SizedBox(
               width: 10,
               height: 10,
-              child: CircularProgressIndicator(strokeWidth: 1, valueColor: AlwaysStoppedAnimation(Colors.black38)),
+              child: CircularProgressIndicator(strokeWidth: 1, valueColor: AlwaysStoppedAnimation(Colors.grey)),
             ),
-            Text("  加载中...", style: TextStyle(color: Colors.black38)),
+            Text("  加载中...", style: TextStyle(color: Colors.grey)),
           ],
         ),
       );
@@ -156,7 +156,7 @@ abstract class PagedListController<T> extends ChangeNotifier {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("暂无数据", style: TextStyle(color: Colors.black54)),
+          Text("暂无数据", style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -168,9 +168,9 @@ abstract class PagedListController<T> extends ChangeNotifier {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(width: 25, height: 1, color: Colors.black26),
-          Text("  已加载全部  ", style: TextStyle(color: Colors.black38)),
-          Container(width: 25, height: 1, color: Colors.black26),
+          Container(width: 25, height: 1, color: Colors.grey),
+          Text("  已加载全部  ", style: TextStyle(color: Colors.grey)),
+          Container(width: 25, height: 1, color: Colors.grey),
         ],
       ),
     );
@@ -182,7 +182,7 @@ abstract class PagedListController<T> extends ChangeNotifier {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("加载失败 请刷新重试", style: TextStyle(color: Colors.black54)),
+          Text("加载失败 请刷新重试", style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
