@@ -75,7 +75,7 @@ Widget _defaultFailedWidgetBuilder(BuildContext context, Object error, Widget? c
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("加载失败 请刷新重试", style: TextStyle(fontSize: 46.sp)),
-        SizedBox(height: 10),
+        SizedBox(width: double.infinity, height: 10),
         ElevatedButton(
           child: Text("刷新"),
           style: ButtonStyle(
@@ -99,7 +99,7 @@ Widget _defaultNoneWidgetBuilder(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text("暂无数据 请刷新重试", style: TextStyle(fontSize: 46.sp)),
-        SizedBox(height: 10),
+        SizedBox(width: double.infinity, height: 10),
         ElevatedButton(
           child: Text("刷新"),
           style: ButtonStyle(
