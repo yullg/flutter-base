@@ -39,6 +39,7 @@ export 'src/ui/page/text_input_page.dart';
 export 'src/ui/paged_list_widget.dart';
 export 'src/ui/predicate_widget.dart';
 export 'src/ui/rebuild_widget.dart';
+export 'src/ui/sex_age_widget.dart';
 export 'src/ui/smart_button.dart';
 export 'src/ui/smart_table.dart';
 export 'src/ui/user_profile_picture_widget.dart';

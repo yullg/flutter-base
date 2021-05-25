@@ -19,7 +19,7 @@ class SexAgeWidget extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(Icons.build, color: Colors.white, size: 10),
+              Icon(Icons.male, color: Colors.white, size: 10),
               SizedBox(width: 3),
               Text("$age", style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
@@ -35,7 +35,7 @@ class SexAgeWidget extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(Icons.face, color: Colors.white, size: 10),
+              Icon(Icons.female, color: Colors.white, size: 10),
               SizedBox(width: 3),
               Text("$age", style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
