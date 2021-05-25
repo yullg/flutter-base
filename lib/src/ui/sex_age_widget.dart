@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../bean/sex.dart';
 
@@ -10,39 +11,31 @@ class SexAgeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Sex.male == sex) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          color: Colors.blue[300],
-          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(Icons.male, color: Colors.white, size: 10),
-              SizedBox(width: 3),
-              Text("$age", style: TextStyle(color: Colors.white, fontSize: 12)),
-            ],
+    switch (sex) {
+      case Sex.male:
+        return Container(
+          padding: EdgeInsets.fromLTRB(5, 1, 5, 1),
+          decoration: ShapeDecoration(
+            color: Colors.blue.shade300,
+            shape: StadiumBorder(),
           ),
-        ),
-      );
-    } else if (Sex.female == sex) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          color: Colors.pink[300],
-          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(Icons.female, color: Colors.white, size: 10),
-              SizedBox(width: 3),
-              Text("$age", style: TextStyle(color: Colors.white, fontSize: 12)),
-            ],
+          child: Text.rich(TextSpan(children: [
+            WidgetSpan(child: Icon(Icons.male, color: Colors.white, size: 34.sp), alignment: PlaceholderAlignment.middle),
+            TextSpan(text: "$age", style: TextStyle(color: Colors.white, fontSize: 34.sp)),
+          ])),
+        );
+      case Sex.female:
+        return Container(
+          padding: EdgeInsets.fromLTRB(5, 1, 5, 1),
+          decoration: ShapeDecoration(
+            color: Colors.pink.shade300,
+            shape: StadiumBorder(),
           ),
-        ),
-      );
+          child: Text.rich(TextSpan(children: [
+            WidgetSpan(child: Icon(Icons.female, color: Colors.white, size: 34.sp), alignment: PlaceholderAlignment.middle),
+            TextSpan(text: "$age", style: TextStyle(color: Colors.white, fontSize: 34.sp)),
+          ])),
+        );
     }
-    return SizedBox.shrink();
   }
 }
