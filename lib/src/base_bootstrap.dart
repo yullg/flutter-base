@@ -5,11 +5,13 @@ import 'app/config_manager.dart';
 import 'app/directory_manager.dart';
 import 'app/file_manager.dart';
 import 'app/logger_manager.dart';
+import 'app/package_info_manager.dart';
 import 'app/shared_preferences_manager.dart';
 
 class BaseBootstrap {
   static Future<void> initialize(BuildContext context, {String? defaultConfigFile, String? variantConfigFile}) async {
     await ConfigManager.initialize(defaultConfigFile, variantConfigFile);
+    await PackageInfoManager.initialize();
     await LoggerManager.initialize();
     await DirectoryManager.initialize();
     await FileManager.initialize();
@@ -23,6 +25,7 @@ class BaseBootstrap {
     await FileManager.destroy();
     await DirectoryManager.destroy();
     await LoggerManager.destroy();
+    await PackageInfoManager.destroy();
     await ConfigManager.destroy();
   }
 

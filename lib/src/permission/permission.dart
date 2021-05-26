@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../app/config_manager.dart';
+import '../app/package_info_manager.dart';
 
 class PermissionSupport {
   static Future<bool> requestPermissions(BuildContext context, Iterable<Permission> permissions, {bool gotoAppSettings = true}) async {
@@ -24,8 +24,8 @@ class PermissionSupport {
         context: context,
         builder: (context) => AlertDialog(
           title: Align(alignment: Alignment.center, child: Text("${permissionName(permission)}权限申请")),
-          content: Text('${BaseConfig.appName}需要获取${permissionName(permission)}权限才能正常提供该功能，'
-              '请在"设置-应用-${BaseConfig.appName}-权限管理"中开启${permissionName(permission)}权限。'),
+          content: Text('${PackageInfoManager.appName}需要获取${permissionName(permission)}权限才能正常提供该功能，'
+              '请在"设置-应用-${PackageInfoManager.appName}-权限管理"中开启${permissionName(permission)}权限。'),
           actions: <Widget>[
             TextButton(
               child: Text("不用了"),
@@ -58,7 +58,7 @@ class PermissionSupport {
         context: context,
         builder: (context) => AlertDialog(
           title: Align(alignment: Alignment.center, child: Text("系统定位服务不可用")),
-          content: Text('${BaseConfig.appName}需要使用系统定位服务才能正常提供该功能，请在系统"位置设置"中开启定位服务。'),
+          content: Text('${PackageInfoManager.appName}需要使用系统定位服务才能正常提供该功能，请在系统"位置设置"中开启定位服务。'),
           actions: <Widget>[
             TextButton(
               child: Text("不用了"),

@@ -2,6 +2,7 @@ export 'src/app/cache_manager.dart';
 export 'src/app/config_manager.dart';
 export 'src/app/directory_manager.dart';
 export 'src/app/file_manager.dart';
+export 'src/app/package_info_manager.dart';
 export 'src/app/shared_preferences_manager.dart';
 export 'src/base_bootstrap.dart';
 export 'src/bean/district.dart';
