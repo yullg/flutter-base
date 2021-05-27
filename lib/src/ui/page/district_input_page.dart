@@ -37,7 +37,7 @@ class _DistrictInputPageState extends State<DistrictInputPage> {
       value: districtValueNotifier,
       child: WillPopScope(
         child: Scaffold(
-          backgroundColor: Colors.grey[100],
+          backgroundColor: Colors.grey.shade100,
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             leading: BackButton(onPressed: onBackClick),

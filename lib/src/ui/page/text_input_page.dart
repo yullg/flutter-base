@@ -36,7 +36,7 @@ class _TextInputPageState extends State<TextInputPage> {
     return ChangeNotifierProvider.value(
       value: textEditingController,
       child: Scaffold(
-        backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
           title: Text(widget.title),
           actions: [

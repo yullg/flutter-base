@@ -34,7 +34,7 @@ class _SexInputPageState extends State<SexInputPage> {
     return ChangeNotifierProvider.value(
       value: sexValueNotifier,
       child: Scaffold(
-        backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.grey.shade100,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(widget.title),
@@ -106,7 +106,7 @@ class _SexInputPageState extends State<SexInputPage> {
                           Expanded(
                             child: Text(
                               "女",
-                              style: TextStyle(fontSize: 44.sp, color: Sex.female == notifier.value ? Theme.of(context).primaryColor : Colors.black),
+                              style: TextStyle(fontSize: 42.sp, color: Sex.female == notifier.value ? Theme.of(context).primaryColor : Colors.black),
                             ),
                           ),
                           if (Sex.female == notifier.value) Icon(Icons.radio_button_checked, color: Theme.of(context).primaryColor),
