@@ -1,12 +1,30 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../helper/string_helper.dart';
 import '../../helper/toast_helper.dart';
 import '../smart_button.dart';
 import '../verification_code_send_button.dart';
 
+typedef SendVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail);
+typedef SubmitByOldPassword = Future<void> Function(BuildContext context, String oldPassword, String newPassword);
+typedef SubmitByVerificationCode = Future<void> Function(BuildContext context, String phoneOrEmail, String code, String newPassword);
+
+enum _ChangePasswordMode { password, code }
+
+final _passwordRegExp = RegExp(r'^\S{6,50}$');
+final _phoneRegExp = RegExp(r'^\d{11}$');
+final _emailRegExp = RegExp(r'^\S+@\S+\.\S+$');
+final _verificationCodeRegExp = RegExp(r'^\d+$');
+
 class ChangePasswordPage extends StatefulWidget {
+  final SubmitByOldPassword submitByOldPassword;
+  final SendVerificationCode sendVerificationCode;
+  final SubmitByVerificationCode submitByVerificationCode;
+
+  ChangePasswordPage({Key? key, required this.submitByOldPassword, required this.sendVerificationCode, required this.submitByVerificationCode})
+      : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _ChangePasswordPageState();
 }
@@ -180,12 +198,26 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
             child: SmartElevatedButton(
               child: Text("完成"),
-              onPressed: () async {},
+              lockedChild: Text("处理中"),
+              onPressed: () async {
+                String oldPassword = oldPasswordTextEditingController.text;
+                String newPassword = newPasswordTextEditingController.text;
+                String newPassword2 = newPassword2TextEditingController.text;
+                if (!(_passwordRegExp.hasMatch(oldPassword) && _passwordRegExp.hasMatch(newPassword) && _passwordRegExp.hasMatch(newPassword2))) {
+                  ToastHelper.show("无效的输入参数");
+                  return;
+                }
+                if (newPassword != newPassword2) {
+                  ToastHelper.show("新密码输入不一致");
+                  return;
+                }
+                await widget.submitByOldPassword(context, oldPassword, newPassword);
+              },
             ),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-            child: Text("密码必须是6-50位字符（不能是纯数字）"),
+            child: Text("密码必须是6-50位非空白字符"),
           ),
         ],
       );
@@ -206,6 +238,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   child: TextField(
                     controller: phoneOrEmailTextEditingController,
                     textAlign: TextAlign.end,
+                    maxLength: 50,
                     decoration: InputDecoration(
                       counterText: "",
                       hintText: "请输入绑定的手机号或邮箱",
@@ -216,37 +249,46 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
-            ),
-            child: Row(
-              children: [
-                Text("验证码：", style: TextStyle(fontSize: 42.sp)),
-                Expanded(
-                  child: TextField(
-                    controller: codeTextEditingController,
-                    textAlign: TextAlign.end,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      hintText: "请输入验证码",
-                      border: InputBorder.none,
-                    ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(bottom: BorderSide(color: Colors.grey.shade100)),
+                  ),
+                  child: Row(
+                    children: [
+                      Text("验证码：", style: TextStyle(fontSize: 42.sp)),
+                      Expanded(
+                        child: TextField(
+                          controller: codeTextEditingController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.end,
+                          maxLength: 8,
+                          decoration: InputDecoration(
+                            counterText: "",
+                            hintText: "请输入验证码",
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10),
-                VerificationCodeSendOutlinedButton(onPressed: () async {
-                  String phoneOrEmail = phoneOrEmailTextEditingController.text;
-                  if (StringHelper.hasNotText(phoneOrEmail)) {
-                    ToastHelper.show("请输入手机号或邮箱");
-                    return false;
-                  }
-                  return true;
-                }),
-              ],
-            ),
+              ),
+              SizedBox(width: 15),
+              VerificationCodeSendElevatedButton(onPressed: () async {
+                String phoneOrEmail = phoneOrEmailTextEditingController.text;
+                if (!(_phoneRegExp.hasMatch(phoneOrEmail) || _emailRegExp.hasMatch(phoneOrEmail))) {
+                  ToastHelper.show("无效的手机号或邮箱参数");
+                  return false;
+                }
+                return await widget.sendVerificationCode(context, phoneOrEmail);
+              }),
+              SizedBox(width: 15),
+            ],
           ),
           Container(
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -305,12 +347,29 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
             child: SmartElevatedButton(
               child: Text("完成"),
-              onPressed: () async {},
+              onPressed: () async {
+                String phoneOrEmail = phoneOrEmailTextEditingController.text;
+                String code = codeTextEditingController.text;
+                String newPassword = newPasswordTextEditingController.text;
+                String newPassword2 = newPassword2TextEditingController.text;
+                if (!((_phoneRegExp.hasMatch(phoneOrEmail) || _emailRegExp.hasMatch(phoneOrEmail)) &&
+                    _verificationCodeRegExp.hasMatch(code) &&
+                    _passwordRegExp.hasMatch(newPassword) &&
+                    _passwordRegExp.hasMatch(newPassword2))) {
+                  ToastHelper.show("无效的输入参数");
+                  return;
+                }
+                if (newPassword != newPassword2) {
+                  ToastHelper.show("新密码输入不一致");
+                  return;
+                }
+                await widget.submitByVerificationCode(context, phoneOrEmail, code, newPassword);
+              },
             ),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-            child: Text("密码必须是6-50位字符（不能是纯数字）"),
+            child: Text("密码必须是6-50位非空白字符"),
           ),
         ],
       );
@@ -325,5 +384,3 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     super.dispose();
   }
 }
-
-enum _ChangePasswordMode { password, code }

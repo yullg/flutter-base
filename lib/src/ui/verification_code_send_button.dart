@@ -5,6 +5,23 @@ import 'package:flutter/material.dart';
 
 import 'smart_button.dart';
 
+class VerificationCodeSendElevatedButton extends _VerificationCodeSendButton {
+  VerificationCodeSendElevatedButton({Key? key, String? name, int? interval, required AsyncValueGetter<bool> onPressed})
+      : super(key: key, name: name, interval: interval, onPressed: onPressed);
+
+  @override
+  State<StatefulWidget> createState() => _VerificationCodeSendElevatedButtonState();
+}
+
+class _VerificationCodeSendElevatedButtonState extends _VerificationCodeSendButtonState<VerificationCodeSendElevatedButton> {
+  @override
+  Widget build(BuildContext context) => SmartElevatedButton(
+        child: newButtonChild(context),
+        lockedChild: newButtonLockedChild(context),
+        onPressed: newButtonOnPressed(context),
+      );
+}
+
 class VerificationCodeSendOutlinedButton extends _VerificationCodeSendButton {
   VerificationCodeSendOutlinedButton({Key? key, String? name, int? interval, required AsyncValueGetter<bool> onPressed})
       : super(key: key, name: name, interval: interval, onPressed: onPressed);
