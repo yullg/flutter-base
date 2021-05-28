@@ -8,15 +8,15 @@ import '../../helper/district_helper.dart';
 import '../infinite_rotating_widget.dart';
 import '../smart_button.dart';
 
-typedef DistrictSubmit = Future<bool> Function(BuildContext context, District? value);
+typedef _Submit = Future<bool> Function(BuildContext context, District? value);
 
 class DistrictInputPage extends StatefulWidget {
   final String title;
   final District? district;
   final int? maxLevel;
-  final DistrictSubmit onSubmit;
+  final _Submit submit;
 
-  DistrictInputPage({Key? key, this.title = "请选择城市", this.district, this.maxLevel, required this.onSubmit}) : super(key: key);
+  DistrictInputPage({Key? key, this.title = "请选择城市", this.district, this.maxLevel, required this.submit}) : super(key: key);
 
   @override
   State createState() => _DistrictInputPageState();
@@ -58,11 +58,11 @@ class _DistrictInputPageState extends State<DistrictInputPage> {
                     onPressed: widget.district == district
                         ? null
                         : () async {
-                            await widget.onSubmit(context, district).then((value) {
+                            await widget.submit(context, district).then((value) {
                               if (value) {
                                 Navigator.pop(context, Optional(district));
                               }
-                            }).catchError((e) {});
+                            });
                           },
                   );
                 },

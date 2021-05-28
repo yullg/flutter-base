@@ -5,16 +5,16 @@ import '../../core/optional.dart';
 import '../infinite_rotating_widget.dart';
 import '../smart_button.dart';
 
-typedef DateSubmit = Future<bool> Function(BuildContext context, DateTime? value);
+typedef _Submit = Future<bool> Function(BuildContext context, DateTime? value);
 
 class DateInputPage extends StatefulWidget {
   final String title;
   final DateTime? dateTime;
   final DateTime? startDateTime;
   final DateTime? endDateTime;
-  final DateSubmit onSubmit;
+  final _Submit submit;
 
-  DateInputPage({Key? key, this.title = "请选择日期", this.dateTime, this.startDateTime, this.endDateTime, required this.onSubmit}) : super(key: key);
+  DateInputPage({Key? key, this.title = "请选择日期", this.dateTime, this.startDateTime, this.endDateTime, required this.submit}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _DateInputPageState();
@@ -53,11 +53,11 @@ class _DateInputPageState extends State<DateInputPage> {
                   onPressed: widget.dateTime == dateTime
                       ? null
                       : () async {
-                          await widget.onSubmit(context, dateTime).then((value) {
+                          await widget.submit(context, dateTime).then((value) {
                             if (value) {
                               Navigator.pop(context, Optional(dateTime));
                             }
-                          }).catchError((e) {});
+                          });
                         },
                 );
               },

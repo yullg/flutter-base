@@ -7,14 +7,14 @@ import '../../core/optional.dart';
 import '../infinite_rotating_widget.dart';
 import '../smart_button.dart';
 
-typedef SexSubmit = Future<bool> Function(BuildContext context, Sex? value);
+typedef _Submit = Future<bool> Function(BuildContext context, Sex? value);
 
 class SexInputPage extends StatefulWidget {
   final String title;
   final Sex? sex;
-  final SexSubmit onSubmit;
+  final _Submit submit;
 
-  SexInputPage({Key? key, this.title = "请选择性别", this.sex, required this.onSubmit}) : super(key: key);
+  SexInputPage({Key? key, this.title = "请选择性别", this.sex, required this.submit}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SexInputPageState();
@@ -52,11 +52,11 @@ class _SexInputPageState extends State<SexInputPage> {
                   onPressed: widget.sex == sex
                       ? null
                       : () async {
-                          await widget.onSubmit(context, sex).then((value) {
+                          await widget.submit(context, sex).then((value) {
                             if (value) {
                               Navigator.pop(context, Optional(sex));
                             }
-                          }).catchError((e) {});
+                          });
                         },
                 );
               },

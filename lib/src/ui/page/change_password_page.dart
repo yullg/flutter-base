@@ -2,13 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../core/optional.dart';
 import '../../helper/toast_helper.dart';
 import '../smart_button.dart';
 import '../verification_code_send_button.dart';
 
-typedef SendVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail);
-typedef SubmitByOldPassword = Future<void> Function(BuildContext context, String oldPassword, String newPassword);
-typedef SubmitByVerificationCode = Future<void> Function(BuildContext context, String phoneOrEmail, String code, String newPassword);
+typedef _SendVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail);
+typedef _SubmitByOldPassword = Future<bool> Function(BuildContext context, String oldPassword, String newPassword);
+typedef _SubmitByVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail, String code, String newPassword);
 
 enum _ChangePasswordMode { password, code }
 
@@ -18,9 +19,9 @@ final _emailRegExp = RegExp(r'^\S+@\S+\.\S+$');
 final _verificationCodeRegExp = RegExp(r'^\d+$');
 
 class ChangePasswordPage extends StatefulWidget {
-  final SubmitByOldPassword submitByOldPassword;
-  final SendVerificationCode sendVerificationCode;
-  final SubmitByVerificationCode submitByVerificationCode;
+  final _SubmitByOldPassword submitByOldPassword;
+  final _SendVerificationCode sendVerificationCode;
+  final _SubmitByVerificationCode submitByVerificationCode;
 
   ChangePasswordPage({Key? key, required this.submitByOldPassword, required this.sendVerificationCode, required this.submitByVerificationCode})
       : super(key: key);
@@ -211,7 +212,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ToastHelper.show("新密码输入不一致");
                   return;
                 }
-                await widget.submitByOldPassword(context, oldPassword, newPassword);
+                await widget.submitByOldPassword(context, oldPassword, newPassword).then((value) {
+                  if (value) {
+                    Navigator.pop(context, Optional(true));
+                  }
+                });
               },
             ),
           ),
@@ -363,7 +368,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ToastHelper.show("新密码输入不一致");
                   return;
                 }
-                await widget.submitByVerificationCode(context, phoneOrEmail, code, newPassword);
+                await widget.submitByVerificationCode(context, phoneOrEmail, code, newPassword).then((value) {
+                  if (value) {
+                    Navigator.pop(context, Optional(true));
+                  }
+                });
               },
             ),
           ),

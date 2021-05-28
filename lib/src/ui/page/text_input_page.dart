@@ -6,7 +6,7 @@ import '../../core/optional.dart';
 import '../infinite_rotating_widget.dart';
 import '../smart_button.dart';
 
-typedef TextSubmit = Future<bool> Function(BuildContext context, String? value);
+typedef _Submit = Future<bool> Function(BuildContext context, String? value);
 
 class TextInputPage extends StatefulWidget {
   final String title;
@@ -14,9 +14,9 @@ class TextInputPage extends StatefulWidget {
   final String? helperText;
   final String? hintText;
   final int? maxLength;
-  final TextSubmit onSubmit;
+  final _Submit submit;
 
-  TextInputPage({Key? key, this.title = "请输入", this.text, this.helperText, this.hintText, this.maxLength, required this.onSubmit}) : super(key: key);
+  TextInputPage({Key? key, this.title = "请输入", this.text, this.helperText, this.hintText, this.maxLength, required this.submit}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TextInputPageState();
@@ -53,11 +53,11 @@ class _TextInputPageState extends State<TextInputPage> {
                   onPressed: widget.text == text
                       ? null
                       : () async {
-                          await widget.onSubmit(context, text).then((value) {
+                          await widget.submit(context, text).then((value) {
                             if (value) {
                               Navigator.pop(context, Optional(text));
                             }
-                          }).catchError((e) {});
+                          });
                         },
                 );
               },
