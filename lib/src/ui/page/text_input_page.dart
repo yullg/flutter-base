@@ -72,6 +72,7 @@ class _TextInputPageState extends State<TextInputPage> {
             helperText: widget.helperText,
             hintText: widget.hintText,
             contentPadding: EdgeInsets.all(15),
+            helperMaxLines: 5,
             filled: true,
             fillColor: Colors.white,
           ),
