@@ -15,6 +15,7 @@ export 'src/ffmpeg/ffmpeg_support.dart';
 export 'src/ffmpeg/ffprobe_support.dart';
 export 'src/helper/Exif_helper.dart';
 export 'src/helper/collection_helper.dart';
+export 'src/helper/common_field_helper.dart';
 export 'src/helper/datetime_helper.dart';
 export 'src/helper/district_helper.dart';
 export 'src/helper/enum_helper.dart';

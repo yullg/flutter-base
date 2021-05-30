@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/optional.dart';
+import '../../helper/common_field_helper.dart';
 import '../../helper/toast_helper.dart';
 import '../smart_button.dart';
 import '../verification_code_send_button.dart';
@@ -9,9 +10,6 @@ import '../verification_code_send_button.dart';
 typedef _SendVerificationCode = Future<bool> Function(BuildContext context, String email);
 
 typedef _Submit = Future<bool> Function(BuildContext context, String email, String code);
-
-final _emailRegExp = RegExp(r'^\S+@\S+\.\S+$');
-final _verificationCodeRegExp = RegExp(r'^\d+$');
 
 class ChangeEmailPage extends StatefulWidget {
   final _SendVerificationCode sendVerificationCode;
@@ -102,7 +100,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
               SizedBox(width: 15),
               VerificationCodeSendElevatedButton(onPressed: () async {
                 String email = emailTextEditingController.text;
-                if (!_emailRegExp.hasMatch(email)) {
+                if (!CommonFieldHelper.isValidEmail(email)) {
                   ToastHelper.show("无效的邮箱参数");
                   return false;
                 }
@@ -119,7 +117,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
               onPressed: () async {
                 String email = emailTextEditingController.text;
                 String code = codeTextEditingController.text;
-                if (!(_emailRegExp.hasMatch(email) && _verificationCodeRegExp.hasMatch(code))) {
+                if (!(CommonFieldHelper.isValidEmail(email) && CommonFieldHelper.isValidVerificationCode(code))) {
                   ToastHelper.show("无效的输入参数");
                   return;
                 }

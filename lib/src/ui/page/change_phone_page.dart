@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/optional.dart';
+import '../../helper/common_field_helper.dart';
 import '../../helper/toast_helper.dart';
 import '../smart_button.dart';
 import '../verification_code_send_button.dart';
@@ -9,9 +10,6 @@ import '../verification_code_send_button.dart';
 typedef _SendVerificationCode = Future<bool> Function(BuildContext context, String phone);
 
 typedef _Submit = Future<bool> Function(BuildContext context, String phone, String code);
-
-final _phoneRegExp = RegExp(r'^\d{11}$');
-final _verificationCodeRegExp = RegExp(r'^\d+$');
 
 class ChangePhonePage extends StatefulWidget {
   final _SendVerificationCode sendVerificationCode;
@@ -102,7 +100,7 @@ class _ChangePhonePageState extends State<ChangePhonePage> {
               SizedBox(width: 15),
               VerificationCodeSendElevatedButton(onPressed: () async {
                 String phone = phoneTextEditingController.text;
-                if (!_phoneRegExp.hasMatch(phone)) {
+                if (!CommonFieldHelper.isValidPhone(phone)) {
                   ToastHelper.show("无效的手机号参数");
                   return false;
                 }
@@ -119,7 +117,7 @@ class _ChangePhonePageState extends State<ChangePhonePage> {
               onPressed: () async {
                 String phone = phoneTextEditingController.text;
                 String code = codeTextEditingController.text;
-                if (!(_phoneRegExp.hasMatch(phone) && _verificationCodeRegExp.hasMatch(code))) {
+                if (!(CommonFieldHelper.isValidPhone(phone) && CommonFieldHelper.isValidVerificationCode(code))) {
                   ToastHelper.show("无效的输入参数");
                   return;
                 }

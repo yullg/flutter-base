@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/optional.dart';
+import '../../helper/common_field_helper.dart';
 import '../../helper/toast_helper.dart';
 import '../smart_button.dart';
 import '../verification_code_send_button.dart';
@@ -12,11 +13,6 @@ typedef _SubmitByOldPassword = Future<bool> Function(BuildContext context, Strin
 typedef _SubmitByVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail, String code, String newPassword);
 
 enum _ChangePasswordMode { password, code }
-
-final _passwordRegExp = RegExp(r'^\S{6,50}$');
-final _phoneRegExp = RegExp(r'^\d{11}$');
-final _emailRegExp = RegExp(r'^\S+@\S+\.\S+$');
-final _verificationCodeRegExp = RegExp(r'^\d+$');
 
 class ChangePasswordPage extends StatefulWidget {
   final _SubmitByOldPassword submitByOldPassword;
@@ -204,7 +200,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 String oldPassword = oldPasswordTextEditingController.text;
                 String newPassword = newPasswordTextEditingController.text;
                 String newPassword2 = newPassword2TextEditingController.text;
-                if (!(_passwordRegExp.hasMatch(oldPassword) && _passwordRegExp.hasMatch(newPassword) && _passwordRegExp.hasMatch(newPassword2))) {
+                if (!(CommonFieldHelper.isValidPassword(oldPassword) &&
+                    CommonFieldHelper.isValidPassword(newPassword) &&
+                    CommonFieldHelper.isValidPassword(newPassword2))) {
                   ToastHelper.show("无效的输入参数");
                   return;
                 }
@@ -286,7 +284,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SizedBox(width: 15),
               VerificationCodeSendElevatedButton(onPressed: () async {
                 String phoneOrEmail = phoneOrEmailTextEditingController.text;
-                if (!(_phoneRegExp.hasMatch(phoneOrEmail) || _emailRegExp.hasMatch(phoneOrEmail))) {
+                if (!(CommonFieldHelper.isValidPhone(phoneOrEmail) || CommonFieldHelper.isValidEmail(phoneOrEmail))) {
                   ToastHelper.show("无效的手机号或邮箱参数");
                   return false;
                 }
@@ -357,10 +355,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 String code = codeTextEditingController.text;
                 String newPassword = newPasswordTextEditingController.text;
                 String newPassword2 = newPassword2TextEditingController.text;
-                if (!((_phoneRegExp.hasMatch(phoneOrEmail) || _emailRegExp.hasMatch(phoneOrEmail)) &&
-                    _verificationCodeRegExp.hasMatch(code) &&
-                    _passwordRegExp.hasMatch(newPassword) &&
-                    _passwordRegExp.hasMatch(newPassword2))) {
+                if (!((CommonFieldHelper.isValidPhone(phoneOrEmail) || CommonFieldHelper.isValidEmail(phoneOrEmail)) &&
+                    CommonFieldHelper.isValidVerificationCode(code) &&
+                    CommonFieldHelper.isValidPassword(newPassword) &&
+                    CommonFieldHelper.isValidPassword(newPassword2))) {
                   ToastHelper.show("无效的输入参数");
                   return;
                 }
