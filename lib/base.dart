@@ -40,6 +40,7 @@ export 'src/ui/page/change_phone_page.dart';
 export 'src/ui/page/date_input_page.dart';
 export 'src/ui/page/district_input_page.dart';
 export 'src/ui/page/sex_input_page.dart';
+export 'src/ui/page/sign_in_page.dart';
 export 'src/ui/page/text_input_page.dart';
 export 'src/ui/page/web_view_page.dart';
 export 'src/ui/paged_list_widget.dart';

@@ -26,6 +26,9 @@ class _LimitBackWidgetState extends State<LimitBackWidget> {
         if (callbackResult != null) {
           return callbackResult;
         }
+        if (Navigator.canPop(context)) {
+          return true;
+        }
         if (previousTime != null) {
           if (DateTime.now().difference(previousTime!) < Duration(seconds: 1)) {
             previousTime = null;
