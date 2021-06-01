@@ -2,15 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/optional.dart';
-import '../../helper/common_field_helper.dart';
 import '../../helper/toast_helper.dart';
 import '../smart_button.dart';
 import '../verification_code_send_button.dart';
 
 typedef _SendVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail);
-typedef _SubmitByOldPassword = Future<bool> Function(BuildContext context, String oldPassword, String newPassword);
-typedef _SubmitByVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail, String code, String newPassword);
+typedef _SubmitByOldPassword = Future<void> Function(BuildContext context, String oldPassword, String newPassword);
+typedef _SubmitByVerificationCode = Future<void> Function(BuildContext context, String phoneOrEmail, String code, String newPassword);
 
 enum _ChangePasswordMode { password, code }
 
@@ -96,15 +94,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           )
         ],
       ),
-      body: Builder(
-        builder: (context) {
-          switch (changePasswordMode) {
-            case _ChangePasswordMode.password:
-              return buildPasswordModeBody(context);
-            case _ChangePasswordMode.code:
-              return buildCodeModeBody(context);
-          }
-        },
+      body: Focus(
+        child: Builder(
+          builder: (context) {
+            switch (changePasswordMode) {
+              case _ChangePasswordMode.password:
+                return buildPasswordModeBody(context);
+              case _ChangePasswordMode.code:
+                return buildCodeModeBody(context);
+            }
+          },
+        ),
       ),
     );
   }
@@ -197,24 +197,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               child: Text("完成"),
               lockedChild: Text("处理中"),
               onPressed: () async {
-                String oldPassword = oldPasswordTextEditingController.text;
-                String newPassword = newPasswordTextEditingController.text;
-                String newPassword2 = newPassword2TextEditingController.text;
-                if (!(CommonFieldHelper.isValidPassword(oldPassword) &&
-                    CommonFieldHelper.isValidPassword(newPassword) &&
-                    CommonFieldHelper.isValidPassword(newPassword2))) {
-                  ToastHelper.show("无效的输入参数");
-                  return;
-                }
+                Focus.of(context).unfocus();
+                String oldPassword = oldPasswordTextEditingController.text.trim(),
+                    newPassword = newPasswordTextEditingController.text.trim(),
+                    newPassword2 = newPassword2TextEditingController.text.trim();
                 if (newPassword != newPassword2) {
                   ToastHelper.show("新密码输入不一致");
                   return;
                 }
-                await widget.submitByOldPassword(context, oldPassword, newPassword).then((value) {
-                  if (value) {
-                    Navigator.pop(context, Optional(true));
-                  }
-                });
+                await widget.submitByOldPassword(context, oldPassword, newPassword);
               },
             ),
           ),
@@ -283,11 +274,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               ),
               SizedBox(width: 15),
               VerificationCodeSendElevatedButton(onPressed: () async {
-                String phoneOrEmail = phoneOrEmailTextEditingController.text;
-                if (!(CommonFieldHelper.isValidPhone(phoneOrEmail) || CommonFieldHelper.isValidEmail(phoneOrEmail))) {
-                  ToastHelper.show("无效的手机号或邮箱参数");
-                  return false;
-                }
+                String phoneOrEmail = phoneOrEmailTextEditingController.text.trim();
                 return await widget.sendVerificationCode(context, phoneOrEmail);
               }),
               SizedBox(width: 15),
@@ -350,27 +337,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
             child: SmartElevatedButton(
               child: Text("完成"),
+              lockedChild: Text("处理中"),
               onPressed: () async {
-                String phoneOrEmail = phoneOrEmailTextEditingController.text;
-                String code = codeTextEditingController.text;
-                String newPassword = newPasswordTextEditingController.text;
-                String newPassword2 = newPassword2TextEditingController.text;
-                if (!((CommonFieldHelper.isValidPhone(phoneOrEmail) || CommonFieldHelper.isValidEmail(phoneOrEmail)) &&
-                    CommonFieldHelper.isValidVerificationCode(code) &&
-                    CommonFieldHelper.isValidPassword(newPassword) &&
-                    CommonFieldHelper.isValidPassword(newPassword2))) {
-                  ToastHelper.show("无效的输入参数");
-                  return;
-                }
+                Focus.of(context).unfocus();
+                String phoneOrEmail = phoneOrEmailTextEditingController.text.trim(),
+                    code = codeTextEditingController.text.trim(),
+                    newPassword = newPasswordTextEditingController.text.trim(),
+                    newPassword2 = newPassword2TextEditingController.text.trim();
                 if (newPassword != newPassword2) {
                   ToastHelper.show("新密码输入不一致");
                   return;
                 }
-                await widget.submitByVerificationCode(context, phoneOrEmail, code, newPassword).then((value) {
-                  if (value) {
-                    Navigator.pop(context, Optional(true));
-                  }
-                });
+                await widget.submitByVerificationCode(context, phoneOrEmail, code, newPassword);
               },
             ),
           ),
