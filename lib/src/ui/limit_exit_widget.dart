@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../helper/toast_helper.dart';
 
-typedef BackCallback = Future<bool?> Function();
+typedef _ExitCallback = Future<bool?> Function();
 
-class LimitBackWidget extends StatefulWidget {
+class LimitExitWidget extends StatefulWidget {
   final Widget child;
-  final BackCallback? onBackCallback;
+  final _ExitCallback? onExitCallback;
 
-  LimitBackWidget({Key? key, required this.child, this.onBackCallback}) : super(key: key);
+  LimitExitWidget({Key? key, required this.child, this.onExitCallback}) : super(key: key);
 
   @override
-  State createState() => _LimitBackWidgetState();
+  State createState() => _LimitExitWidgetState();
 }
 
-class _LimitBackWidgetState extends State<LimitBackWidget> {
+class _LimitExitWidgetState extends State<LimitExitWidget> {
   DateTime? previousTime;
 
   @override
@@ -22,7 +22,7 @@ class _LimitBackWidgetState extends State<LimitBackWidget> {
     return WillPopScope(
       child: widget.child,
       onWillPop: () async {
-        bool? callbackResult = await widget.onBackCallback?.call();
+        bool? callbackResult = await widget.onExitCallback?.call();
         if (callbackResult != null) {
           return callbackResult;
         }
