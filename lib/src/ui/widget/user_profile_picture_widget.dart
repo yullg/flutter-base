@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../app/cache_manager.dart';
-import '../helper/uri_helper.dart';
+import '../../app/cache_manager.dart';
+import '../../helper/uri_helper.dart';
 
 class UserProfilePictureWidget extends StatelessWidget {
   final String? src;

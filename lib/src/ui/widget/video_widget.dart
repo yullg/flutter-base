@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../helper/number_helper.dart';
-import '../helper/toast_helper.dart';
+import '../../helper/number_helper.dart';
+import '../../helper/toast_helper.dart';
 
 typedef VideoPlayerControllerBuilder = VideoPlayerController Function();
 

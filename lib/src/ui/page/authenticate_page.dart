@@ -1,13 +1,12 @@
-import 'package:base/base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/package_info_manager.dart';
-import '../limit_exit_widget.dart';
-import '../smart_button.dart';
-import '../verification_code_send_button.dart';
+import '../widget/limit_exit_widget.dart';
+import '../widget/smart_button.dart';
+import '../widget/verification_code_send_button.dart';
 
 typedef _SignInByPassword = Future<void> Function(BuildContext context, String name, String password);
 typedef _SignInByPhoneCode = Future<void> Function(BuildContext context, String phone, String code);

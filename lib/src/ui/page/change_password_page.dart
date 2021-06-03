@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../helper/toast_helper.dart';
-import '../smart_button.dart';
-import '../verification_code_send_button.dart';
+import '../widget/smart_button.dart';
+import '../widget/verification_code_send_button.dart';
 
 typedef _SendVerificationCode = Future<bool> Function(BuildContext context, String phoneOrEmail);
 typedef _SubmitByOldPassword = Future<void> Function(BuildContext context, String oldPassword, String newPassword);

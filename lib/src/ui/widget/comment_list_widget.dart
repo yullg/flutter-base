@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../helper/datetime_helper.dart';
+import '../../helper/datetime_helper.dart';
 import 'user_profile_picture_widget.dart';
 
 class CommentModel {

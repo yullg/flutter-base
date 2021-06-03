@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/optional.dart';
-import '../infinite_rotating_widget.dart';
-import '../smart_button.dart';
+import '../widget/infinite_rotating_widget.dart';
+import '../widget/smart_button.dart';
 
 typedef _Submit = Future<bool> Function(BuildContext context, DateTime? value);
 

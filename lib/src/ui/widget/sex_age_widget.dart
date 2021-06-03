@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../bean/sex.dart';
+import '../../bean/sex.dart';
 
 class SexAgeWidget extends StatelessWidget {
   final Sex sex;

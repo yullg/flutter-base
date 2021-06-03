@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-import '../permission/permission.dart';
+import '../../permission/permission.dart';
 
 class PredicateWidget extends StatefulWidget {
   final Predicate predicate;
