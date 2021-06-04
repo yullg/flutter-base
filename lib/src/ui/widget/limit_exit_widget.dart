@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:move_to_background/move_to_background.dart';
 
 import '../../helper/toast_helper.dart';
 
@@ -24,7 +25,16 @@ class _LimitExitWidgetState extends State<LimitExitWidget> {
       onWillPop: () async {
         bool? callbackResult = await widget.onExitCallback?.call();
         if (callbackResult != null) {
-          return callbackResult;
+          if (callbackResult) {
+            if (Navigator.canPop(context)) {
+              return true;
+            } else {
+              MoveToBackground.moveTaskToBack();
+              return false;
+            }
+          } else {
+            return false;
+          }
         }
         if (Navigator.canPop(context)) {
           return true;
@@ -32,7 +42,8 @@ class _LimitExitWidgetState extends State<LimitExitWidget> {
         if (previousTime != null) {
           if (DateTime.now().difference(previousTime!) < Duration(seconds: 1)) {
             previousTime = null;
-            return true;
+            MoveToBackground.moveTaskToBack();
+            return false;
           }
         }
         previousTime = DateTime.now();
