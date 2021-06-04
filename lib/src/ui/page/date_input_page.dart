@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/optional.dart';
+import '../../core/result.dart';
 import '../widget/infinite_rotating_widget.dart';
 import '../widget/smart_button.dart';
 
@@ -55,7 +55,7 @@ class _DateInputPageState extends State<DateInputPage> {
                       : () async {
                           await widget.submit(context, dateTime).then((value) {
                             if (value) {
-                              Navigator.pop(context, Optional(dateTime));
+                              Navigator.pop(context, Result.withData(dateTime));
                             }
                           });
                         },

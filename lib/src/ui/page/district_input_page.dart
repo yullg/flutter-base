@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../bean/district.dart';
-import '../../core/optional.dart';
+import '../../core/result.dart';
 import '../../helper/district_helper.dart';
 import '../widget/infinite_rotating_widget.dart';
 import '../widget/smart_button.dart';
@@ -60,7 +60,7 @@ class _DistrictInputPageState extends State<DistrictInputPage> {
                         : () async {
                             await widget.submit(context, district).then((value) {
                               if (value) {
-                                Navigator.pop(context, Optional(district));
+                                Navigator.pop(context, Result.withData(district));
                               }
                             });
                           },

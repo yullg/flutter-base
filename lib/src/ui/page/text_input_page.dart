@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/optional.dart';
+import '../../core/result.dart';
 import '../widget/infinite_rotating_widget.dart';
 import '../widget/smart_button.dart';
 
@@ -55,7 +55,7 @@ class _TextInputPageState extends State<TextInputPage> {
                       : () async {
                           await widget.submit(context, text).then((value) {
                             if (value) {
-                              Navigator.pop(context, Optional(text));
+                              Navigator.pop(context, Result.withData(text));
                             }
                           });
                         },

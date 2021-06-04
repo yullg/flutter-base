@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../bean/sex.dart';
-import '../../core/optional.dart';
+import '../../core/result.dart';
 import '../widget/infinite_rotating_widget.dart';
 import '../widget/smart_button.dart';
 
@@ -54,7 +54,7 @@ class _SexInputPageState extends State<SexInputPage> {
                       : () async {
                           await widget.submit(context, sex).then((value) {
                             if (value) {
-                              Navigator.pop(context, Optional(sex));
+                              Navigator.pop(context, Result.withData(sex));
                             }
                           });
                         },
