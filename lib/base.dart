@@ -33,6 +33,7 @@ export 'src/ui/page/change_password_page.dart';
 export 'src/ui/page/change_phone_page.dart';
 export 'src/ui/page/date_input_page.dart';
 export 'src/ui/page/district_input_page.dart';
+export 'src/ui/page/download_page.dart';
 export 'src/ui/page/sex_input_page.dart';
 export 'src/ui/page/text_input_page.dart';
 export 'src/ui/page/web_view_page.dart';
