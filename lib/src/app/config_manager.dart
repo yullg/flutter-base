@@ -67,6 +67,7 @@ class ParseResult {
 }
 
 class BaseConfig {
+  static bool? _debug;
   static String? _fileManagerDirectory;
   static String? _globalCacheManager_cacheKey;
   static int? _globalCacheManager_stalePeriod;
@@ -77,15 +78,19 @@ class BaseConfig {
   static String? _logger_fileLevel;
 
   static Future<void> load() async {
-    _fileManagerDirectory = ConfigManager.findUntilNotNull((source) => source["fileManagerDirectory"]);
-    _globalCacheManager_cacheKey = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]?["cacheKey"]);
-    _globalCacheManager_stalePeriod = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]?["stalePeriod"]);
-    _globalCacheManager_maxNrOfCacheObjects = ConfigManager.findUntilNotNull((source) => source["globalCacheManager"]?["maxNrOfCacheObjects"]);
-    _logger_consoleEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]?["consoleEnabled"]);
-    _logger_consoleLevel = ConfigManager.findUntilNotNull((source) => source["logger"]?["consoleLevel"]);
-    _logger_fileEnabled = ConfigManager.findUntilNotNull((source) => source["logger"]?["fileEnabled"]);
-    _logger_fileLevel = ConfigManager.findUntilNotNull((source) => source["logger"]?["fileLevel"]);
+    _debug = ConfigManager.findUntilNotNull((source) => source["base"]?["debug"]);
+    _fileManagerDirectory = ConfigManager.findUntilNotNull((source) => source["base"]?["fileManagerDirectory"]);
+    _globalCacheManager_cacheKey = ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["cacheKey"]);
+    _globalCacheManager_stalePeriod = ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["stalePeriod"]);
+    _globalCacheManager_maxNrOfCacheObjects =
+        ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["maxNrOfCacheObjects"]);
+    _logger_consoleEnabled = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleEnabled"]);
+    _logger_consoleLevel = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleLevel"]);
+    _logger_fileEnabled = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileEnabled"]);
+    _logger_fileLevel = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileLevel"]);
   }
+
+  static bool? get debug => _debug;
 
   static String? get fileManagerDirectory => _fileManagerDirectory;
 
@@ -104,6 +109,7 @@ class BaseConfig {
   static String? get logger_fileLevel => _logger_fileLevel;
 
   static Future<void> reset() async {
+    _debug = null;
     _fileManagerDirectory = null;
     _globalCacheManager_cacheKey = null;
     _globalCacheManager_stalePeriod = null;
