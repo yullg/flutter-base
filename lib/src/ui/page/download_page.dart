@@ -49,94 +49,104 @@ class _DownloadPageState extends State<DownloadPage> {
             ),
             body: (downloadTasks != null && downloadTasks.isNotEmpty)
                 ? ListView.separated(
-                    itemBuilder: (context, index) => Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.all(15),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(downloadTasks[index].filename ?? "***", overflow: TextOverflow.ellipsis),
-                                    SizedBox(height: 10),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    itemBuilder: (context, index) => Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            child: Container(
+                              color: Colors.white,
+                              padding: EdgeInsets.all(15),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                            DateTimeHelper.format(
-                                                    DateTime.fromMillisecondsSinceEpoch(downloadTasks[index].timeCreated), "yyyy-MM-dd HH:mm:ss") ??
-                                                "",
-                                            style: TextStyle(color: Colors.grey)),
-                                        Builder(
-                                          builder: (context) {
-                                            if (DownloadTaskStatus.canceled == downloadTasks[index].status) {
-                                              return Text("已取消", style: TextStyle(color: Colors.grey));
-                                            } else if (DownloadTaskStatus.complete == downloadTasks[index].status) {
-                                              return Text("已完成", style: TextStyle(color: Colors.grey));
-                                            } else if (DownloadTaskStatus.enqueued == downloadTasks[index].status) {
-                                              return Text("排队中", style: TextStyle(color: Colors.grey));
-                                            } else if (DownloadTaskStatus.paused == downloadTasks[index].status) {
-                                              return Text("已暂停", style: TextStyle(color: Colors.grey));
-                                            } else if (DownloadTaskStatus.running == downloadTasks[index].status) {
-                                              return Text("下载中", style: TextStyle(color: Colors.grey));
-                                            } else {
-                                              return Text("状态异常", style: TextStyle(color: Colors.grey));
-                                            }
-                                          },
+                                        Text(downloadTasks[index].filename ?? "***", overflow: TextOverflow.ellipsis),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                                DateTimeHelper.format(DateTime.fromMillisecondsSinceEpoch(downloadTasks[index].timeCreated),
+                                                        "yyyy-MM-dd HH:mm:ss") ??
+                                                    "",
+                                                style: TextStyle(color: Colors.grey)),
+                                            Builder(
+                                              builder: (context) {
+                                                if (DownloadTaskStatus.canceled == downloadTasks[index].status) {
+                                                  return Text("已取消", style: TextStyle(color: Colors.grey));
+                                                } else if (DownloadTaskStatus.complete == downloadTasks[index].status) {
+                                                  return Text("已完成", style: TextStyle(color: Colors.grey));
+                                                } else if (DownloadTaskStatus.enqueued == downloadTasks[index].status) {
+                                                  return Text("排队中", style: TextStyle(color: Colors.grey));
+                                                } else if (DownloadTaskStatus.paused == downloadTasks[index].status) {
+                                                  return Text("已暂停", style: TextStyle(color: Colors.grey));
+                                                } else if (DownloadTaskStatus.running == downloadTasks[index].status) {
+                                                  return Text("下载中", style: TextStyle(color: Colors.grey));
+                                                } else {
+                                                  return Text("状态异常", style: TextStyle(color: Colors.grey));
+                                                }
+                                              },
+                                            ),
+                                          ],
                                         ),
+                                        SizedBox(height: 10),
+                                        LinearProgressIndicator(value: downloadTasks[index].progress / 100),
                                       ],
                                     ),
-                                    SizedBox(height: 10),
-                                    LinearProgressIndicator(value: downloadTasks[index].progress / 100),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Material(
-                                type: MaterialType.transparency,
-                                child: IconButton(
-                                  icon: Icon(Icons.delete_outline),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => AlertDialog(
-                                        title: Text("确定要删除吗？", textAlign: TextAlign.center),
-                                        actions: [
-                                          TextButton(
-                                            child: const Text('取消'),
-                                            style: ButtonStyle(
-                                              foregroundColor: MaterialStateProperty.all(Colors.black),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
+                                  ),
+                                  SizedBox(width: 10),
+                                  Material(
+                                    type: MaterialType.transparency,
+                                    child: IconButton(
+                                      icon: Icon(Icons.delete_outline),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) => AlertDialog(
+                                            title: Text("确定要删除吗？", textAlign: TextAlign.center),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text('取消'),
+                                                style: ButtonStyle(
+                                                  foregroundColor: MaterialStateProperty.all(Colors.black),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text('确定'),
+                                                style: ButtonStyle(
+                                                  foregroundColor: MaterialStateProperty.all(Colors.red),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  FlutterDownloader.remove(taskId: downloadTasks[index].taskId, shouldDeleteContent: true)
+                                                      .then((value) async {
+                                                    await refreshDownloadTask().catchError((e, s) {
+                                                      ToastHelper.show("下载列表刷新失败");
+                                                    });
+                                                  }).catchError((e) {
+                                                    ToastHelper.show("操作失败");
+                                                  });
+                                                },
+                                              ),
+                                            ],
                                           ),
-                                          TextButton(
-                                            child: const Text('确定'),
-                                            style: ButtonStyle(
-                                              foregroundColor: MaterialStateProperty.all(Colors.red),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              FlutterDownloader.remove(taskId: downloadTasks[index].taskId, shouldDeleteContent: true)
-                                                  .then((value) async {
-                                                await refreshDownloadTask().catchError((e, s) {
-                                                  ToastHelper.show("下载列表刷新失败");
-                                                });
-                                              }).catchError((e) {
-                                                ToastHelper.show("操作失败");
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
+                            onTap: DownloadTaskStatus.complete == downloadTasks[index].status
+                                ? () => FlutterDownloader.open(taskId: downloadTasks[index].taskId).catchError((e) {
+                                      ToastHelper.show("文件无法打开");
+                                    })
+                                : null,
                           ),
                         ),
                     separatorBuilder: (context, index) => SizedBox(height: 1),
