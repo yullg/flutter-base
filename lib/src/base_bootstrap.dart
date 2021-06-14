@@ -10,8 +10,8 @@ import 'app/package_info_manager.dart';
 import 'app/shared_preferences_manager.dart';
 
 class BaseBootstrap {
-  static Future<void> initialize(BuildContext context, {String? defaultConfigFile, String? variantConfigFile}) async {
-    await ConfigManager.initialize(defaultConfigFile, variantConfigFile);
+  static Future<void> initialize(BuildContext context, {String? defaultConfigJson, String? variantConfigJson}) async {
+    await ConfigManager.initialize(defaultConfigJson, variantConfigJson);
     await PackageInfoManager.initialize();
     await SharedPreferenceManager.initialize();
     await LoggerManager.initialize();

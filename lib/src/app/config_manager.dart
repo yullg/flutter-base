@@ -1,26 +1,17 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart' show rootBundle;
-
 import '../helper/string_helper.dart';
 
 class ConfigManager {
   static dynamic _defaultSource;
   static dynamic _variantSource;
 
-  static Future<void> initialize(String? defaultConfigFile, String? variantConfigFile) async {
-    String? sourceJsonDefault, sourceJsonVariant;
-    if (defaultConfigFile != null) {
-      sourceJsonDefault = await rootBundle.loadString(defaultConfigFile);
+  static Future<void> initialize(String? defaultConfigJson, String? variantConfigJson) async {
+    if (StringHelper.hasText(defaultConfigJson)) {
+      _defaultSource = jsonDecode(defaultConfigJson!);
     }
-    if (variantConfigFile != null) {
-      sourceJsonVariant = await rootBundle.loadString(variantConfigFile);
-    }
-    if (StringHelper.hasText(sourceJsonDefault)) {
-      _defaultSource = jsonDecode(sourceJsonDefault!);
-    }
-    if (StringHelper.hasText(sourceJsonVariant)) {
-      _variantSource = jsonDecode(sourceJsonVariant!);
+    if (StringHelper.hasText(variantConfigJson)) {
+      _variantSource = jsonDecode(variantConfigJson!);
     }
     await BaseConfig.load();
   }
