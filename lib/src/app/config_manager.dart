@@ -13,7 +13,7 @@ class ConfigManager {
     if (StringHelper.hasText(variantConfigJson)) {
       _variantSource = jsonDecode(variantConfigJson!);
     }
-    await BaseConfig.load();
+    await Config.load();
   }
 
   static dynamic find(ParseResult parse(dynamic source, SourceType type)) {
@@ -40,7 +40,7 @@ class ConfigManager {
   }
 
   static Future<void> destroy() async {
-    await BaseConfig.reset();
+    await Config.reset();
     _defaultSource = null;
     _variantSource = null;
   }
@@ -57,7 +57,7 @@ class ParseResult {
   ParseResult(this.complete, this.result);
 }
 
-class BaseConfig {
+class Config {
   static bool? _debug;
   static String? _fileManagerDirectory;
   static String? _globalCacheManager_cacheKey;
@@ -111,5 +111,5 @@ class BaseConfig {
     _logger_fileLevel = null;
   }
 
-  BaseConfig._();
+  Config._();
 }

@@ -6,7 +6,7 @@ import 'config_manager.dart';
 
 class DownloadManager {
   static Future<void> initialize() async {
-    await FlutterDownloader.initialize(debug: BaseConfig.debug ?? false);
+    await FlutterDownloader.initialize(debug: Config.debug ?? false);
     FlutterDownloader.registerCallback(_downloadCallback);
   }
 

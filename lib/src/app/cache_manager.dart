@@ -6,11 +6,11 @@ class CacheManager {
   static GlobalCacheManager? _globalCacheManager;
 
   static Future<void> initialize() async {
-    int? stalePeriod = BaseConfig.globalCacheManager_stalePeriod;
+    int? stalePeriod = Config.globalCacheManager_stalePeriod;
     _globalCacheManager = GlobalCacheManager(
-      cacheKey: BaseConfig.globalCacheManager_cacheKey,
+      cacheKey: Config.globalCacheManager_cacheKey,
       stalePeriod: stalePeriod != null ? Duration(days: stalePeriod) : null,
-      maxNrOfCacheObjects: BaseConfig.globalCacheManager_maxNrOfCacheObjects,
+      maxNrOfCacheObjects: Config.globalCacheManager_maxNrOfCacheObjects,
     );
   }
 
