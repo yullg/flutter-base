@@ -35,7 +35,7 @@ class UserProfilePictureWidget extends StatelessWidget {
                 cacheManager: CacheManager.globalCacheManager,
                 cacheKey: UriHelper.baseUri(Uri.parse(src!)).toString(),
               )
-            : Image.asset("assets/image/user_profile_picture.jpg", package: "base", fit: BoxFit.cover),
+            : Image.asset("assets/image/user_profile_picture.webp", package: "base", fit: BoxFit.cover),
       ),
     );
   }
