@@ -2,18 +2,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../app/shared_preferences_manager.dart';
-import '../core/result.dart';
+import '../logger/system_logger.dart';
 
-Future<Result<bool>> agreeServiceAgreementAndPrivacyStatement(
+Future<bool> agreeServiceAgreementAndPrivacyStatement(
         {required BuildContext context,
         String name = "agreeServiceAgreementAndPrivacyStatement",
         required void Function() onServiceAgreementClick,
         required void Function() onPrivacyStatementClick}) =>
     Future.microtask(() async {
       if (SharedPreferenceManager.instance.getBool(name) ?? false) {
-        return Result.withData(true);
+        return true;
       } else {
-        return (await showDialog<Result<bool>>(
+        return (await showDialog<bool>(
               context: context,
               barrierDismissible: false,
               builder: (context) => WillPopScope(
@@ -45,7 +45,7 @@ Future<Result<bool>> agreeServiceAgreementAndPrivacyStatement(
                       ),
                       child: Text("暂不使用"),
                       onPressed: () {
-                        Navigator.pop(context, Result.withData(false));
+                        Navigator.pop(context, false);
                       },
                     ),
                     TextButton(
@@ -54,10 +54,10 @@ Future<Result<bool>> agreeServiceAgreementAndPrivacyStatement(
                       ),
                       child: Text("同意"),
                       onPressed: () {
-                        SharedPreferenceManager.instance.setBool(name, true).then((value) {
-                          Navigator.pop(context, Result.withData(true));
-                        }).catchError((e, s) {
-                          Navigator.pop(context, Result.withError(e, s));
+                        SharedPreferenceManager.instance.setBool(name, true).catchError((e, s) {
+                          SystemLogger.log("Unable to save '$name'", e, s);
+                        }).whenComplete(() {
+                          Navigator.pop(context, true);
                         });
                       },
                     ),
@@ -65,6 +65,6 @@ Future<Result<bool>> agreeServiceAgreementAndPrivacyStatement(
                 ),
               ),
             )) ??
-            Result.nothing();
+            false;
       }
     });

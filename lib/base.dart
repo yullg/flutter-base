@@ -26,6 +26,7 @@ export 'src/helper/toast_helper.dart';
 export 'src/helper/uri_helper.dart';
 export 'src/helper/uuid_helper.dart';
 export 'src/logger/logger.dart';
+export 'src/logger/system_logger.dart';
 export 'src/permission/permission.dart';
 export 'src/ui/page/authenticate_page.dart';
 export 'src/ui/page/change_email_page.dart';
