@@ -49,6 +49,7 @@ export 'src/ui/widget/limit_exit_widget.dart';
 export 'src/ui/widget/paged_list_widget.dart';
 export 'src/ui/widget/predicate_widget.dart';
 export 'src/ui/widget/rebuild_widget.dart';
+export 'src/ui/widget/scrollable_column.dart';
 export 'src/ui/widget/sex_age_widget.dart';
 export 'src/ui/widget/smart_button.dart';
 export 'src/ui/widget/smart_table.dart';

@@ -238,7 +238,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
           SizedBox(
             width: double.infinity,
             child: SmartElevatedButton(
-              child: Text("登  录"),
+              child: Text("登\u3000录"),
               lockedChild: Text("登录中..."),
               style: ButtonStyle(
                 textStyle: MaterialStateProperty.all(TextStyle(fontSize: 50.sp)),
@@ -331,7 +331,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
             SizedBox(
               width: double.infinity,
               child: SmartElevatedButton(
-                child: Text("登  录"),
+                child: Text("登\u3000录"),
                 lockedChild: Text("登录中..."),
                 style: ButtonStyle(
                   textStyle: MaterialStateProperty.all(TextStyle(fontSize: 50.sp)),
@@ -425,7 +425,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
             SizedBox(
               width: double.infinity,
               child: SmartElevatedButton(
-                child: Text("登  录"),
+                child: Text("登\u3000录"),
                 lockedChild: Text("登录中..."),
                 style: ButtonStyle(
                   textStyle: MaterialStateProperty.all(TextStyle(fontSize: 50.sp)),
@@ -534,7 +534,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
             SizedBox(
               width: double.infinity,
               child: SmartElevatedButton(
-                child: Text("提  交"),
+                child: Text("提\u3000交"),
                 lockedChild: Text("提交中..."),
                 style: ButtonStyle(
                   textStyle: MaterialStateProperty.all(TextStyle(fontSize: 50.sp)),
@@ -644,7 +644,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
             SizedBox(
               width: double.infinity,
               child: SmartElevatedButton(
-                child: Text("注  册"),
+                child: Text("注\u3000册"),
                 lockedChild: Text("注册中..."),
                 style: ButtonStyle(
                   textStyle: MaterialStateProperty.all(TextStyle(fontSize: 50.sp)),
