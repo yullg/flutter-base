@@ -91,7 +91,7 @@ Widget _defaultFailedWidgetBuilder(BuildContext context, Object error, Widget? c
     );
 
 Widget _defaultFailedWidgetFutureBuilder(BuildContext context, Object error, Widget? child) => Center(
-      child: Text("加载失败", style: TextStyle(fontSize: 46.sp)),
+      child: Text("加载失败 请稍候重试", style: TextStyle(fontSize: 46.sp)),
     );
 
 Widget _defaultNoneWidgetBuilder(BuildContext context) => Column(
@@ -115,5 +115,5 @@ Widget _defaultNoneWidgetBuilder(BuildContext context) => Column(
     );
 
 Widget _defaultNoneWidgetFutureBuilder(BuildContext context) => Center(
-      child: Text("暂无数据", style: TextStyle(fontSize: 46.sp)),
+      child: Text("暂无数据 请稍候重试", style: TextStyle(fontSize: 46.sp)),
     );
