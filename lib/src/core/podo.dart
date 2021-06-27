@@ -1,4 +1,4 @@
-const EMPTY_PODO = Podo._({});
+const EMPTY_PODO = Podo._(const {});
 
 class Podo {
   final Map<String, dynamic> _map;
