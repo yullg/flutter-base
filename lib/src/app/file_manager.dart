@@ -5,7 +5,7 @@ import 'package:path/path.dart' as p;
 import '../helper/enum_helper.dart';
 import '../helper/mime_type_helper.dart';
 import '../helper/uuid_helper.dart';
-import 'config_manager.dart';
+import 'base_config.dart';
 import 'directory_manager.dart';
 
 enum FileType { text, image, video, audio, application, unknown }
@@ -52,7 +52,7 @@ class FileManager {
   }
 
   static Directory _directory(DirectoryType directoryType) {
-    return DirectoryManager.joinDirectory(DirectoryManager.directory(directoryType), Config.fileManagerDirectory ?? "file_manager_data");
+    return DirectoryManager.joinDirectory(DirectoryManager.directory(directoryType), BaseConfig.fileManagerDirectory ?? "file_manager_data");
   }
 
   static Future<void> destroy() async {}

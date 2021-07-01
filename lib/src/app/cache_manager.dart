@@ -1,16 +1,16 @@
 import 'package:flutter_cache_manager/flutter_cache_manager.dart' as cm;
 
-import 'config_manager.dart';
+import 'base_config.dart';
 
 class CacheManager {
   static GlobalCacheManager? _globalCacheManager;
 
   static Future<void> initialize() async {
-    int? stalePeriod = Config.globalCacheManager_stalePeriod;
+    int? stalePeriod = BaseConfig.globalCacheManager_stalePeriod;
     _globalCacheManager = GlobalCacheManager(
-      cacheKey: Config.globalCacheManager_cacheKey,
+      cacheKey: BaseConfig.globalCacheManager_cacheKey,
       stalePeriod: stalePeriod != null ? Duration(days: stalePeriod) : null,
-      maxNrOfCacheObjects: Config.globalCacheManager_maxNrOfCacheObjects,
+      maxNrOfCacheObjects: BaseConfig.globalCacheManager_maxNrOfCacheObjects,
     );
   }
 

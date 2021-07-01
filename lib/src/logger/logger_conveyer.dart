@@ -1,27 +1,23 @@
 import 'dart:async';
 
-import '../app/config_manager.dart';
+import '../app/base_config.dart';
 import '../helper/enum_helper.dart';
 import 'logger_appender.dart';
 
 class LogConveyer {
   static final StreamController<LogEvent> _streamController = StreamController.broadcast();
-  static StreamSubscription<LogEvent> _defaultStreamSubscription =
-      _streamController.stream.listen(DefaultLoggerAppender().output, onError: (e) {});
+  static StreamSubscription<LogEvent> _defaultStreamSubscription = _streamController.stream.listen(DefaultLoggerAppender().output, onError: (e) {});
   static StreamSubscription<LogEvent>? _consoleStreamSubscription;
   static StreamSubscription<LogEvent>? _fileStreamSubscription;
 
   static Future<void> initialize() async {
-    if (Config.logger_consoleEnabled ?? false) {
-      _consoleStreamSubscription = _streamController.stream.listen(
-          ConsoleLoggerAppender(EnumHelper.parseString(Level.values, Config.logger_consoleLevel) ?? Level.info)
-              .output,
-          onError: (e) {});
+    if (BaseConfig.logger_consoleEnabled ?? false) {
+      _consoleStreamSubscription = _streamController.stream
+          .listen(ConsoleLoggerAppender(EnumHelper.parseString(Level.values, BaseConfig.logger_consoleLevel) ?? Level.info).output, onError: (e) {});
     }
-    if (Config.logger_fileEnabled ?? false) {
-      _fileStreamSubscription = _streamController.stream.listen(
-          FileLoggerAppender(EnumHelper.parseString(Level.values, Config.logger_fileLevel) ?? Level.info).output,
-          onError: (e) {});
+    if (BaseConfig.logger_fileEnabled ?? false) {
+      _fileStreamSubscription = _streamController.stream
+          .listen(FileLoggerAppender(EnumHelper.parseString(Level.values, BaseConfig.logger_fileLevel) ?? Level.info).output, onError: (e) {});
     }
     _defaultStreamSubscription.cancel();
   }
