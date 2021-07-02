@@ -7,7 +7,6 @@ import 'app/directory_manager.dart';
 import 'app/download_manager.dart';
 import 'app/file_manager.dart';
 import 'app/logger_manager.dart';
-import 'app/mqtt_manager.dart';
 import 'app/package_info_manager.dart';
 import 'app/shared_preferences_manager.dart';
 import 'logger/system_logger.dart';
@@ -24,7 +23,6 @@ class BaseBootstrap {
       await FileManager.initialize();
       await CacheManager.initialize();
       await DownloadManager.initialize();
-      await MqttManager.initialize();
     } catch (e, s) {
       SystemLogger.log("BaseBootstrap initialize error", e, s);
       rethrow;
@@ -33,7 +31,6 @@ class BaseBootstrap {
 
   static Future<void> destroy() async {
     try {
-      await MqttManager.destroy();
       await DownloadManager.destroy();
       await CacheManager.destroy();
       await FileManager.destroy();

@@ -31,7 +31,6 @@ dependencies:
   visibility_detector: 0.2.0
   move_to_background: 1.0.2
   flutter_downloader: 1.6.1
-  mqtt_client: 9.3.1
 
 dev_dependencies:
   flutter_test:
