@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../app/shared_preferences_manager.dart';
-import '../logger/system_logger.dart';
+import '../logger/base_logger.dart';
 
 Future<bool> agreeServiceAgreementAndPrivacyStatement(
         {required BuildContext context,
@@ -55,7 +55,7 @@ Future<bool> agreeServiceAgreementAndPrivacyStatement(
                       child: Text("同意"),
                       onPressed: () {
                         SharedPreferenceManager.instance.setBool(name, true).catchError((e, s) {
-                          SystemLogger.log("Unable to save '$name'", e, s);
+                          BaseLogger.error("Unable to save '$name'", e, s);
                         }).whenComplete(() {
                           Navigator.pop(context, true);
                         });

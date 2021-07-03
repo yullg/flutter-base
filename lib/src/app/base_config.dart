@@ -1,3 +1,5 @@
+import '../bean/log_level.dart';
+import '../helper/enum_helper.dart';
 import 'config_manager.dart';
 
 class BaseConfig {
@@ -7,9 +9,9 @@ class BaseConfig {
   static int? _globalCacheManager_stalePeriod;
   static int? _globalCacheManager_maxNrOfCacheObjects;
   static bool? _logger_consoleEnabled;
-  static String? _logger_consoleLevel;
+  static LogLevel? _logger_consoleLevel;
   static bool? _logger_fileEnabled;
-  static String? _logger_fileLevel;
+  static LogLevel? _logger_fileLevel;
 
   static Future<void> initialize() async {
     _debug = ConfigManager.findUntilNotNull((source) => source["base"]?["debug"]);
@@ -19,9 +21,10 @@ class BaseConfig {
     _globalCacheManager_maxNrOfCacheObjects =
         ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["maxNrOfCacheObjects"]);
     _logger_consoleEnabled = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleEnabled"]);
-    _logger_consoleLevel = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleLevel"]);
+    _logger_consoleLevel =
+        EnumHelper.parseString(LogLevel.values, ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleLevel"]));
     _logger_fileEnabled = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileEnabled"]);
-    _logger_fileLevel = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileLevel"]);
+    _logger_fileLevel = EnumHelper.parseString(LogLevel.values, ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileLevel"]));
   }
 
   static bool? get debug => _debug;
@@ -36,11 +39,11 @@ class BaseConfig {
 
   static bool? get logger_consoleEnabled => _logger_consoleEnabled;
 
-  static String? get logger_consoleLevel => _logger_consoleLevel;
+  static LogLevel? get logger_consoleLevel => _logger_consoleLevel;
 
   static bool? get logger_fileEnabled => _logger_fileEnabled;
 
-  static String? get logger_fileLevel => _logger_fileLevel;
+  static LogLevel? get logger_fileLevel => _logger_fileLevel;
 
   static Future<void> destroy() async {
     _debug = null;

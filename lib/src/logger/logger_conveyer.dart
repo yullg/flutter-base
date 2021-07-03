@@ -1,49 +1,35 @@
-import 'dart:async';
-
 import '../app/base_config.dart';
-import '../helper/enum_helper.dart';
+import '../bean/log_level.dart';
 import 'logger_appender.dart';
 
 class LogConveyer {
-  static final StreamController<LogEvent> _streamController = StreamController.broadcast();
-  static StreamSubscription<LogEvent> _defaultStreamSubscription = _streamController.stream.listen(DefaultLoggerAppender().output, onError: (e) {});
-  static StreamSubscription<LogEvent>? _consoleStreamSubscription;
-  static StreamSubscription<LogEvent>? _fileStreamSubscription;
+  static final _consoleLoggerAppender = ConsoleLoggerAppender();
+  static final _fileLoggerAppender = FileLoggerAppender();
 
-  static Future<void> initialize() async {
-    if (BaseConfig.logger_consoleEnabled ?? false) {
-      _consoleStreamSubscription = _streamController.stream
-          .listen(ConsoleLoggerAppender(EnumHelper.parseString(Level.values, BaseConfig.logger_consoleLevel) ?? Level.info).output, onError: (e) {});
+  static Future<void> convey(Log log) async {
+    try {
+      if (BaseConfig.logger_consoleEnabled ?? true) {
+        if (log.level.index >= (BaseConfig.logger_consoleLevel ?? LogLevel.trace).index) {
+          await _consoleLoggerAppender.output(log);
+        }
+      }
+    } finally {
+      if (BaseConfig.logger_fileEnabled ?? true) {
+        if (log.level.index >= (BaseConfig.logger_fileLevel ?? LogLevel.trace).index) {
+          await _fileLoggerAppender.output(log);
+        }
+      }
     }
-    if (BaseConfig.logger_fileEnabled ?? false) {
-      _fileStreamSubscription = _streamController.stream
-          .listen(FileLoggerAppender(EnumHelper.parseString(Level.values, BaseConfig.logger_fileLevel) ?? Level.info).output, onError: (e) {});
-    }
-    _defaultStreamSubscription.cancel();
-  }
-
-  static void convey(LogEvent logEvent) {
-    _streamController.add(logEvent);
-  }
-
-  static Future<void> destroy() async {
-    _defaultStreamSubscription = _streamController.stream.listen(DefaultLoggerAppender().output, onError: (e) {});
-    _consoleStreamSubscription?.cancel();
-    _consoleStreamSubscription = null;
-    _fileStreamSubscription?.cancel();
-    _fileStreamSubscription = null;
   }
 }
 
-enum Level { trace, debug, info, warn, error, fatal }
-
-class LogEvent {
-  final String loggerName;
-  final Level level;
+class Log {
+  final String name;
+  final LogLevel level;
   final DateTime time;
   final dynamic message;
   final dynamic error;
   final StackTrace? trace;
 
-  LogEvent(this.loggerName, this.level, this.time, this.message, this.error, this.trace);
+  Log(this.name, this.level, this.time, this.message, this.error, this.trace);
 }
