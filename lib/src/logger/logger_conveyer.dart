@@ -24,6 +24,7 @@ class LogConveyer {
 }
 
 class Log {
+  final String module;
   final String name;
   final LogLevel level;
   final DateTime time;
@@ -31,5 +32,5 @@ class Log {
   final dynamic error;
   final StackTrace? trace;
 
-  Log(this.name, this.level, this.time, this.message, this.error, this.trace);
+  Log(this.module, this.name, this.level, this.time, this.message, this.error, this.trace);
 }

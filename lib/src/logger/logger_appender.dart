@@ -16,7 +16,7 @@ abstract class LoggerAppender {
 
   String stringifyLogEvent(Log log) {
     StringBuffer result = StringBuffer();
-    result.write("${log.name}    ");
+    result.write("${log.module}/${log.name}    ");
     result.write("${log.time.toIso8601String()}    ");
     result.write("${EnumHelper.format(log.level) ?? '---'}    ");
     result.write("${log.message ?? '---'}    ");
@@ -45,12 +45,13 @@ class FileLoggerAppender extends LoggerAppender {
   @override
   Future<void> output(Log log) async {
     var temporaryDirectory = await getTemporaryDirectory();
-    var logFile = File(p.join(temporaryDirectory.absolute.path, "yullg", "log", "log-${DateTimeHelper.format(DateTime.now(), 'yyyyMMdd')}.log"));
+    var logFile =
+        File(p.join(temporaryDirectory.absolute.path, "yullg", "log", "${log.module}-${DateTimeHelper.format(DateTime.now(), 'yyyyMMdd')}.log"));
     logFile.createSync(recursive: true);
     logFile.writeAsStringSync(stringifyLogEvent(log), mode: FileMode.append);
   }
 
-  static final _logFileNameRegExp = RegExp(r"^log-(\d{4})(\d{2})(\d{2})\.log$");
+  static final _logFileNameRegExp = RegExp(r"^.*-(\d{4})(\d{2})(\d{2})\.log$");
 
   Future<void> _deleteLogFile(int days) async {
     var logDirectory = Directory(p.join((await getTemporaryDirectory()).absolute.path, "yullg", "log"));

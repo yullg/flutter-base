@@ -1,7 +1,7 @@
 import 'logger.dart';
 
 class BaseLogger {
-  static const _logger = Logger("com.yullg.base");
+  static const _logger = Logger("base", "base");
 
   static void trace(dynamic message, [dynamic error, StackTrace? trace]) {
     _logger.trace(message, error, trace);

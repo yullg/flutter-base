@@ -2,9 +2,10 @@ import '../bean/log_level.dart';
 import 'logger_conveyer.dart';
 
 class Logger {
+  final String _module;
   final String _name;
 
-  const Logger(this._name);
+  const Logger(this._module, this._name);
 
   void trace(dynamic message, [dynamic error, StackTrace? trace]) {
     _log(LogLevel.trace, DateTime.now(), message, error, trace);
@@ -31,11 +32,8 @@ class Logger {
   }
 
   void _log(LogLevel level, DateTime time, dynamic message, [dynamic error, StackTrace? trace]) {
-    LogConveyer.convey(Log(_name, level, time, message, error, trace)).catchError((e) {
+    LogConveyer.convey(Log(_module, _name, level, time, message, error, trace)).catchError((e) {
       // ignore
     });
   }
 }
-
-
-
