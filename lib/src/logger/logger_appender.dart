@@ -45,8 +45,7 @@ class FileLoggerAppender extends LoggerAppender {
   @override
   Future<void> output(Log log) async {
     var temporaryDirectory = await getTemporaryDirectory();
-    var logFile =
-        File(p.join(temporaryDirectory.absolute.path, "yullg", "log", "${log.module}-${DateTimeHelper.format(DateTime.now(), 'yyyyMMdd')}.log"));
+    var logFile = File(p.join(temporaryDirectory.absolute.path, "yullg", "log", "${log.module}-${DateTimeHelper.format(log.time, 'yyyyMMdd')}.log"));
     logFile.createSync(recursive: true);
     logFile.writeAsStringSync(stringifyLogEvent(log), mode: FileMode.append);
   }
