@@ -21,6 +21,7 @@ export 'src/helper/district_helper.dart';
 export 'src/helper/enum_helper.dart';
 export 'src/helper/exif_helper.dart';
 export 'src/helper/mime_type_helper.dart';
+export 'src/helper/null_helper.dart';
 export 'src/helper/number_helper.dart';
 export 'src/helper/string_helper.dart';
 export 'src/helper/toast_helper.dart';
