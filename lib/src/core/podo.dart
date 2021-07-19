@@ -9,8 +9,6 @@ class Podo {
 
   Podo.clone(Podo podo) : this._(Map.of(podo._map));
 
-  Podo.of(Map<String, dynamic> map) : this._(Map.of(map));
-
   bool get isEmpty => _map.isEmpty;
 
   bool get isNotEmpty => _map.isNotEmpty;
@@ -25,9 +23,9 @@ class Podo {
 
   void remove(String name) => _map.remove(name);
 
-  dynamic get(String name) => _map[name];
+  T get<T>(String name) => _map[name];
 
-  void set(String name, dynamic value) => _map[name] = value;
+  void set<T>(String name, T value) => _map[name] = value;
 
   Map<String, dynamic> unwrap() => Map.unmodifiable(_map);
 
