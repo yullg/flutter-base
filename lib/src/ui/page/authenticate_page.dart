@@ -101,7 +101,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                       ),
                       Expanded(
                         child: LayoutBuilder(
-                          builder: (_, constraints) => SingleChildScrollView(
+                          builder: (context, constraints) => SingleChildScrollView(
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
                                 minHeight: constraints.maxHeight,
@@ -146,6 +146,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                                                 foregroundColor: MaterialStateProperty.all(Colors.white),
                                                 shape: MaterialStateProperty.all(CircleBorder())),
                                             onPressed: () {
+                                              Focus.of(context).unfocus();
                                               notifier.authenticatePageMode = AuthenticatePageMode.password;
                                             },
                                           ),
@@ -158,6 +159,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                                                 foregroundColor: MaterialStateProperty.all(Colors.white),
                                                 shape: MaterialStateProperty.all(CircleBorder())),
                                             onPressed: () {
+                                              Focus.of(context).unfocus();
                                               notifier.authenticatePageMode = AuthenticatePageMode.phone_code;
                                             },
                                           ),
@@ -170,6 +172,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                                                 foregroundColor: MaterialStateProperty.all(Colors.white),
                                                 shape: MaterialStateProperty.all(CircleBorder())),
                                             onPressed: () {
+                                              Focus.of(context).unfocus();
                                               notifier.authenticatePageMode = AuthenticatePageMode.email_code;
                                             },
                                           ),
@@ -261,6 +264,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("重置密码"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.reset_password;
                 },
               ),
@@ -270,6 +274,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("注册账号"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.sign_up;
                 },
               ),
@@ -352,6 +357,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("重置密码"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.reset_password;
                 },
               ),
@@ -361,6 +367,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("注册账号"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.sign_up;
                 },
               ),
@@ -443,6 +450,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("重置密码"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.reset_password;
                 },
               ),
@@ -452,6 +460,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("注册账号"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.sign_up;
                 },
               ),
@@ -551,6 +560,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("密码登录"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.password;
                 },
               ),
@@ -560,6 +570,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("注册账号"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.sign_up;
                 },
               ),
@@ -659,6 +670,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("重置密码"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.reset_password;
                 },
               ),
@@ -668,6 +680,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 ),
                 child: Text("密码登录"),
                 onPressed: () {
+                  Focus.of(context).unfocus();
                   notifier.authenticatePageMode = AuthenticatePageMode.password;
                 },
               ),
