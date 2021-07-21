@@ -52,7 +52,7 @@ class FileManager {
   }
 
   static Directory _directory(DirectoryType directoryType) {
-    return DirectoryManager.joinDirectory(DirectoryManager.directory(directoryType), BaseConfig.fileManagerDirectory ?? "file_manager_data");
+    return Directory(p.join(DirectoryManager.directory(directoryType).path, BaseConfig.fileManagerDirectory ?? "file_manager_data"));
   }
 
   static Future<void> destroy() async {}

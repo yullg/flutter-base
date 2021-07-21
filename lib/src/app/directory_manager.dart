@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 enum DirectoryType { data, files, cache }
@@ -44,10 +43,6 @@ class DirectoryManager {
       case DirectoryType.cache:
         return cacheDir;
     }
-  }
-
-  static Directory joinDirectory(Directory directory, [String? part1, String? part2, String? part3]) {
-    return Directory(p.join(directory.path, part1, part2, part3));
   }
 
   static Future<void> destroy() async {
