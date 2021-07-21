@@ -1,4 +1,6 @@
 class StringHelper {
+  static const String _EMPTY_STRING = "";
+
   static bool hasLength(String? str) {
     return (str != null && str.isNotEmpty);
   }
@@ -11,11 +13,11 @@ class StringHelper {
 
   static bool hasNotText(String? str) => !hasText(str);
 
-  static bool equals(String? strA, String? strB, {bool trim = true}) {
+  static bool textEquals(String? strA, String? strB, {bool trim = true}) {
     if (trim) {
-      return (strA?.trim() ?? "") == (strB?.trim() ?? "");
+      return (strA?.trim() ?? _EMPTY_STRING) == (strB?.trim() ?? _EMPTY_STRING);
     } else {
-      return (strA ?? "") == (strB ?? "");
+      return (strA ?? _EMPTY_STRING) == (strB ?? _EMPTY_STRING);
     }
   }
 
