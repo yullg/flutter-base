@@ -1,15 +1,11 @@
-// Data from android.webkit.MimeTypeMap
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
 
-class MimeTypeHelper {
-  static bool _initialized = false;
-  static Map<String, String> _mimeTypeToExtensionMap = {};
-  static Map<String, String> _extensionToMimeTypeMap = {};
+import '../bean/resource.dart';
 
+class MimeTypeHelper {
   static bool hasExtension(String? extension) {
-    _initialize();
     if (extension != null && extension.length > 0) {
       return _extensionToMimeTypeMap.containsKey(extension);
     }
@@ -17,7 +13,6 @@ class MimeTypeHelper {
   }
 
   static bool hasMimeType(String? mimeType) {
-    _initialize();
     if (mimeType != null && mimeType.length > 0) {
       return _mimeTypeToExtensionMap.containsKey(mimeType);
     }
@@ -25,7 +20,6 @@ class MimeTypeHelper {
   }
 
   static String? extensionToMimeType(String? extension) {
-    _initialize();
     if (extension != null && extension.length > 0) {
       return _extensionToMimeTypeMap[extension];
     }
@@ -33,347 +27,584 @@ class MimeTypeHelper {
   }
 
   static String? mimeTypeToExtension(String? mimeType) {
-    _initialize();
     if (mimeType != null && mimeType.length > 0) {
       return _mimeTypeToExtensionMap[mimeType];
     }
     return null;
   }
 
-  static String? getMimeTypeFromFile(File file) {
-    var extension = p.extension(file.path).replaceFirst('.', '').toLowerCase();
-    return extensionToMimeType(extension);
-  }
-
-  static String? getMimeTypeFromUrl(String url) {
-    int query = url.lastIndexOf('?');
-    if (query > 0) {
-      url = url.substring(0, query);
-    }
-    int filenamePos = url.lastIndexOf('/');
-    String filename = filenamePos >= 0 ? url.substring(filenamePos + 1) : url;
-    if (filename.length > 0) {
-      int dotPos = filename.lastIndexOf('.');
-      if (dotPos >= 0) {
-        String extension = filename.substring(dotPos + 1);
-        return extensionToMimeType(extension);
-      }
+  static String? getMimeTypeFromFile(File? file) {
+    if (file != null) {
+      var extension = p.extension(file.path).replaceFirst('.', '').toLowerCase();
+      return extensionToMimeType(extension);
     }
     return null;
   }
 
-  static void _loadEntry(String mimeType, String extension) {
-    if (!_mimeTypeToExtensionMap.containsKey(mimeType)) {
-      _mimeTypeToExtensionMap[mimeType] = extension;
+  static String? getMimeTypeFromUri(Uri? uri) {
+    if (uri != null && uri.pathSegments.isNotEmpty) {
+      var extension = p.extension(uri.pathSegments.last).replaceFirst('.', '').toLowerCase();
+      return extensionToMimeType(extension);
     }
-    _extensionToMimeTypeMap[extension] = mimeType;
+    return null;
   }
 
-  static void _initialize() {
-    if (_initialized) return;
-    _loadEntry("application/andrew-inset", "ez");
-    _loadEntry("application/dsptype", "tsp");
-    _loadEntry("application/futuresplash", "spl");
-    _loadEntry("application/hta", "hta");
-    _loadEntry("application/mac-binhex40", "hqx");
-    _loadEntry("application/mac-compactpro", "cpt");
-    _loadEntry("application/mathematica", "nb");
-    _loadEntry("application/msaccess", "mdb");
-    _loadEntry("application/oda", "oda");
-    _loadEntry("application/ogg", "ogg");
-    _loadEntry("application/pdf", "pdf");
-    _loadEntry("application/pgp-keys", "key");
-    _loadEntry("application/pgp-signature", "pgp");
-    _loadEntry("application/pics-rules", "prf");
-    _loadEntry("application/rar", "rar");
-    _loadEntry("application/rdf+xml", "rdf");
-    _loadEntry("application/rss+xml", "rss");
-    _loadEntry("application/zip", "zip");
-    _loadEntry("application/vnd.android.package-archive", "apk");
-    _loadEntry("application/vnd.cinderella", "cdy");
-    _loadEntry("application/vnd.ms-pki.stl", "stl");
-    _loadEntry("application/vnd.oasis.opendocument.database", "odb");
-    _loadEntry("application/vnd.oasis.opendocument.formula", "odf");
-    _loadEntry("application/vnd.oasis.opendocument.graphics", "odg");
-    _loadEntry("application/vnd.oasis.opendocument.graphics-template", "otg");
-    _loadEntry("application/vnd.oasis.opendocument.image", "odi");
-    _loadEntry("application/vnd.oasis.opendocument.spreadsheet", "ods");
-    _loadEntry("application/vnd.oasis.opendocument.spreadsheet-template", "ots");
-    _loadEntry("application/vnd.oasis.opendocument.text", "odt");
-    _loadEntry("application/vnd.oasis.opendocument.text-master", "odm");
-    _loadEntry("application/vnd.oasis.opendocument.text-template", "ott");
-    _loadEntry("application/vnd.oasis.opendocument.text-web", "oth");
-    _loadEntry("application/msword", "doc");
-    _loadEntry("application/msword", "dot");
-    _loadEntry("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx");
-    _loadEntry("application/vnd.openxmlformats-officedocument.wordprocessingml.template", "dotx");
-    _loadEntry("application/vnd.ms-excel", "xls");
-    _loadEntry("application/vnd.ms-excel", "xlt");
-    _loadEntry("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx");
-    _loadEntry("application/vnd.openxmlformats-officedocument.spreadsheetml.template", "xltx");
-    _loadEntry("application/vnd.ms-powerpoint", "ppt");
-    _loadEntry("application/vnd.ms-powerpoint", "pot");
-    _loadEntry("application/vnd.ms-powerpoint", "pps");
-    _loadEntry("application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx");
-    _loadEntry("application/vnd.openxmlformats-officedocument.presentationml.template", "potx");
-    _loadEntry("application/vnd.openxmlformats-officedocument.presentationml.slideshow", "ppsx");
-    _loadEntry("application/vnd.rim.cod", "cod");
-    _loadEntry("application/vnd.smaf", "mmf");
-    _loadEntry("application/vnd.stardivision.calc", "sdc");
-    _loadEntry("application/vnd.stardivision.draw", "sda");
-    _loadEntry("application/vnd.stardivision.impress", "sdd");
-    _loadEntry("application/vnd.stardivision.impress", "sdp");
-    _loadEntry("application/vnd.stardivision.math", "smf");
-    _loadEntry("application/vnd.stardivision.writer", "sdw");
-    _loadEntry("application/vnd.stardivision.writer", "vor");
-    _loadEntry("application/vnd.stardivision.writer-global", "sgl");
-    _loadEntry("application/vnd.sun.xml.calc", "sxc");
-    _loadEntry("application/vnd.sun.xml.calc.template", "stc");
-    _loadEntry("application/vnd.sun.xml.draw", "sxd");
-    _loadEntry("application/vnd.sun.xml.draw.template", "std");
-    _loadEntry("application/vnd.sun.xml.impress", "sxi");
-    _loadEntry("application/vnd.sun.xml.impress.template", "sti");
-    _loadEntry("application/vnd.sun.xml.math", "sxm");
-    _loadEntry("application/vnd.sun.xml.writer", "sxw");
-    _loadEntry("application/vnd.sun.xml.writer.global", "sxg");
-    _loadEntry("application/vnd.sun.xml.writer.template", "stw");
-    _loadEntry("application/vnd.visio", "vsd");
-    _loadEntry("application/x-abiword", "abw");
-    _loadEntry("application/x-apple-diskimage", "dmg");
-    _loadEntry("application/x-bcpio", "bcpio");
-    _loadEntry("application/x-bittorrent", "torrent");
-    _loadEntry("application/x-cdf", "cdf");
-    _loadEntry("application/x-cdlink", "vcd");
-    _loadEntry("application/x-chess-pgn", "pgn");
-    _loadEntry("application/x-cpio", "cpio");
-    _loadEntry("application/x-debian-package", "deb");
-    _loadEntry("application/x-debian-package", "udeb");
-    _loadEntry("application/x-director", "dcr");
-    _loadEntry("application/x-director", "dir");
-    _loadEntry("application/x-director", "dxr");
-    _loadEntry("application/x-dms", "dms");
-    _loadEntry("application/x-doom", "wad");
-    _loadEntry("application/x-dvi", "dvi");
-    _loadEntry("application/x-flac", "flac");
-    _loadEntry("application/x-font", "pfa");
-    _loadEntry("application/x-font", "pfb");
-    _loadEntry("application/x-font", "gsf");
-    _loadEntry("application/x-font", "pcf");
-    _loadEntry("application/x-font", "pcf.Z");
-    _loadEntry("application/x-freemind", "mm");
-    _loadEntry("application/x-futuresplash", "spl");
-    _loadEntry("application/x-gnumeric", "gnumeric");
-    _loadEntry("application/x-go-sgf", "sgf");
-    _loadEntry("application/x-graphing-calculator", "gcf");
-    _loadEntry("application/x-gtar", "gtar");
-    _loadEntry("application/x-gtar", "tgz");
-    _loadEntry("application/x-gtar", "taz");
-    _loadEntry("application/x-hdf", "hdf");
-    _loadEntry("application/x-ica", "ica");
-    _loadEntry("application/x-internet-signup", "ins");
-    _loadEntry("application/x-internet-signup", "isp");
-    _loadEntry("application/x-iphone", "iii");
-    _loadEntry("application/x-iso9660-image", "iso");
-    _loadEntry("application/x-jmol", "jmz");
-    _loadEntry("application/x-kchart", "chrt");
-    _loadEntry("application/x-killustrator", "kil");
-    _loadEntry("application/x-koan", "skp");
-    _loadEntry("application/x-koan", "skd");
-    _loadEntry("application/x-koan", "skt");
-    _loadEntry("application/x-koan", "skm");
-    _loadEntry("application/x-kpresenter", "kpr");
-    _loadEntry("application/x-kpresenter", "kpt");
-    _loadEntry("application/x-kspread", "ksp");
-    _loadEntry("application/x-kword", "kwd");
-    _loadEntry("application/x-kword", "kwt");
-    _loadEntry("application/x-latex", "latex");
-    _loadEntry("application/x-lha", "lha");
-    _loadEntry("application/x-lzh", "lzh");
-    _loadEntry("application/x-lzx", "lzx");
-    _loadEntry("application/x-maker", "frm");
-    _loadEntry("application/x-maker", "maker");
-    _loadEntry("application/x-maker", "frame");
-    _loadEntry("application/x-maker", "fb");
-    _loadEntry("application/x-maker", "book");
-    _loadEntry("application/x-maker", "fbdoc");
-    _loadEntry("application/x-mif", "mif");
-    _loadEntry("application/x-ms-wmd", "wmd");
-    _loadEntry("application/x-ms-wmz", "wmz");
-    _loadEntry("application/x-msi", "msi");
-    _loadEntry("application/x-ns-proxy-autoconfig", "pac");
-    _loadEntry("application/x-nwc", "nwc");
-    _loadEntry("application/x-object", "o");
-    _loadEntry("application/x-oz-application", "oza");
-    _loadEntry("application/x-pkcs12", "p12");
-    _loadEntry("application/x-pkcs7-certreqresp", "p7r");
-    _loadEntry("application/x-pkcs7-crl", "crl");
-    _loadEntry("application/x-quicktimeplayer", "qtl");
-    _loadEntry("application/x-shar", "shar");
-    _loadEntry("application/x-shockwave-flash", "swf");
-    _loadEntry("application/x-stuffit", "sit");
-    _loadEntry("application/x-sv4cpio", "sv4cpio");
-    _loadEntry("application/x-sv4crc", "sv4crc");
-    _loadEntry("application/x-tar", "tar");
-    _loadEntry("application/x-texinfo", "texinfo");
-    _loadEntry("application/x-texinfo", "texi");
-    _loadEntry("application/x-troff", "t");
-    _loadEntry("application/x-troff", "roff");
-    _loadEntry("application/x-troff-man", "man");
-    _loadEntry("application/x-ustar", "ustar");
-    _loadEntry("application/x-wais-source", "src");
-    _loadEntry("application/x-wingz", "wz");
-    _loadEntry("application/x-webarchive", "webarchive");
-    _loadEntry("application/x-x509-ca-cert", "crt");
-    _loadEntry("application/x-x509-user-cert", "crt");
-    _loadEntry("application/x-xcf", "xcf");
-    _loadEntry("application/x-xfig", "fig");
-    _loadEntry("application/xhtml+xml", "xhtml");
-    _loadEntry("audio/3gpp", "3gpp");
-    _loadEntry("audio/basic", "snd");
-    _loadEntry("audio/midi", "mid");
-    _loadEntry("audio/midi", "midi");
-    _loadEntry("audio/midi", "kar");
-    _loadEntry("audio/mpeg", "mpga");
-    _loadEntry("audio/mpeg", "mpega");
-    _loadEntry("audio/mpeg", "mp2");
-    _loadEntry("audio/mpeg", "mp3");
-    _loadEntry("audio/mpeg", "m4a");
-    _loadEntry("audio/mpegurl", "m3u");
-    _loadEntry("audio/prs.sid", "sid");
-    _loadEntry("audio/x-aiff", "aif");
-    _loadEntry("audio/x-aiff", "aiff");
-    _loadEntry("audio/x-aiff", "aifc");
-    _loadEntry("audio/x-gsm", "gsm");
-    _loadEntry("audio/x-mpegurl", "m3u");
-    _loadEntry("audio/x-ms-wma", "wma");
-    _loadEntry("audio/x-ms-wax", "wax");
-    _loadEntry("audio/x-pn-realaudio", "ra");
-    _loadEntry("audio/x-pn-realaudio", "rm");
-    _loadEntry("audio/x-pn-realaudio", "ram");
-    _loadEntry("audio/x-realaudio", "ra");
-    _loadEntry("audio/x-scpls", "pls");
-    _loadEntry("audio/x-sd2", "sd2");
-    _loadEntry("audio/x-wav", "wav");
-    _loadEntry("image/bmp", "bmp");
-    _loadEntry("image/gif", "gif");
-    _loadEntry("image/ico", "cur");
-    _loadEntry("image/ico", "ico");
-    _loadEntry("image/ief", "ief");
-    _loadEntry("image/jpeg", "jpeg");
-    _loadEntry("image/jpeg", "jpg");
-    _loadEntry("image/jpeg", "jpe");
-    _loadEntry("image/pcx", "pcx");
-    _loadEntry("image/png", "png");
-    _loadEntry("image/svg+xml", "svg");
-    _loadEntry("image/svg+xml", "svgz");
-    _loadEntry("image/tiff", "tiff");
-    _loadEntry("image/tiff", "tif");
-    _loadEntry("image/vnd.djvu", "djvu");
-    _loadEntry("image/vnd.djvu", "djv");
-    _loadEntry("image/vnd.wap.wbmp", "wbmp");
-    _loadEntry("image/x-cmu-raster", "ras");
-    _loadEntry("image/x-coreldraw", "cdr");
-    _loadEntry("image/x-coreldrawpattern", "pat");
-    _loadEntry("image/x-coreldrawtemplate", "cdt");
-    _loadEntry("image/x-corelphotopaint", "cpt");
-    _loadEntry("image/x-icon", "ico");
-    _loadEntry("image/x-jg", "art");
-    _loadEntry("image/x-jng", "jng");
-    _loadEntry("image/x-ms-bmp", "bmp");
-    _loadEntry("image/x-photoshop", "psd");
-    _loadEntry("image/x-portable-anymap", "pnm");
-    _loadEntry("image/x-portable-bitmap", "pbm");
-    _loadEntry("image/x-portable-graymap", "pgm");
-    _loadEntry("image/x-portable-pixmap", "ppm");
-    _loadEntry("image/x-rgb", "rgb");
-    _loadEntry("image/x-xbitmap", "xbm");
-    _loadEntry("image/x-xpixmap", "xpm");
-    _loadEntry("image/x-xwindowdump", "xwd");
-    _loadEntry("model/iges", "igs");
-    _loadEntry("model/iges", "iges");
-    _loadEntry("model/mesh", "msh");
-    _loadEntry("model/mesh", "mesh");
-    _loadEntry("model/mesh", "silo");
-    _loadEntry("text/calendar", "ics");
-    _loadEntry("text/calendar", "icz");
-    _loadEntry("text/comma-separated-values", "csv");
-    _loadEntry("text/css", "css");
-    _loadEntry("text/html", "htm");
-    _loadEntry("text/html", "html");
-    _loadEntry("text/h323", "323");
-    _loadEntry("text/iuls", "uls");
-    _loadEntry("text/mathml", "mml");
-    _loadEntry("text/plain", "txt");
-    _loadEntry("text/plain", "asc");
-    _loadEntry("text/plain", "text");
-    _loadEntry("text/plain", "diff");
-    _loadEntry("text/plain", "po");
-    _loadEntry("text/richtext", "rtx");
-    _loadEntry("text/rtf", "rtf");
-    _loadEntry("text/texmacs", "ts");
-    _loadEntry("text/text", "phps");
-    _loadEntry("text/tab-separated-values", "tsv");
-    _loadEntry("text/xml", "xml");
-    _loadEntry("text/x-bibtex", "bib");
-    _loadEntry("text/x-boo", "boo");
-    _loadEntry("text/x-c++hdr", "h++");
-    _loadEntry("text/x-c++hdr", "hpp");
-    _loadEntry("text/x-c++hdr", "hxx");
-    _loadEntry("text/x-c++hdr", "hh");
-    _loadEntry("text/x-c++src", "c++");
-    _loadEntry("text/x-c++src", "cpp");
-    _loadEntry("text/x-c++src", "cxx");
-    _loadEntry("text/x-chdr", "h");
-    _loadEntry("text/x-component", "htc");
-    _loadEntry("text/x-csh", "csh");
-    _loadEntry("text/x-csrc", "c");
-    _loadEntry("text/x-dsrc", "d");
-    _loadEntry("text/x-haskell", "hs");
-    _loadEntry("text/x-java", "java");
-    _loadEntry("text/x-literate-haskell", "lhs");
-    _loadEntry("text/x-moc", "moc");
-    _loadEntry("text/x-pascal", "p");
-    _loadEntry("text/x-pascal", "pas");
-    _loadEntry("text/x-pcs-gcd", "gcd");
-    _loadEntry("text/x-setext", "etx");
-    _loadEntry("text/x-tcl", "tcl");
-    _loadEntry("text/x-tex", "tex");
-    _loadEntry("text/x-tex", "ltx");
-    _loadEntry("text/x-tex", "sty");
-    _loadEntry("text/x-tex", "cls");
-    _loadEntry("text/x-vcalendar", "vcs");
-    _loadEntry("text/x-vcard", "vcf");
-    _loadEntry("video/3gpp", "3gpp");
-    _loadEntry("video/3gpp", "3gp");
-    _loadEntry("video/3gpp", "3g2");
-    _loadEntry("video/dl", "dl");
-    _loadEntry("video/dv", "dif");
-    _loadEntry("video/dv", "dv");
-    _loadEntry("video/fli", "fli");
-    _loadEntry("video/m4v", "m4v");
-    _loadEntry("video/mpeg", "mpeg");
-    _loadEntry("video/mpeg", "mpg");
-    _loadEntry("video/mpeg", "mpe");
-    _loadEntry("video/mp4", "mp4");
-    _loadEntry("video/mpeg", "vob");
-    _loadEntry("video/quicktime", "qt");
-    _loadEntry("video/quicktime", "mov");
-    _loadEntry("video/vnd.mpegurl", "mxu");
-    _loadEntry("video/x-la-asf", "lsf");
-    _loadEntry("video/x-la-asf", "lsx");
-    _loadEntry("video/x-mng", "mng");
-    _loadEntry("video/x-ms-asf", "asf");
-    _loadEntry("video/x-ms-asf", "asx");
-    _loadEntry("video/x-ms-wm", "wm");
-    _loadEntry("video/x-ms-wmv", "wmv");
-    _loadEntry("video/x-ms-wmx", "wmx");
-    _loadEntry("video/x-ms-wvx", "wvx");
-    _loadEntry("video/x-msvideo", "avi");
-    _loadEntry("video/x-sgi-movie", "movie");
-    _loadEntry("x-conference/x-cooltalk", "ice");
-    _loadEntry("x-epoc/x-sisx-app", "sisx");
-    _initialized = true;
+  static ResourceType getResourceTypeFromMimeType(String? mimeType) {
+    var result = ResourceType.unknown;
+    if (mimeType != null) {
+      if (mimeType.startsWith('text/')) {
+        result = ResourceType.text;
+      } else if (mimeType.startsWith('image/')) {
+        result = ResourceType.image;
+      } else if (mimeType.startsWith('video/')) {
+        result = ResourceType.video;
+      } else if (mimeType.startsWith('audio/')) {
+        result = ResourceType.audio;
+      } else if (mimeType.startsWith('application/')) {
+        result = ResourceType.application;
+      }
+    }
+    return result;
+  }
+
+  static ResourceType getResourceTypeFromFile(File? file) {
+    return getResourceTypeFromMimeType(getMimeTypeFromFile(file));
+  }
+
+  static ResourceType getResourceTypeFromUri(Uri? uri) {
+    return getResourceTypeFromMimeType(getMimeTypeFromUri(uri));
   }
 
   MimeTypeHelper._();
 }
+
+// Data from android.webkit.MimeTypeMap
+
+const Map<String, String> _mimeTypeToExtensionMap = {
+  "application/andrew-inset": "ez",
+  "application/dsptype": "tsp",
+  "application/futuresplash": "spl",
+  "application/hta": "hta",
+  "application/mac-binhex40": "hqx",
+  "application/mac-compactpro": "cpt",
+  "application/mathematica": "nb",
+  "application/msaccess": "mdb",
+  "application/oda": "oda",
+  "application/ogg": "ogg",
+  "application/pdf": "pdf",
+  "application/pgp-keys": "key",
+  "application/pgp-signature": "pgp",
+  "application/pics-rules": "prf",
+  "application/rar": "rar",
+  "application/rdf+xml": "rdf",
+  "application/rss+xml": "rss",
+  "application/zip": "zip",
+  "application/vnd.android.package-archive": "apk",
+  "application/vnd.cinderella": "cdy",
+  "application/vnd.ms-pki.stl": "stl",
+  "application/vnd.oasis.opendocument.database": "odb",
+  "application/vnd.oasis.opendocument.formula": "odf",
+  "application/vnd.oasis.opendocument.graphics": "odg",
+  "application/vnd.oasis.opendocument.graphics-template": "otg",
+  "application/vnd.oasis.opendocument.image": "odi",
+  "application/vnd.oasis.opendocument.spreadsheet": "ods",
+  "application/vnd.oasis.opendocument.spreadsheet-template": "ots",
+  "application/vnd.oasis.opendocument.text": "odt",
+  "application/vnd.oasis.opendocument.text-master": "odm",
+  "application/vnd.oasis.opendocument.text-template": "ott",
+  "application/vnd.oasis.opendocument.text-web": "oth",
+  "application/msword": "doc",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.template": "dotx",
+  "application/vnd.ms-excel": "xls",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.template": "xltx",
+  "application/vnd.ms-powerpoint": "ppt",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation": "pptx",
+  "application/vnd.openxmlformats-officedocument.presentationml.template": "potx",
+  "application/vnd.openxmlformats-officedocument.presentationml.slideshow": "ppsx",
+  "application/vnd.rim.cod": "cod",
+  "application/vnd.smaf": "mmf",
+  "application/vnd.stardivision.calc": "sdc",
+  "application/vnd.stardivision.draw": "sda",
+  "application/vnd.stardivision.impress": "sdd",
+  "application/vnd.stardivision.math": "smf",
+  "application/vnd.stardivision.writer": "sdw",
+  "application/vnd.stardivision.writer-global": "sgl",
+  "application/vnd.sun.xml.calc": "sxc",
+  "application/vnd.sun.xml.calc.template": "stc",
+  "application/vnd.sun.xml.draw": "sxd",
+  "application/vnd.sun.xml.draw.template": "std",
+  "application/vnd.sun.xml.impress": "sxi",
+  "application/vnd.sun.xml.impress.template": "sti",
+  "application/vnd.sun.xml.math": "sxm",
+  "application/vnd.sun.xml.writer": "sxw",
+  "application/vnd.sun.xml.writer.global": "sxg",
+  "application/vnd.sun.xml.writer.template": "stw",
+  "application/vnd.visio": "vsd",
+  "application/x-abiword": "abw",
+  "application/x-apple-diskimage": "dmg",
+  "application/x-bcpio": "bcpio",
+  "application/x-bittorrent": "torrent",
+  "application/x-cdf": "cdf",
+  "application/x-cdlink": "vcd",
+  "application/x-chess-pgn": "pgn",
+  "application/x-cpio": "cpio",
+  "application/x-debian-package": "deb",
+  "application/x-director": "dcr",
+  "application/x-dms": "dms",
+  "application/x-doom": "wad",
+  "application/x-dvi": "dvi",
+  "application/x-flac": "flac",
+  "application/x-font": "pfa",
+  "application/x-freemind": "mm",
+  "application/x-futuresplash": "spl",
+  "application/x-gnumeric": "gnumeric",
+  "application/x-go-sgf": "sgf",
+  "application/x-graphing-calculator": "gcf",
+  "application/x-gtar": "gtar",
+  "application/x-hdf": "hdf",
+  "application/x-ica": "ica",
+  "application/x-internet-signup": "ins",
+  "application/x-iphone": "iii",
+  "application/x-iso9660-image": "iso",
+  "application/x-jmol": "jmz",
+  "application/x-kchart": "chrt",
+  "application/x-killustrator": "kil",
+  "application/x-koan": "skp",
+  "application/x-kpresenter": "kpr",
+  "application/x-kspread": "ksp",
+  "application/x-kword": "kwd",
+  "application/x-latex": "latex",
+  "application/x-lha": "lha",
+  "application/x-lzh": "lzh",
+  "application/x-lzx": "lzx",
+  "application/x-maker": "frm",
+  "application/x-mif": "mif",
+  "application/x-ms-wmd": "wmd",
+  "application/x-ms-wmz": "wmz",
+  "application/x-msi": "msi",
+  "application/x-ns-proxy-autoconfig": "pac",
+  "application/x-nwc": "nwc",
+  "application/x-object": "o",
+  "application/x-oz-application": "oza",
+  "application/x-pkcs12": "p12",
+  "application/x-pkcs7-certreqresp": "p7r",
+  "application/x-pkcs7-crl": "crl",
+  "application/x-quicktimeplayer": "qtl",
+  "application/x-shar": "shar",
+  "application/x-shockwave-flash": "swf",
+  "application/x-stuffit": "sit",
+  "application/x-sv4cpio": "sv4cpio",
+  "application/x-sv4crc": "sv4crc",
+  "application/x-tar": "tar",
+  "application/x-texinfo": "texinfo",
+  "application/x-troff": "t",
+  "application/x-troff-man": "man",
+  "application/x-ustar": "ustar",
+  "application/x-wais-source": "src",
+  "application/x-wingz": "wz",
+  "application/x-webarchive": "webarchive",
+  "application/x-x509-ca-cert": "crt",
+  "application/x-x509-user-cert": "crt",
+  "application/x-xcf": "xcf",
+  "application/x-xfig": "fig",
+  "application/xhtml+xml": "xhtml",
+  "audio/3gpp": "3gpp",
+  "audio/basic": "snd",
+  "audio/midi": "mid",
+  "audio/mpeg": "mpga",
+  "audio/mpegurl": "m3u",
+  "audio/prs.sid": "sid",
+  "audio/x-aiff": "aif",
+  "audio/x-gsm": "gsm",
+  "audio/x-mpegurl": "m3u",
+  "audio/x-ms-wma": "wma",
+  "audio/x-ms-wax": "wax",
+  "audio/x-pn-realaudio": "ra",
+  "audio/x-realaudio": "ra",
+  "audio/x-scpls": "pls",
+  "audio/x-sd2": "sd2",
+  "audio/x-wav": "wav",
+  "image/bmp": "bmp",
+  "image/gif": "gif",
+  "image/ico": "cur",
+  "image/ief": "ief",
+  "image/jpeg": "jpeg",
+  "image/pcx": "pcx",
+  "image/png": "png",
+  "image/svg+xml": "svg",
+  "image/tiff": "tiff",
+  "image/vnd.djvu": "djvu",
+  "image/vnd.wap.wbmp": "wbmp",
+  "image/x-cmu-raster": "ras",
+  "image/x-coreldraw": "cdr",
+  "image/x-coreldrawpattern": "pat",
+  "image/x-coreldrawtemplate": "cdt",
+  "image/x-corelphotopaint": "cpt",
+  "image/x-icon": "ico",
+  "image/x-jg": "art",
+  "image/x-jng": "jng",
+  "image/x-ms-bmp": "bmp",
+  "image/x-photoshop": "psd",
+  "image/x-portable-anymap": "pnm",
+  "image/x-portable-bitmap": "pbm",
+  "image/x-portable-graymap": "pgm",
+  "image/x-portable-pixmap": "ppm",
+  "image/x-rgb": "rgb",
+  "image/x-xbitmap": "xbm",
+  "image/x-xpixmap": "xpm",
+  "image/x-xwindowdump": "xwd",
+  "model/iges": "igs",
+  "model/mesh": "msh",
+  "text/calendar": "ics",
+  "text/comma-separated-values": "csv",
+  "text/css": "css",
+  "text/html": "htm",
+  "text/h323": "323",
+  "text/iuls": "uls",
+  "text/mathml": "mml",
+  "text/plain": "txt",
+  "text/richtext": "rtx",
+  "text/rtf": "rtf",
+  "text/texmacs": "ts",
+  "text/text": "phps",
+  "text/tab-separated-values": "tsv",
+  "text/xml": "xml",
+  "text/x-bibtex": "bib",
+  "text/x-boo": "boo",
+  "text/x-c++hdr": "h++",
+  "text/x-c++src": "c++",
+  "text/x-chdr": "h",
+  "text/x-component": "htc",
+  "text/x-csh": "csh",
+  "text/x-csrc": "c",
+  "text/x-dsrc": "d",
+  "text/x-haskell": "hs",
+  "text/x-java": "java",
+  "text/x-literate-haskell": "lhs",
+  "text/x-moc": "moc",
+  "text/x-pascal": "p",
+  "text/x-pcs-gcd": "gcd",
+  "text/x-setext": "etx",
+  "text/x-tcl": "tcl",
+  "text/x-tex": "tex",
+  "text/x-vcalendar": "vcs",
+  "text/x-vcard": "vcf",
+  "video/3gpp": "3gpp",
+  "video/dl": "dl",
+  "video/dv": "dif",
+  "video/fli": "fli",
+  "video/m4v": "m4v",
+  "video/mpeg": "mpeg",
+  "video/mp4": "mp4",
+  "video/quicktime": "qt",
+  "video/vnd.mpegurl": "mxu",
+  "video/x-la-asf": "lsf",
+  "video/x-mng": "mng",
+  "video/x-ms-asf": "asf",
+  "video/x-ms-wm": "wm",
+  "video/x-ms-wmv": "wmv",
+  "video/x-ms-wmx": "wmx",
+  "video/x-ms-wvx": "wvx",
+  "video/x-msvideo": "avi",
+  "video/x-sgi-movie": "movie",
+  "x-conference/x-cooltalk": "ice",
+  "x-epoc/x-sisx-app": "sisx"
+};
+
+const Map<String, String> _extensionToMimeTypeMap = {
+  "ez": "application/andrew-inset",
+  "tsp": "application/dsptype",
+  "spl": "application/x-futuresplash",
+  "hta": "application/hta",
+  "hqx": "application/mac-binhex40",
+  "cpt": "image/x-corelphotopaint",
+  "nb": "application/mathematica",
+  "mdb": "application/msaccess",
+  "oda": "application/oda",
+  "ogg": "application/ogg",
+  "pdf": "application/pdf",
+  "key": "application/pgp-keys",
+  "pgp": "application/pgp-signature",
+  "prf": "application/pics-rules",
+  "rar": "application/rar",
+  "rdf": "application/rdf+xml",
+  "rss": "application/rss+xml",
+  "zip": "application/zip",
+  "apk": "application/vnd.android.package-archive",
+  "cdy": "application/vnd.cinderella",
+  "stl": "application/vnd.ms-pki.stl",
+  "odb": "application/vnd.oasis.opendocument.database",
+  "odf": "application/vnd.oasis.opendocument.formula",
+  "odg": "application/vnd.oasis.opendocument.graphics",
+  "otg": "application/vnd.oasis.opendocument.graphics-template",
+  "odi": "application/vnd.oasis.opendocument.image",
+  "ods": "application/vnd.oasis.opendocument.spreadsheet",
+  "ots": "application/vnd.oasis.opendocument.spreadsheet-template",
+  "odt": "application/vnd.oasis.opendocument.text",
+  "odm": "application/vnd.oasis.opendocument.text-master",
+  "ott": "application/vnd.oasis.opendocument.text-template",
+  "oth": "application/vnd.oasis.opendocument.text-web",
+  "doc": "application/msword",
+  "dot": "application/msword",
+  "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "dotx": "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+  "xls": "application/vnd.ms-excel",
+  "xlt": "application/vnd.ms-excel",
+  "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "xltx": "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+  "ppt": "application/vnd.ms-powerpoint",
+  "pot": "application/vnd.ms-powerpoint",
+  "pps": "application/vnd.ms-powerpoint",
+  "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "potx": "application/vnd.openxmlformats-officedocument.presentationml.template",
+  "ppsx": "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+  "cod": "application/vnd.rim.cod",
+  "mmf": "application/vnd.smaf",
+  "sdc": "application/vnd.stardivision.calc",
+  "sda": "application/vnd.stardivision.draw",
+  "sdd": "application/vnd.stardivision.impress",
+  "sdp": "application/vnd.stardivision.impress",
+  "smf": "application/vnd.stardivision.math",
+  "sdw": "application/vnd.stardivision.writer",
+  "vor": "application/vnd.stardivision.writer",
+  "sgl": "application/vnd.stardivision.writer-global",
+  "sxc": "application/vnd.sun.xml.calc",
+  "stc": "application/vnd.sun.xml.calc.template",
+  "sxd": "application/vnd.sun.xml.draw",
+  "std": "application/vnd.sun.xml.draw.template",
+  "sxi": "application/vnd.sun.xml.impress",
+  "sti": "application/vnd.sun.xml.impress.template",
+  "sxm": "application/vnd.sun.xml.math",
+  "sxw": "application/vnd.sun.xml.writer",
+  "sxg": "application/vnd.sun.xml.writer.global",
+  "stw": "application/vnd.sun.xml.writer.template",
+  "vsd": "application/vnd.visio",
+  "abw": "application/x-abiword",
+  "dmg": "application/x-apple-diskimage",
+  "bcpio": "application/x-bcpio",
+  "torrent": "application/x-bittorrent",
+  "cdf": "application/x-cdf",
+  "vcd": "application/x-cdlink",
+  "pgn": "application/x-chess-pgn",
+  "cpio": "application/x-cpio",
+  "deb": "application/x-debian-package",
+  "udeb": "application/x-debian-package",
+  "dcr": "application/x-director",
+  "dir": "application/x-director",
+  "dxr": "application/x-director",
+  "dms": "application/x-dms",
+  "wad": "application/x-doom",
+  "dvi": "application/x-dvi",
+  "flac": "application/x-flac",
+  "pfa": "application/x-font",
+  "pfb": "application/x-font",
+  "gsf": "application/x-font",
+  "pcf": "application/x-font",
+  "pcf.Z": "application/x-font",
+  "mm": "application/x-freemind",
+  "gnumeric": "application/x-gnumeric",
+  "sgf": "application/x-go-sgf",
+  "gcf": "application/x-graphing-calculator",
+  "gtar": "application/x-gtar",
+  "tgz": "application/x-gtar",
+  "taz": "application/x-gtar",
+  "hdf": "application/x-hdf",
+  "ica": "application/x-ica",
+  "ins": "application/x-internet-signup",
+  "isp": "application/x-internet-signup",
+  "iii": "application/x-iphone",
+  "iso": "application/x-iso9660-image",
+  "jmz": "application/x-jmol",
+  "chrt": "application/x-kchart",
+  "kil": "application/x-killustrator",
+  "skp": "application/x-koan",
+  "skd": "application/x-koan",
+  "skt": "application/x-koan",
+  "skm": "application/x-koan",
+  "kpr": "application/x-kpresenter",
+  "kpt": "application/x-kpresenter",
+  "ksp": "application/x-kspread",
+  "kwd": "application/x-kword",
+  "kwt": "application/x-kword",
+  "latex": "application/x-latex",
+  "lha": "application/x-lha",
+  "lzh": "application/x-lzh",
+  "lzx": "application/x-lzx",
+  "frm": "application/x-maker",
+  "maker": "application/x-maker",
+  "frame": "application/x-maker",
+  "fb": "application/x-maker",
+  "book": "application/x-maker",
+  "fbdoc": "application/x-maker",
+  "mif": "application/x-mif",
+  "wmd": "application/x-ms-wmd",
+  "wmz": "application/x-ms-wmz",
+  "msi": "application/x-msi",
+  "pac": "application/x-ns-proxy-autoconfig",
+  "nwc": "application/x-nwc",
+  "o": "application/x-object",
+  "oza": "application/x-oz-application",
+  "p12": "application/x-pkcs12",
+  "p7r": "application/x-pkcs7-certreqresp",
+  "crl": "application/x-pkcs7-crl",
+  "qtl": "application/x-quicktimeplayer",
+  "shar": "application/x-shar",
+  "swf": "application/x-shockwave-flash",
+  "sit": "application/x-stuffit",
+  "sv4cpio": "application/x-sv4cpio",
+  "sv4crc": "application/x-sv4crc",
+  "tar": "application/x-tar",
+  "texinfo": "application/x-texinfo",
+  "texi": "application/x-texinfo",
+  "t": "application/x-troff",
+  "roff": "application/x-troff",
+  "man": "application/x-troff-man",
+  "ustar": "application/x-ustar",
+  "src": "application/x-wais-source",
+  "wz": "application/x-wingz",
+  "webarchive": "application/x-webarchive",
+  "crt": "application/x-x509-user-cert",
+  "xcf": "application/x-xcf",
+  "fig": "application/x-xfig",
+  "xhtml": "application/xhtml+xml",
+  "3gpp": "video/3gpp",
+  "snd": "audio/basic",
+  "mid": "audio/midi",
+  "midi": "audio/midi",
+  "kar": "audio/midi",
+  "mpga": "audio/mpeg",
+  "mpega": "audio/mpeg",
+  "mp2": "audio/mpeg",
+  "mp3": "audio/mpeg",
+  "m4a": "audio/mpeg",
+  "m3u": "audio/x-mpegurl",
+  "sid": "audio/prs.sid",
+  "aif": "audio/x-aiff",
+  "aiff": "audio/x-aiff",
+  "aifc": "audio/x-aiff",
+  "gsm": "audio/x-gsm",
+  "wma": "audio/x-ms-wma",
+  "wax": "audio/x-ms-wax",
+  "ra": "audio/x-realaudio",
+  "rm": "audio/x-pn-realaudio",
+  "ram": "audio/x-pn-realaudio",
+  "pls": "audio/x-scpls",
+  "sd2": "audio/x-sd2",
+  "wav": "audio/x-wav",
+  "bmp": "image/x-ms-bmp",
+  "gif": "image/gif",
+  "cur": "image/ico",
+  "ico": "image/x-icon",
+  "ief": "image/ief",
+  "jpeg": "image/jpeg",
+  "jpg": "image/jpeg",
+  "jpe": "image/jpeg",
+  "pcx": "image/pcx",
+  "png": "image/png",
+  "svg": "image/svg+xml",
+  "svgz": "image/svg+xml",
+  "tiff": "image/tiff",
+  "tif": "image/tiff",
+  "djvu": "image/vnd.djvu",
+  "djv": "image/vnd.djvu",
+  "wbmp": "image/vnd.wap.wbmp",
+  "ras": "image/x-cmu-raster",
+  "cdr": "image/x-coreldraw",
+  "pat": "image/x-coreldrawpattern",
+  "cdt": "image/x-coreldrawtemplate",
+  "art": "image/x-jg",
+  "jng": "image/x-jng",
+  "psd": "image/x-photoshop",
+  "pnm": "image/x-portable-anymap",
+  "pbm": "image/x-portable-bitmap",
+  "pgm": "image/x-portable-graymap",
+  "ppm": "image/x-portable-pixmap",
+  "rgb": "image/x-rgb",
+  "xbm": "image/x-xbitmap",
+  "xpm": "image/x-xpixmap",
+  "xwd": "image/x-xwindowdump",
+  "igs": "model/iges",
+  "iges": "model/iges",
+  "msh": "model/mesh",
+  "mesh": "model/mesh",
+  "silo": "model/mesh",
+  "ics": "text/calendar",
+  "icz": "text/calendar",
+  "csv": "text/comma-separated-values",
+  "css": "text/css",
+  "htm": "text/html",
+  "html": "text/html",
+  "323": "text/h323",
+  "uls": "text/iuls",
+  "mml": "text/mathml",
+  "txt": "text/plain",
+  "asc": "text/plain",
+  "text": "text/plain",
+  "diff": "text/plain",
+  "po": "text/plain",
+  "rtx": "text/richtext",
+  "rtf": "text/rtf",
+  "ts": "text/texmacs",
+  "phps": "text/text",
+  "tsv": "text/tab-separated-values",
+  "xml": "text/xml",
+  "bib": "text/x-bibtex",
+  "boo": "text/x-boo",
+  "h++": "text/x-c++hdr",
+  "hpp": "text/x-c++hdr",
+  "hxx": "text/x-c++hdr",
+  "hh": "text/x-c++hdr",
+  "c++": "text/x-c++src",
+  "cpp": "text/x-c++src",
+  "cxx": "text/x-c++src",
+  "h": "text/x-chdr",
+  "htc": "text/x-component",
+  "csh": "text/x-csh",
+  "c": "text/x-csrc",
+  "d": "text/x-dsrc",
+  "hs": "text/x-haskell",
+  "java": "text/x-java",
+  "lhs": "text/x-literate-haskell",
+  "moc": "text/x-moc",
+  "p": "text/x-pascal",
+  "pas": "text/x-pascal",
+  "gcd": "text/x-pcs-gcd",
+  "etx": "text/x-setext",
+  "tcl": "text/x-tcl",
+  "tex": "text/x-tex",
+  "ltx": "text/x-tex",
+  "sty": "text/x-tex",
+  "cls": "text/x-tex",
+  "vcs": "text/x-vcalendar",
+  "vcf": "text/x-vcard",
+  "3gp": "video/3gpp",
+  "3g2": "video/3gpp",
+  "dl": "video/dl",
+  "dif": "video/dv",
+  "dv": "video/dv",
+  "fli": "video/fli",
+  "m4v": "video/m4v",
+  "mpeg": "video/mpeg",
+  "mpg": "video/mpeg",
+  "mpe": "video/mpeg",
+  "mp4": "video/mp4",
+  "vob": "video/mpeg",
+  "qt": "video/quicktime",
+  "mov": "video/quicktime",
+  "mxu": "video/vnd.mpegurl",
+  "lsf": "video/x-la-asf",
+  "lsx": "video/x-la-asf",
+  "mng": "video/x-mng",
+  "asf": "video/x-ms-asf",
+  "asx": "video/x-ms-asf",
+  "wm": "video/x-ms-wm",
+  "wmv": "video/x-ms-wmv",
+  "wmx": "video/x-ms-wmx",
+  "wvx": "video/x-ms-wvx",
+  "avi": "video/x-msvideo",
+  "movie": "video/x-sgi-movie",
+  "ice": "x-conference/x-cooltalk",
+  "sisx": "x-epoc/x-sisx-app"
+};

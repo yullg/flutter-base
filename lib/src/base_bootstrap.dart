@@ -5,7 +5,7 @@ import 'app/cache_manager.dart';
 import 'app/config_manager.dart';
 import 'app/directory_manager.dart';
 import 'app/download_manager.dart';
-import 'app/file_manager.dart';
+import 'app/key_file_manager.dart';
 import 'app/package_info_manager.dart';
 import 'app/shared_preferences_manager.dart';
 import 'logger/base_logger.dart';
@@ -18,7 +18,7 @@ class BaseBootstrap {
       await PackageInfoManager.initialize();
       await SharedPreferenceManager.initialize();
       await DirectoryManager.initialize();
-      await FileManager.initialize();
+      await KeyFileManager.initialize();
       await CacheManager.initialize();
       await DownloadManager.initialize();
     } catch (e, s) {
@@ -31,7 +31,7 @@ class BaseBootstrap {
     try {
       await DownloadManager.destroy();
       await CacheManager.destroy();
-      await FileManager.destroy();
+      await KeyFileManager.destroy();
       await DirectoryManager.destroy();
       await SharedPreferenceManager.destroy();
       await PackageInfoManager.destroy();

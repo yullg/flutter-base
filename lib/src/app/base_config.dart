@@ -4,7 +4,7 @@ import 'config_manager.dart';
 
 class BaseConfig {
   static bool? _debug;
-  static String? _fileManagerDirectory;
+  static String? _keyFileManagerDirectory;
   static String? _globalCacheManager_cacheKey;
   static int? _globalCacheManager_stalePeriod;
   static int? _globalCacheManager_maxNrOfCacheObjects;
@@ -15,7 +15,7 @@ class BaseConfig {
 
   static Future<void> initialize() async {
     _debug = ConfigManager.findUntilNotNull((source) => source["base"]?["debug"]);
-    _fileManagerDirectory = ConfigManager.findUntilNotNull((source) => source["base"]?["fileManagerDirectory"]);
+    _keyFileManagerDirectory = ConfigManager.findUntilNotNull((source) => source["base"]?["keyFileManagerDirectory"]);
     _globalCacheManager_cacheKey = ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["cacheKey"]);
     _globalCacheManager_stalePeriod = ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["stalePeriod"]);
     _globalCacheManager_maxNrOfCacheObjects =
@@ -29,7 +29,7 @@ class BaseConfig {
 
   static bool? get debug => _debug;
 
-  static String? get fileManagerDirectory => _fileManagerDirectory;
+  static String? get keyFileManagerDirectory => _keyFileManagerDirectory;
 
   static String? get globalCacheManager_cacheKey => _globalCacheManager_cacheKey;
 
@@ -47,7 +47,7 @@ class BaseConfig {
 
   static Future<void> destroy() async {
     _debug = null;
-    _fileManagerDirectory = null;
+    _keyFileManagerDirectory = null;
     _globalCacheManager_cacheKey = null;
     _globalCacheManager_stalePeriod = null;
     _globalCacheManager_maxNrOfCacheObjects = null;
