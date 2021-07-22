@@ -18,7 +18,8 @@ class FileManager {
   }
 
   static File keyToFile(String key) {
-    return File(p.join(_directory(directoryType(key)).path, key.substring(key.indexOf("_") + 1)));
+    var directory = Directory(p.join(DirectoryManager.directory(directoryType(key)).path, BaseConfig.fileManagerDirectory ?? "file_manager_data"));
+    return File(p.join(directory.path, key.substring(key.indexOf("_") + 1)));
   }
 
   static DirectoryType directoryType(String key) {
@@ -49,10 +50,6 @@ class FileManager {
 
   static Future<void> delete(String key) async {
     keyToFile(key).deleteSync();
-  }
-
-  static Directory _directory(DirectoryType directoryType) {
-    return Directory(p.join(DirectoryManager.directory(directoryType).path, BaseConfig.fileManagerDirectory ?? "file_manager_data"));
   }
 
   static Future<void> destroy() async {}
