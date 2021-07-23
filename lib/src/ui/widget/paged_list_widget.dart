@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-typedef PagedListControllerBuilder = PagedListController Function();
-
 class PagedListWidget extends StatefulWidget {
-  final PagedListControllerBuilder controllerBuilder;
+  final ValueGetter<PagedListController> controllerBuilder;
 
   PagedListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
 
@@ -13,7 +11,7 @@ class PagedListWidget extends StatefulWidget {
 }
 
 class _PagedListWidgetState extends State<PagedListWidget> {
-  late PagedListController controller;
+  late final PagedListController controller;
 
   @override
   void initState() {
@@ -25,7 +23,7 @@ class _PagedListWidgetState extends State<PagedListWidget> {
   Widget build(BuildContext context) => ChangeNotifierProvider.value(
         value: controller,
         child: Consumer<PagedListController>(
-          builder: (context, controller, child) => ListView.separated(
+          builder: (_, controller, child) => ListView.separated(
             itemCount: controller._attribute._datas.length + 1,
             itemBuilder: controller._itemBuilder,
             separatorBuilder: controller.separatorWidgetBuilder,
@@ -41,7 +39,7 @@ class _PagedListWidgetState extends State<PagedListWidget> {
 }
 
 class PagedSliverListWidget extends StatefulWidget {
-  final PagedListControllerBuilder controllerBuilder;
+  final ValueGetter<PagedListController> controllerBuilder;
 
   PagedSliverListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
 
@@ -62,7 +60,7 @@ class _PagedSliverListWidgetState extends State<PagedSliverListWidget> {
   Widget build(BuildContext context) => ChangeNotifierProvider.value(
         value: controller,
         child: Consumer<PagedListController>(
-          builder: (context, controller, child) => SliverList(
+          builder: (_, controller, child) => SliverList(
             delegate: SliverChildBuilderDelegate(
               controller._itemBuilder,
               childCount: controller._attribute._datas.length + 1,
