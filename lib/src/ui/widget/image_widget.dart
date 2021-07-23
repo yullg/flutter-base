@@ -46,6 +46,6 @@ Widget _defaultLoadingBuilder(BuildContext context, ImageChunkEvent? event) {
 
 Widget _defaultErrorBuilder(BuildContext context, Object error, StackTrace? stackTrace) {
   return Center(
-    child: Icon(Icons.broken_image, color: Colors.grey[400], size: 45),
+    child: Icon(Icons.broken_image, color: Colors.grey.shade400, size: 45),
   );
 }

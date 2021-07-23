@@ -45,7 +45,6 @@ class MediaResourceWidget extends StatelessWidget {
   }
 }
 
-Widget _defaultUnsupportedWidgetBuilder(BuildContext context) => Container(
-      alignment: Alignment.center,
+Widget _defaultUnsupportedWidgetBuilder(BuildContext context) => Center(
       child: Text("格式不支持", style: TextStyle(color: Colors.white)),
     );

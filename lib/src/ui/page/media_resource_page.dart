@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../bean/resource.dart';
@@ -47,13 +48,15 @@ class MediaResourcePageState extends State<MediaResourcePage> {
               icon: Icon(Icons.delete),
               onPressed: () {
                 int index = currentIndex();
-                widget.resources.removeAt(index);
-                if (widget.resources.length > 1) {
-                  setState(() {
-                    pageController.jumpToPage(index - 1 >= 0 ? index - 1 : 0);
-                  });
-                } else {
-                  Navigator.pop(context);
+                if (index < widget.resources.length) {
+                  widget.resources.removeAt(index);
+                  if (widget.resources.isEmpty) {
+                    Navigator.pop(context);
+                  } else {
+                    setState(() {
+                      pageController.jumpToPage(index > 0 ? index - 1 : 0);
+                    });
+                  }
                 }
               },
             ),
@@ -62,7 +65,17 @@ class MediaResourcePageState extends State<MediaResourcePage> {
       body: PageView.builder(
         controller: pageController,
         itemCount: widget.resources.length,
-        itemBuilder: (_, index) => MediaResourceWidget(widget.resources[index]),
+        itemBuilder: (_, index) {
+          var resource = widget.resources[index];
+          if (ResourceType.image == resource.type) {
+            return PhotoViewGestureDetectorScope(
+              axis: Axis.horizontal,
+              child: MediaResourceWidget(resource),
+            );
+          } else {
+            return MediaResourceWidget(resource);
+          }
+        },
       ),
     );
   }
