@@ -25,9 +25,9 @@ class FutureWidget<T> extends StatefulWidget {
     required Future<T?> future,
     required this.valueWidgetBuilder,
     this.waitingWidgetBuilder = _defaultWaitingWidgetBuilder,
-    this.failedWidgetBuilder = _defaultFailedWidgetFutureBuilder,
-    this.noneWidgetBuilder = _defaultNoneWidgetFutureBuilder,
-  })  : asyncValueGetter = _FutureToFunction(future).function,
+    this.failedWidgetBuilder = _defaultFailedWidgetBuilder,
+    this.noneWidgetBuilder = _defaultNoneWidgetBuilder,
+  })  : asyncValueGetter = _FutureToFunction<T?>(future).function,
         super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class FutureWidget<T> extends StatefulWidget {
 }
 
 class _FutureState<T> extends State<FutureWidget<T>> {
-  late Future<T?> future;
+  late final Future<T?> future;
 
   @override
   void initState() {
@@ -90,10 +90,6 @@ Widget _defaultFailedWidgetBuilder(BuildContext context, Object error, Widget? c
       ],
     );
 
-Widget _defaultFailedWidgetFutureBuilder(BuildContext context, Object error, Widget? child) => Center(
-      child: Text("加载失败 请稍候重试", style: TextStyle(fontSize: 46.sp)),
-    );
-
 Widget _defaultNoneWidgetBuilder(BuildContext context) => Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,8 +108,4 @@ Widget _defaultNoneWidgetBuilder(BuildContext context) => Column(
           },
         )
       ],
-    );
-
-Widget _defaultNoneWidgetFutureBuilder(BuildContext context) => Center(
-      child: Text("暂无数据 请稍候重试", style: TextStyle(fontSize: 46.sp)),
     );
