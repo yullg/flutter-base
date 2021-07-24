@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../helper/datetime_helper.dart';
 import 'user_profile_picture_widget.dart';
 
-class CommentModel {
+class Comment {
   final String id;
   final String? pid;
   final String userId;
@@ -13,45 +13,60 @@ class CommentModel {
   final String? content;
   final DateTime time;
 
-  CommentModel? _parent;
-  final List<CommentModel> _children = [];
+  Comment({required this.id, this.pid, required this.userId, this.userNickname, this.userProfilePicture, this.content, required this.time});
+}
 
-  CommentModel({required this.id, this.pid, required this.userId, this.userNickname, this.userProfilePicture, this.content, required this.time});
+class _CommentModel {
+  final Comment data;
+  final Comment? parent;
+
+  _CommentModel(this.data, this.parent);
+}
+
+List<MapEntry<_CommentModel, List<_CommentModel>>> _commentsToModels(List<Comment> comments) {
+  List<MapEntry<_CommentModel, List<_CommentModel>>> result = [];
+  for (var comment in comments) {
+    if (comment.pid == null) {
+      List<_CommentModel> children = [];
+      _fillChildren(comment, comments, children);
+      result.add(MapEntry(_CommentModel(comment, null), children));
+    }
+  }
+  result.sort((a, b) => a.key.data.time.compareTo(b.key.data.time));
+  result.forEach((e) => e.value.sort((a, b) => a.data.time.compareTo(b.data.time)));
+  return result;
+}
+
+void _fillChildren(Comment parent, List<Comment> comments, List<_CommentModel> children) {
+  for (var comment in comments) {
+    if (comment.pid == parent.id) {
+      children.add(_CommentModel(comment, parent));
+      _fillChildren(comment, comments, children);
+    }
+  }
 }
 
 class CommentListWidget extends StatelessWidget {
-  final List<CommentModel> _comments = [];
-  final ValueChanged<CommentModel>? onCommentPressed;
-  final ValueChanged<CommentModel>? onCommentLongPressed;
-  final ValueChanged<CommentModel>? onCommentMenuPressed;
-  final ValueChanged<CommentModel>? onCommentUserPressed;
-  final ValueChanged<CommentModel>? onCommentParentUserPressed;
+  final List<MapEntry<_CommentModel, List<_CommentModel>>> _models;
+  final ValueChanged<Comment>? onCommentPressed;
+  final ValueChanged<Comment>? onCommentLongPressed;
+  final ValueChanged<Comment>? onCommentMenuPressed;
+  final ValueChanged<Comment>? onCommentUserPressed;
+  final ValueChanged<Comment>? onCommentParentUserPressed;
 
-  CommentListWidget(List<CommentModel> comments,
+  CommentListWidget(List<Comment> comments,
       {Key? key,
       this.onCommentPressed,
       this.onCommentLongPressed,
       this.onCommentMenuPressed,
       this.onCommentUserPressed,
       this.onCommentParentUserPressed})
-      : super(key: key) {
-    comments.forEach((comment) {
-      comment._parent = null;
-      comment._children.clear();
-    });
-    for (CommentModel comment in comments) {
-      if (comment.pid == null) {
-        _fillParentAndChildren(comment, comments, comment._children);
-        _comments.add(comment);
-      }
-    }
-    this._comments.sort((a, b) => a.time.compareTo(b.time));
-    this._comments.forEach((comment) => comment._children.sort((a, b) => a.time.compareTo(b.time)));
-  }
+      : _models = _commentsToModels(comments),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) => ListView.builder(
-        itemCount: _comments.length,
+        itemCount: _models.length,
         itemBuilder: (context, index) => Container(
           padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
           decoration: BoxDecoration(
@@ -61,11 +76,15 @@ class CommentListWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _commentToWidget(context, _comments[index], onCommentPressed, onCommentLongPressed, onCommentMenuPressed, onCommentUserPressed,
-                  onCommentParentUserPressed),
+              _modelToWidget(context, _models[index].key,
+                  onCommentPressed: onCommentPressed,
+                  onCommentLongPressed: onCommentLongPressed,
+                  onCommentMenuPressed: onCommentMenuPressed,
+                  onCommentUserPressed: onCommentUserPressed,
+                  onCommentParentUserPressed: onCommentParentUserPressed),
               Padding(
                 padding: EdgeInsets.only(left: 40),
-                child: _SubCommentList(_comments[index]._children,
+                child: _SubCommentList(_models[index].value,
                     onCommentPressed: onCommentPressed,
                     onCommentLongPressed: onCommentLongPressed,
                     onCommentMenuPressed: onCommentMenuPressed,
@@ -79,34 +98,22 @@ class CommentListWidget extends StatelessWidget {
 }
 
 class CommentSliverListWidget extends StatelessWidget {
-  final List<CommentModel> _comments = [];
-  final ValueChanged<CommentModel>? onCommentPressed;
-  final ValueChanged<CommentModel>? onCommentLongPressed;
-  final ValueChanged<CommentModel>? onCommentMenuPressed;
-  final ValueChanged<CommentModel>? onCommentUserPressed;
-  final ValueChanged<CommentModel>? onCommentParentUserPressed;
+  final List<MapEntry<_CommentModel, List<_CommentModel>>> _models;
+  final ValueChanged<Comment>? onCommentPressed;
+  final ValueChanged<Comment>? onCommentLongPressed;
+  final ValueChanged<Comment>? onCommentMenuPressed;
+  final ValueChanged<Comment>? onCommentUserPressed;
+  final ValueChanged<Comment>? onCommentParentUserPressed;
 
-  CommentSliverListWidget(List<CommentModel> comments,
+  CommentSliverListWidget(List<Comment> comments,
       {Key? key,
       this.onCommentPressed,
       this.onCommentLongPressed,
       this.onCommentMenuPressed,
       this.onCommentUserPressed,
       this.onCommentParentUserPressed})
-      : super(key: key) {
-    comments.forEach((comment) {
-      comment._parent = null;
-      comment._children.clear();
-    });
-    for (CommentModel comment in comments) {
-      if (comment.pid == null) {
-        _fillParentAndChildren(comment, comments, comment._children);
-        _comments.add(comment);
-      }
-    }
-    this._comments.sort((a, b) => a.time.compareTo(b.time));
-    this._comments.forEach((comment) => comment._children.sort((a, b) => a.time.compareTo(b.time)));
-  }
+      : _models = _commentsToModels(comments),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) => SliverList(
@@ -120,11 +127,15 @@ class CommentSliverListWidget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _commentToWidget(context, _comments[index], onCommentPressed, onCommentLongPressed, onCommentMenuPressed, onCommentUserPressed,
-                    onCommentParentUserPressed),
+                _modelToWidget(context, _models[index].key,
+                    onCommentPressed: onCommentPressed,
+                    onCommentLongPressed: onCommentLongPressed,
+                    onCommentMenuPressed: onCommentMenuPressed,
+                    onCommentUserPressed: onCommentUserPressed,
+                    onCommentParentUserPressed: onCommentParentUserPressed),
                 Padding(
                   padding: EdgeInsets.only(left: 40),
-                  child: _SubCommentList(_comments[index]._children,
+                  child: _SubCommentList(_models[index].value,
                       onCommentPressed: onCommentPressed,
                       onCommentLongPressed: onCommentLongPressed,
                       onCommentMenuPressed: onCommentMenuPressed,
@@ -134,20 +145,20 @@ class CommentSliverListWidget extends StatelessWidget {
               ],
             ),
           ),
-          childCount: _comments.length,
+          childCount: _models.length,
         ),
       );
 }
 
 class _SubCommentList extends StatefulWidget {
-  final List<CommentModel> comments;
-  final ValueChanged<CommentModel>? onCommentPressed;
-  final ValueChanged<CommentModel>? onCommentLongPressed;
-  final ValueChanged<CommentModel>? onCommentMenuPressed;
-  final ValueChanged<CommentModel>? onCommentUserPressed;
-  final ValueChanged<CommentModel>? onCommentParentUserPressed;
+  final List<_CommentModel> models;
+  final ValueChanged<Comment>? onCommentPressed;
+  final ValueChanged<Comment>? onCommentLongPressed;
+  final ValueChanged<Comment>? onCommentMenuPressed;
+  final ValueChanged<Comment>? onCommentUserPressed;
+  final ValueChanged<Comment>? onCommentParentUserPressed;
 
-  _SubCommentList(this.comments,
+  _SubCommentList(this.models,
       {Key? key,
       this.onCommentPressed,
       this.onCommentLongPressed,
@@ -167,14 +178,18 @@ class _SubCommentListState extends State<_SubCommentList> {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ...(showAll ? widget.comments : widget.comments.take(3)).map((comment) => Container(
+          ...(showAll ? widget.models : widget.models.take(3)).map((model) => Container(
                 decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade100)),
                 ),
-                child: _commentToWidget(context, comment, widget.onCommentPressed, widget.onCommentLongPressed, widget.onCommentMenuPressed,
-                    widget.onCommentUserPressed, widget.onCommentParentUserPressed),
+                child: _modelToWidget(context, model,
+                    onCommentPressed: widget.onCommentPressed,
+                    onCommentLongPressed: widget.onCommentLongPressed,
+                    onCommentMenuPressed: widget.onCommentMenuPressed,
+                    onCommentUserPressed: widget.onCommentUserPressed,
+                    onCommentParentUserPressed: widget.onCommentParentUserPressed),
               )),
-          if (showAll == false && widget.comments.length > 3)
+          if (showAll == false && widget.models.length > 3)
             Material(
               type: MaterialType.transparency,
               child: InkWell(
@@ -185,7 +200,7 @@ class _SubCommentListState extends State<_SubCommentList> {
                   decoration: BoxDecoration(
                     border: Border(top: BorderSide(color: Colors.grey.shade100)),
                   ),
-                  child: Text("展开更多${widget.comments.length - 3}条评论", style: TextStyle(color: Theme.of(context).primaryColor)),
+                  child: Text("展开更多${widget.models.length - 3}条评论", style: TextStyle(color: Theme.of(context).primaryColor)),
                 ),
                 onTap: () {
                   setState(() => showAll = true);
@@ -196,24 +211,12 @@ class _SubCommentListState extends State<_SubCommentList> {
       );
 }
 
-void _fillParentAndChildren(CommentModel parent, List<CommentModel> comments, List<CommentModel> children) {
-  for (CommentModel comment in comments) {
-    if (comment.pid == parent.id) {
-      comment._parent = parent;
-      children.add(comment);
-      _fillParentAndChildren(comment, comments, children);
-    }
-  }
-}
-
-Widget _commentToWidget(
-        BuildContext context,
-        CommentModel comment,
-        ValueChanged<CommentModel>? onCommentPressed,
-        ValueChanged<CommentModel>? onCommentLongPressed,
-        ValueChanged<CommentModel>? onCommentMenuPressed,
-        ValueChanged<CommentModel>? onCommentUserPressed,
-        ValueChanged<CommentModel>? onCommentParentUserPressed) =>
+Widget _modelToWidget(BuildContext context, _CommentModel model,
+        {ValueChanged<Comment>? onCommentPressed,
+        ValueChanged<Comment>? onCommentLongPressed,
+        ValueChanged<Comment>? onCommentMenuPressed,
+        ValueChanged<Comment>? onCommentUserPressed,
+        ValueChanged<Comment>? onCommentParentUserPressed}) =>
     InkWell(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,9 +224,9 @@ Widget _commentToWidget(
           InkResponse(
             child: Padding(
               padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: UserProfilePictureWidget(comment.userProfilePicture, diameter: 30),
+              child: UserProfilePictureWidget(model.data.userProfilePicture, diameter: 30),
             ),
-            onTap: onCommentUserPressed == null ? null : () => onCommentUserPressed(comment),
+            onTap: onCommentUserPressed == null ? null : () => onCommentUserPressed(model.data),
           ),
           SizedBox(width: 10),
           Expanded(
@@ -234,21 +237,15 @@ Widget _commentToWidget(
                 Row(
                   children: [
                     Expanded(
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: InkWell(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            child: Text(comment.userNickname ?? "", style: TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                          ),
-                          onTap: onCommentUserPressed == null ? null : () => onCommentUserPressed(comment),
-                        ),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: Text(model.data.userNickname ?? "", style: TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       ),
                     ),
                     SizedBox(width: 10),
                     Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Text(DateTimeHelper.smartFormat(comment.time) ?? "", style: TextStyle(color: Colors.grey)),
+                      child: Text(DateTimeHelper.smartFormat(model.data.time) ?? "", style: TextStyle(color: Colors.grey)),
                     ),
                     if (onCommentMenuPressed != null)
                       Material(
@@ -258,36 +255,34 @@ Widget _commentToWidget(
                             padding: EdgeInsets.all(10),
                             child: Icon(Icons.more_horiz, color: Colors.grey),
                           ),
-                          onTap: () => onCommentMenuPressed(comment),
+                          onTap: () => onCommentMenuPressed(model.data),
                         ),
                       ),
                   ],
                 ),
                 Builder(
                   builder: (context) {
-                    if (comment.content == null) {
+                    if (model.data.content == null) {
                       return Container(
                         color: Colors.grey.shade100,
                         padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                         child: Text("该条评论已被删除", style: TextStyle(color: Colors.grey)),
                       );
+                    } else if (model.parent != null) {
+                      return Text.rich(
+                        TextSpan(children: [
+                          TextSpan(text: "回复@"),
+                          TextSpan(
+                            text: model.parent?.userNickname ?? "",
+                            style: TextStyle(color: Theme.of(context).primaryColor),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = onCommentParentUserPressed == null ? null : () => onCommentParentUserPressed(model.data),
+                          ),
+                          TextSpan(text: model.data.content ?? ""),
+                        ]),
+                      );
                     } else {
-                      if (comment._parent == null) {
-                        return Text(comment.content ?? "");
-                      } else {
-                        return Text.rich(
-                          TextSpan(children: [
-                            TextSpan(text: "回复@"),
-                            TextSpan(
-                              text: comment._parent?.userNickname ?? "",
-                              style: TextStyle(color: Theme.of(context).primaryColor),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = onCommentParentUserPressed == null ? null : () => onCommentParentUserPressed(comment),
-                            ),
-                            TextSpan(text: "：${comment.content ?? ''}"),
-                          ]),
-                        );
-                      }
+                      return Text(model.data.content ?? "");
                     }
                   },
                 ),
@@ -297,6 +292,6 @@ Widget _commentToWidget(
           ),
         ],
       ),
-      onTap: onCommentPressed == null ? null : () => onCommentPressed(comment),
-      onLongPress: onCommentLongPressed == null ? null : () => onCommentLongPressed(comment),
+      onTap: onCommentPressed == null ? null : () => onCommentPressed(model.data),
+      onLongPress: onCommentLongPressed == null ? null : () => onCommentLongPressed(model.data),
     );

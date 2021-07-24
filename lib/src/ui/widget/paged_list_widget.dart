@@ -76,39 +76,39 @@ class _PagedSliverListWidgetState extends State<PagedSliverListWidget> {
   }
 }
 
-enum ControllerStatus { idle, loading, finished, failed }
+enum PagedListControllerStatus { idle, loading, finished, failed }
 
-class ControllerAttribute<T> {
+class PagedListControllerAttribute<T> {
   final List<T> _datas;
-  ControllerStatus _status;
+  PagedListControllerStatus _status;
 
-  ControllerAttribute([Iterable<T>? datas, ControllerStatus? status])
+  PagedListControllerAttribute([Iterable<T>? datas, PagedListControllerStatus? status])
       : _datas = [...?datas],
-        _status = status ?? ControllerStatus.idle;
+        _status = status ?? PagedListControllerStatus.idle;
 }
 
 abstract class PagedListController<T> extends ChangeNotifier {
-  final ControllerAttribute<T> _attribute;
+  final PagedListControllerAttribute<T> _attribute;
 
-  PagedListController({ControllerAttribute<T>? attribute}) : _attribute = attribute ?? ControllerAttribute<T>();
+  PagedListController({PagedListControllerAttribute<T>? attribute}) : _attribute = attribute ?? PagedListControllerAttribute<T>();
 
   Widget _itemBuilder(BuildContext context, int index) {
     if (index < _attribute._datas.length) {
       return dataToWidget(context, index, _attribute._datas[index]);
     } else {
       switch (_attribute._status) {
-        case ControllerStatus.idle:
+        case PagedListControllerStatus.idle:
           _loadMoreData();
           return loadingWidgetBuilder(context);
-        case ControllerStatus.loading:
+        case PagedListControllerStatus.loading:
           return loadingWidgetBuilder(context);
-        case ControllerStatus.finished:
+        case PagedListControllerStatus.finished:
           if (_attribute._datas.isEmpty) {
             return noneWidgetBuilder(context);
           } else {
             return finishedWidgetBuilder(context);
           }
-        case ControllerStatus.failed:
+        case PagedListControllerStatus.failed:
           return failedWidgetBuilder(context);
       }
     }
@@ -116,16 +116,16 @@ abstract class PagedListController<T> extends ChangeNotifier {
 
   Future<void> _loadMoreData() async {
     try {
-      _attribute._status = ControllerStatus.loading;
+      _attribute._status = PagedListControllerStatus.loading;
       List<T>? moreData = await loadMoreData(_attribute._datas.length);
       if (moreData != null) {
         _attribute._datas.addAll(moreData);
-        _attribute._status = ControllerStatus.idle;
+        _attribute._status = PagedListControllerStatus.idle;
       } else {
-        _attribute._status = ControllerStatus.finished;
+        _attribute._status = PagedListControllerStatus.finished;
       }
     } catch (e) {
-      _attribute._status = ControllerStatus.failed;
+      _attribute._status = PagedListControllerStatus.failed;
     } finally {
       notifyListeners();
     }
