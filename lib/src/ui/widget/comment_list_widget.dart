@@ -278,7 +278,7 @@ Widget _modelToWidget(BuildContext context, _CommentModel model,
                             recognizer: TapGestureRecognizer()
                               ..onTap = onCommentParentUserPressed == null ? null : () => onCommentParentUserPressed(model.data),
                           ),
-                          TextSpan(text: model.data.content ?? ""),
+                          TextSpan(text: "：${model.data.content}"),
                         ]),
                       );
                     } else {
