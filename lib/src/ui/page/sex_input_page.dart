@@ -21,7 +21,7 @@ class SexInputPage extends StatefulWidget {
 }
 
 class _SexInputPageState extends State<SexInputPage> {
-  late ValueNotifier<Sex?> sexValueNotifier;
+  late final ValueNotifier<Sex?> sexValueNotifier;
 
   @override
   void initState() {

@@ -21,7 +21,7 @@ class DateInputPage extends StatefulWidget {
 }
 
 class _DateInputPageState extends State<DateInputPage> {
-  late ValueNotifier<DateTime> dateTimeValueNotifier;
+  late final ValueNotifier<DateTime> dateTimeValueNotifier;
 
   @override
   void initState() {

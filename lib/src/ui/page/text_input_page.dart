@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/result.dart';
+import '../../helper/string_helper.dart';
 import '../widget/infinite_rotating_widget.dart';
 import '../widget/smart_button.dart';
 
@@ -23,7 +24,7 @@ class TextInputPage extends StatefulWidget {
 }
 
 class _TextInputPageState extends State<TextInputPage> {
-  late TextEditingController textEditingController;
+  late final TextEditingController textEditingController;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _TextInputPageState extends State<TextInputPage> {
           actions: [
             Consumer<TextEditingController>(
               builder: (context, notifier, child) {
-                String text = notifier.text;
+                String text = notifier.text.trim();
                 return SmartIconButton(
                   icon: Icon(Icons.done),
                   lockedIcon: InfiniteRotatingWidget(
@@ -50,7 +51,7 @@ class _TextInputPageState extends State<TextInputPage> {
                     curve: Curves.easeInOutBack,
                     child: Icon(Icons.hourglass_top),
                   ),
-                  onPressed: widget.text == text
+                  onPressed: StringHelper.textEquals(widget.text, text)
                       ? null
                       : () async {
                           await widget.submit(context, text).then((value) {

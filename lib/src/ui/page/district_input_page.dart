@@ -23,7 +23,7 @@ class DistrictInputPage extends StatefulWidget {
 }
 
 class _DistrictInputPageState extends State<DistrictInputPage> {
-  late ValueNotifier<District?> districtValueNotifier;
+  late final ValueNotifier<District?> districtValueNotifier;
 
   @override
   void initState() {
