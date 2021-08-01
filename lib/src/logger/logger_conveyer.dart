@@ -1,27 +1,34 @@
+import 'package:flutter/foundation.dart';
+
 import '../app/base_config.dart';
-import '../bean/log_level.dart';
 import 'logger_appender.dart';
 
 class LogConveyer {
+  static const _defaultConsoleEnabled = kReleaseMode ? false : true;
+  static const _defaultConsoleLevel = kReleaseMode ? LogLevel.warn : LogLevel.trace;
+  static const _defaultFileEnabled = kReleaseMode ? false : true;
+  static const _defaultFileLevel = kReleaseMode ? LogLevel.warn : LogLevel.trace;
   static final _consoleLoggerAppender = ConsoleLoggerAppender();
   static final _fileLoggerAppender = FileLoggerAppender();
 
   static Future<void> convey(Log log) async {
     try {
-      if (BaseConfig.logger_consoleEnabled ?? true) {
-        if (log.level.index >= (BaseConfig.logger_consoleLevel ?? LogLevel.trace).index) {
+      if (BaseConfig.logger_consoleEnabled ?? _defaultConsoleEnabled) {
+        if (log.level.index >= (BaseConfig.logger_consoleLevel ?? _defaultConsoleLevel.index)) {
           await _consoleLoggerAppender.output(log);
         }
       }
     } finally {
-      if (BaseConfig.logger_fileEnabled ?? true) {
-        if (log.level.index >= (BaseConfig.logger_fileLevel ?? LogLevel.trace).index) {
+      if (BaseConfig.logger_fileEnabled ?? _defaultFileEnabled) {
+        if (log.level.index >= (BaseConfig.logger_fileLevel ?? _defaultFileLevel.index)) {
           await _fileLoggerAppender.output(log);
         }
       }
     }
   }
 }
+
+enum LogLevel { trace, debug, info, warn, error, fatal }
 
 class Log {
   final String module;

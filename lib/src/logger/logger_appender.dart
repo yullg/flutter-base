@@ -44,8 +44,8 @@ class FileLoggerAppender extends LoggerAppender {
 
   @override
   Future<void> output(Log log) async {
-    var temporaryDirectory = await getTemporaryDirectory();
-    var logFile = File(p.join(temporaryDirectory.absolute.path, "yullg", "log", "${log.module}-${DateTimeHelper.format(log.time, 'yyyyMMdd')}.log"));
+    var cacheDirectory = await _cacheDirectory();
+    var logFile = File(p.join(cacheDirectory.absolute.path, "yullg", "log", "${log.module}-${DateTimeHelper.format(log.time, 'yyyyMMdd')}.log"));
     logFile.createSync(recursive: true);
     logFile.writeAsStringSync(stringifyLogEvent(log), mode: FileMode.append);
   }
@@ -53,7 +53,7 @@ class FileLoggerAppender extends LoggerAppender {
   static final _logFileNameRegExp = RegExp(r"^.*-(\d{4})(\d{2})(\d{2})\.log$");
 
   Future<void> _deleteLogFile(int days) async {
-    var logDirectory = Directory(p.join((await getTemporaryDirectory()).absolute.path, "yullg", "log"));
+    var logDirectory = Directory(p.join((await _cacheDirectory()).absolute.path, "yullg", "log"));
     if (!logDirectory.existsSync()) return;
     var fileSystemEntities = logDirectory.listSync(followLinks: false);
     var minDateTime = DateTime.now().subtract(Duration(days: days));
@@ -70,5 +70,15 @@ class FileLoggerAppender extends LoggerAppender {
         }
       }
     }
+  }
+
+  Future<Directory> _cacheDirectory() async {
+    if (Platform.isAndroid) {
+      var externalCacheDirectories = await getExternalCacheDirectories();
+      if (externalCacheDirectories != null && externalCacheDirectories.isNotEmpty) {
+        return externalCacheDirectories.first;
+      }
+    }
+    return await getTemporaryDirectory();
   }
 }

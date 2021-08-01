@@ -1,33 +1,26 @@
-import '../bean/log_level.dart';
-import '../helper/enum_helper.dart';
 import 'config_manager.dart';
 
 class BaseConfig {
-  static bool? _debug;
   static String? _keyFileManagerDirectory;
   static String? _globalCacheManager_cacheKey;
   static int? _globalCacheManager_stalePeriod;
   static int? _globalCacheManager_maxNrOfCacheObjects;
   static bool? _logger_consoleEnabled;
-  static LogLevel? _logger_consoleLevel;
+  static int? _logger_consoleLevel;
   static bool? _logger_fileEnabled;
-  static LogLevel? _logger_fileLevel;
+  static int? _logger_fileLevel;
 
   static Future<void> initialize() async {
-    _debug = ConfigManager.findUntilNotNull((source) => source["base"]?["debug"]);
     _keyFileManagerDirectory = ConfigManager.findUntilNotNull((source) => source["base"]?["keyFileManagerDirectory"]);
     _globalCacheManager_cacheKey = ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["cacheKey"]);
     _globalCacheManager_stalePeriod = ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["stalePeriod"]);
     _globalCacheManager_maxNrOfCacheObjects =
         ConfigManager.findUntilNotNull((source) => source["base"]?["globalCacheManager"]?["maxNrOfCacheObjects"]);
     _logger_consoleEnabled = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleEnabled"]);
-    _logger_consoleLevel =
-        EnumHelper.parseString(LogLevel.values, ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleLevel"]));
+    _logger_consoleLevel = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["consoleLevel"]);
     _logger_fileEnabled = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileEnabled"]);
-    _logger_fileLevel = EnumHelper.parseString(LogLevel.values, ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileLevel"]));
+    _logger_fileLevel = ConfigManager.findUntilNotNull((source) => source["base"]?["logger"]?["fileLevel"]);
   }
-
-  static bool? get debug => _debug;
 
   static String? get keyFileManagerDirectory => _keyFileManagerDirectory;
 
@@ -39,14 +32,13 @@ class BaseConfig {
 
   static bool? get logger_consoleEnabled => _logger_consoleEnabled;
 
-  static LogLevel? get logger_consoleLevel => _logger_consoleLevel;
+  static int? get logger_consoleLevel => _logger_consoleLevel;
 
   static bool? get logger_fileEnabled => _logger_fileEnabled;
 
-  static LogLevel? get logger_fileLevel => _logger_fileLevel;
+  static int? get logger_fileLevel => _logger_fileLevel;
 
   static Future<void> destroy() async {
-    _debug = null;
     _keyFileManagerDirectory = null;
     _globalCacheManager_cacheKey = null;
     _globalCacheManager_stalePeriod = null;

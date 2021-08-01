@@ -1,4 +1,3 @@
-import '../bean/log_level.dart';
 import 'logger_conveyer.dart';
 
 class Logger {
