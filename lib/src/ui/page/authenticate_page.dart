@@ -11,7 +11,7 @@ import '../widget/verification_code_send_button.dart';
 typedef _SignInByPassword = Future<void> Function(BuildContext context, String name, String password);
 typedef _SignInByPhoneCode = Future<void> Function(BuildContext context, String phone, String code);
 typedef _SignInByEmailCode = Future<void> Function(BuildContext context, String email, String code);
-typedef _SignUp = Future<void> Function(BuildContext context, String phoneOrEmail, String code, String password);
+typedef _SignUp = Future<void> Function(BuildContext context, String phone, String code, String password);
 typedef _ResetPassword = Future<void> Function(BuildContext context, String phoneOrEmail, String code, String password);
 typedef _SendVerificationCode = Future<bool> Function(BuildContext context, AuthenticatePageMode mode, String phoneOrEmail);
 
@@ -593,10 +593,11 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
           SizedBox(height: 15),
           TextField(
             controller: nameTextEditingController,
-            maxLength: 100,
+            keyboardType: TextInputType.phone,
+            maxLength: 11,
             decoration: InputDecoration(
-              hintText: "请输入手机号/邮箱",
-              prefixIcon: Icon(Icons.person),
+              hintText: "请输入手机号",
+              prefixIcon: Icon(Icons.phone_android),
               counterText: "",
             ),
           ),
@@ -616,8 +617,8 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
               Positioned(
                 right: 0,
                 child: VerificationCodeSendOutlinedButton(onPressed: () async {
-                  String phoneOrEmail = nameTextEditingController.text.trim();
-                  return await widget.sendVerificationCode(context, AuthenticatePageMode.sign_up, phoneOrEmail);
+                  String phone = nameTextEditingController.text.trim();
+                  return await widget.sendVerificationCode(context, AuthenticatePageMode.sign_up, phone);
                 }),
               ),
             ],
