@@ -1,5 +1,12 @@
 class StringHelper {
-  static const String _EMPTY_STRING = "";
+  /// 空字符
+  static const String EMPTY_STRING = "";
+
+  /// 斗角空格
+  static const String EN_SPACE_STRING = "\u0020";
+
+  /// 全角空格
+  static const String EM_SPACE_STRING = "\u3000";
 
   static bool hasLength(String? str) {
     return (str != null && str.isNotEmpty);
@@ -15,9 +22,9 @@ class StringHelper {
 
   static bool textEquals(String? strA, String? strB, {bool trim = true}) {
     if (trim) {
-      return (strA?.trim() ?? _EMPTY_STRING) == (strB?.trim() ?? _EMPTY_STRING);
+      return (strA?.trim() ?? EMPTY_STRING) == (strB?.trim() ?? EMPTY_STRING);
     } else {
-      return (strA ?? _EMPTY_STRING) == (strB ?? _EMPTY_STRING);
+      return (strA ?? EMPTY_STRING) == (strB ?? EMPTY_STRING);
     }
   }
 
