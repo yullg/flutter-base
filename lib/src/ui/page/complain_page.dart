@@ -8,7 +8,7 @@ import '../widget/smart_table.dart';
 
 class ComplainPage extends StatelessWidget {
   final String title;
-  final Future<void> Function(String reason) onSubmit;
+  final Future<bool> Function(BuildContext context, String reason) onSubmit;
 
   ComplainPage({Key? key, this.title = "投诉", required this.onSubmit}) : super(key: key);
 
@@ -61,10 +61,12 @@ class ComplainPage extends StatelessWidget {
                   lockedChild: Text("提交中"),
                   onPressed: selectedReasonIndex == null
                       ? null
-                      : () => onSubmit(_reasons[selectedReasonIndex]).then((value) {
-                            ToastHelper.show("投诉已收到，我们会尽快处理~");
-                            if (!presenter.isClosed) {
-                              Get.back();
+                      : () => onSubmit(context, _reasons[selectedReasonIndex]).then((value) {
+                            if (value) {
+                              ToastHelper.show("投诉已收到，我们会尽快处理~");
+                              if (!presenter.isClosed) {
+                                Get.back();
+                              }
                             }
                           }),
                 ),
