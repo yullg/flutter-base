@@ -88,12 +88,14 @@ class FFmpegSupport {
   }
 
   static Future<void> videoCompress(String input, String output,
-      {int maxWidth = 1080, int maxHeight = 1080, String maxrate = "1024K", int crf = 23}) async {
+      {int maxWidth = 1080, int maxHeight = 1080, String maxrate = "512K", int crf = 23, int? duration}) async {
     final completer = Completer<void>();
     await FFmpegApiWrapper.instance.ffmpegExecuteAsyncWithArguments([
       "-y",
       "-i",
       input,
+      if (duration != null) "-t",
+      if (duration != null) "$duration",
       "-maxrate",
       maxrate,
       "-bufsize",
