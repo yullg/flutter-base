@@ -19,7 +19,9 @@ class _RebuildWidgetState<T extends RebuildNotification> extends State<RebuildWi
 
   @override
   Widget build(BuildContext context) => NotificationListener<T>(
-        child: widget.builder(context, notification, null),
+        child: Builder(
+          builder: (context) => widget.builder(context, notification, null),
+        ),
         onNotification: (notification) {
           this.notification = notification;
           if (mounted) setState(() {});
