@@ -5,7 +5,7 @@ class ToastLayer {
     Fluttertoast.showToast(msg: text, toastLength: durable ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
   }
 
-  static void hide() {
+  static void close() {
     Fluttertoast.cancel();
   }
 
