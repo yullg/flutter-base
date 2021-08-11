@@ -34,21 +34,32 @@ class DialogLayer {
   static Future<T?> showConfirmAlertDialog<T>(
       {String? title,
       String? content,
-      AlertDialogAction? cancelAction = const AlertDialogAction(name: "取${StringHelper.EM_SPACE_STRING}消"),
-      AlertDialogAction? confirmAction = const AlertDialogAction(name: "确${StringHelper.EM_SPACE_STRING}定"),
+      String? cancelName = "取${StringHelper.EM_SPACE_STRING}消",
+      String? confirmName = "确${StringHelper.EM_SPACE_STRING}定",
+      Color? cancelColor,
+      Color? confirmColor,
+      VoidCallback? onCancelPressed,
+      VoidCallback? onConfirmPressed,
       Color? backgroundColor,
       Color? foregroundColor,
       bool implicitClose = true,
       bool autoClose = true}) {
-    if (confirmAction != null && confirmAction.color == null) {
-      confirmAction = AlertDialogAction(name: confirmAction.name, color: Get.theme.accentColor, onPressed: confirmAction.onPressed);
-    }
     return showAlertDialog<T>(
       title: title,
       content: content != null ? [content] : null,
       actions: [
-        if (cancelAction != null) cancelAction,
-        if (confirmAction != null) confirmAction,
+        if (cancelName != null)
+          AlertDialogAction(
+            name: cancelName,
+            color: cancelColor,
+            onPressed: onCancelPressed,
+          ),
+        if (confirmName != null)
+          AlertDialogAction(
+            name: confirmName,
+            color: confirmColor ?? Get.theme.primaryColor,
+            onPressed: onConfirmPressed,
+          ),
       ],
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
