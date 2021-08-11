@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../helper/string_helper.dart';
-import '../../helper/toast_helper.dart';
+import '../layer/toast_layer.dart';
 import '../widget/smart_button.dart';
 import '../widget/smart_table.dart';
 
@@ -63,7 +63,7 @@ class ComplainPage extends StatelessWidget {
                       ? null
                       : () => onSubmit(context, _reasons[selectedReasonIndex]).then((value) {
                             if (value) {
-                              ToastHelper.show("投诉已收到，我们会尽快处理~");
+                              ToastLayer.show("投诉已收到，我们会尽快处理~");
                               if (!presenter.isClosed) {
                                 Get.back();
                               }

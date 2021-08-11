@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../helper/toast_helper.dart';
+import '../layer/toast_layer.dart';
 import '../widget/smart_button.dart';
 import '../widget/verification_code_send_button.dart';
 
@@ -202,7 +202,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     newPassword = newPasswordTextEditingController.text.trim(),
                     newPassword2 = newPassword2TextEditingController.text.trim();
                 if (newPassword != newPassword2) {
-                  ToastHelper.show("新密码输入不一致");
+                  ToastLayer.show("新密码输入不一致");
                   return;
                 }
                 await widget.submitByOldPassword(context, oldPassword, newPassword);
@@ -345,7 +345,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     newPassword = newPasswordTextEditingController.text.trim(),
                     newPassword2 = newPassword2TextEditingController.text.trim();
                 if (newPassword != newPassword2) {
-                  ToastHelper.show("新密码输入不一致");
+                  ToastLayer.show("新密码输入不一致");
                   return;
                 }
                 await widget.submitByVerificationCode(context, phoneOrEmail, code, newPassword);

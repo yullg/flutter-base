@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../helper/number_helper.dart';
-import '../../helper/toast_helper.dart';
+import '../layer/toast_layer.dart';
 
 typedef VideoPlayerControllerBuilder = VideoPlayerController Function();
 
@@ -31,7 +31,7 @@ class _VideoWidgetState extends State<VideoWidget> {
       }
     }).catchError((e, s) {
       if (mounted) {
-        ToastHelper.show("视频加载失败");
+        ToastLayer.show("视频加载失败");
       }
     });
     videoPlayerController.setLooping(true).catchError((e, s) {});
@@ -85,7 +85,7 @@ class _VideoWidgetState extends State<VideoWidget> {
                                         child: Icon(Icons.pause, color: Colors.white),
                                         onTap: () {
                                           videoPlayerController.pause().catchError((e, s) {
-                                            ToastHelper.show("操作失败");
+                                            ToastLayer.show("操作失败");
                                           });
                                         },
                                       );
@@ -94,7 +94,7 @@ class _VideoWidgetState extends State<VideoWidget> {
                                         child: Icon(Icons.play_arrow, color: Colors.white),
                                         onTap: () {
                                           videoPlayerController.play().catchError((e, s) {
-                                            ToastHelper.show("操作失败");
+                                            ToastLayer.show("操作失败");
                                           });
                                         },
                                       );
@@ -109,7 +109,7 @@ class _VideoWidgetState extends State<VideoWidget> {
                                         child: Icon(Icons.volume_up, color: Colors.white),
                                         onTap: () {
                                           videoPlayerController.setVolume(0).catchError((e, s) {
-                                            ToastHelper.show("操作失败");
+                                            ToastLayer.show("操作失败");
                                           });
                                         },
                                       );
@@ -118,7 +118,7 @@ class _VideoWidgetState extends State<VideoWidget> {
                                         child: Icon(Icons.volume_off, color: Colors.white),
                                         onTap: () {
                                           notifier.setVolume(1).catchError((e, s) {
-                                            ToastHelper.show("操作失败");
+                                            ToastLayer.show("操作失败");
                                           });
                                         },
                                       );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:move_to_background/move_to_background.dart';
 
-import '../../helper/toast_helper.dart';
+import '../layer/toast_layer.dart';
 
 typedef _ExitCallback = Future<bool?> Function();
 
@@ -47,7 +47,7 @@ class _LimitExitWidgetState extends State<LimitExitWidget> {
           }
         }
         previousTime = DateTime.now();
-        ToastHelper.show("再按一次将退出应用");
+        ToastLayer.show("再按一次将退出应用");
         return false;
       },
     );
