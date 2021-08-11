@@ -16,8 +16,6 @@ export 'src/bean/sex.dart';
 export 'src/core/exceptions.dart';
 export 'src/core/podo.dart';
 export 'src/core/result.dart';
-export 'src/ffmpeg/ffmpeg_support.dart';
-export 'src/ffmpeg/ffprobe_support.dart';
 export 'src/helper/collection_helper.dart';
 export 'src/helper/common_field_helper.dart';
 export 'src/helper/datetime_helper.dart';
