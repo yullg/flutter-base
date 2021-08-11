@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../helper/string_helper.dart';
+
 class DialogLayer {
   static const _default_background_color = Colors.white;
   static const _default_foreground_color = Colors.black;
@@ -32,8 +34,8 @@ class DialogLayer {
   static Future<T?> showConfirmAlertDialog<T>(
       {String? title,
       String? content,
-      AlertDialogAction? cancelAction = const AlertDialogAction(name: "取消"),
-      AlertDialogAction? confirmAction = const AlertDialogAction(name: "确定"),
+      AlertDialogAction? cancelAction = const AlertDialogAction(name: "取${StringHelper.EM_SPACE_STRING}消"),
+      AlertDialogAction? confirmAction = const AlertDialogAction(name: "确${StringHelper.EM_SPACE_STRING}定"),
       Color? backgroundColor,
       Color? foregroundColor,
       bool implicitClose = true,
