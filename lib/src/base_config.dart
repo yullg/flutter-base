@@ -27,6 +27,4 @@ class BaseConfig {
         this.logger_consoleLevel = map?["logger"]?["consoleLevel"],
         this.logger_fileEnabled = map?["logger"]?["fileEnabled"],
         this.logger_fileLevel = map?["logger"]?["fileLevel"];
-
-  static BaseConfig get defaultInstance => BaseConfig();
 }

@@ -7,9 +7,9 @@ import 'base_config.dart';
 import 'core/base_logger.dart';
 
 class BaseModule {
-  static BaseConfig _config = BaseConfig.defaultInstance;
+  static BaseConfig? _config;
 
-  static BaseConfig get config => _config;
+  static BaseConfig get config => _config!;
 
   static Future<void> initialize(BaseConfig config) async {
     try {
@@ -32,7 +32,7 @@ class BaseModule {
       await DirectoryManager.destroy();
       await SharedPreferenceManager.destroy();
       await PackageInfoManager.destroy();
-      _config = BaseConfig.defaultInstance;
+      _config = null;
     } catch (e, s) {
       BaseLogger.fatal("BaseModule destroy error", e, s);
       rethrow;
