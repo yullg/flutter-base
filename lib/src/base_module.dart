@@ -20,7 +20,7 @@ class BaseModule {
       await KeyFileManager.initialize();
       await CacheManager.initialize();
     } catch (e, s) {
-      BaseLogger.fatal("BaseBootstrap initialize error", e, s);
+      BaseLogger.fatal("BaseModule initialize error", e, s);
       rethrow;
     }
   }
@@ -34,7 +34,7 @@ class BaseModule {
       await PackageInfoManager.destroy();
       _config = BaseConfig.defaultInstance;
     } catch (e, s) {
-      BaseLogger.fatal("BaseBootstrap destroy error", e, s);
+      BaseLogger.fatal("BaseModule destroy error", e, s);
       rethrow;
     }
   }
