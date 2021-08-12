@@ -1,14 +1,13 @@
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:get/get.dart';
 
-export 'src/app/base_config.dart';
 export 'src/app/cache_manager.dart';
-export 'src/app/config_manager.dart';
 export 'src/app/directory_manager.dart';
 export 'src/app/key_file_manager.dart';
 export 'src/app/package_info_manager.dart';
 export 'src/app/shared_preferences_manager.dart';
-export 'src/base_bootstrap.dart';
+export 'src/base_config.dart';
+export 'src/base_module.dart';
 export 'src/bean/district.dart';
 export 'src/bean/geo_point.dart';
 export 'src/bean/resource.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../app/shared_preferences_manager.dart';
-import '../logger/base_logger.dart';
+import '../core/base_logger.dart';
 
 Future<bool> agreeServiceAgreementAndPrivacyStatement(
         {required BuildContext context,

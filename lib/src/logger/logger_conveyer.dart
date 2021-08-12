@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../app/base_config.dart';
+import '../base_module.dart';
 import 'logger_appender.dart';
 
 class LogConveyer {
@@ -13,14 +13,14 @@ class LogConveyer {
 
   static Future<void> convey(Log log) async {
     try {
-      if (BaseConfig.logger_consoleEnabled ?? _defaultConsoleEnabled) {
-        if (log.level.index >= (BaseConfig.logger_consoleLevel ?? _defaultConsoleLevel.index)) {
+      if (BaseModule.config.logger_consoleEnabled ?? _defaultConsoleEnabled) {
+        if (log.level.index >= (BaseModule.config.logger_consoleLevel ?? _defaultConsoleLevel.index)) {
           await _consoleLoggerAppender.output(log);
         }
       }
     } finally {
-      if (BaseConfig.logger_fileEnabled ?? _defaultFileEnabled) {
-        if (log.level.index >= (BaseConfig.logger_fileLevel ?? _defaultFileLevel.index)) {
+      if (BaseModule.config.logger_fileEnabled ?? _defaultFileEnabled) {
+        if (log.level.index >= (BaseModule.config.logger_fileLevel ?? _defaultFileLevel.index)) {
           await _fileLoggerAppender.output(log);
         }
       }

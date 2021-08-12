@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 
+import '../base_module.dart';
 import '../bean/resource.dart';
 import '../helper/enum_helper.dart';
 import '../helper/uuid_helper.dart';
-import 'base_config.dart';
 import 'directory_manager.dart';
 
 class KeyFileManager {
@@ -17,7 +17,7 @@ class KeyFileManager {
 
   static File file(String key) {
     var directory =
-        Directory(p.join(DirectoryManager.directory(directoryType(key)).path, BaseConfig.keyFileManagerDirectory ?? "key_file_manager_data"));
+        Directory(p.join(DirectoryManager.directory(directoryType(key)).path, BaseModule.config.keyFileManagerDirectory ?? "key_file_manager_data"));
     return File(p.join(directory.path, key.substring(key.indexOf("_") + 1)));
   }
 

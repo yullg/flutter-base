@@ -1,4 +1,4 @@
-import 'logger.dart';
+import '../logger/logger.dart';
 
 class BaseLogger {
   static const _logger = Logger("base", "base");
