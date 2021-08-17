@@ -42,7 +42,6 @@ export 'src/ui/page/media_resource_page.dart';
 export 'src/ui/page/sex_input_page.dart';
 export 'src/ui/page/text_input_page.dart';
 export 'src/ui/page/web_view_page.dart';
-export 'src/ui/service_agreement_and_privacy_statement.dart';
 export 'src/ui/widget/badge_widget.dart';
 export 'src/ui/widget/comment_list_widget.dart';
 export 'src/ui/widget/future_widget.dart';
