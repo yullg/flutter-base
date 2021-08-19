@@ -13,7 +13,7 @@ class Result<T> {
         _error = null,
         _stackTrace = null;
 
-  Result.withError(Object error, [StackTrace stackTrace = StackTrace.empty])
+  Result.withError(Object error, [StackTrace? stackTrace])
       : _data = null,
         _error = error,
         _stackTrace = stackTrace;

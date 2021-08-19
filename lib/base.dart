@@ -15,6 +15,7 @@ export 'src/bean/sex.dart';
 export 'src/core/exceptions.dart';
 export 'src/core/podo.dart';
 export 'src/core/result.dart';
+export 'src/core/simple_change_notifier.dart';
 export 'src/helper/collection_helper.dart';
 export 'src/helper/common_field_helper.dart';
 export 'src/helper/datetime_helper.dart';
