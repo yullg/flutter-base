@@ -36,7 +36,6 @@ export 'src/ui/page/authenticate_page.dart';
 export 'src/ui/page/change_email_page.dart';
 export 'src/ui/page/change_password_page.dart';
 export 'src/ui/page/change_phone_page.dart';
-export 'src/ui/page/complain_page.dart';
 export 'src/ui/page/date_input_page.dart';
 export 'src/ui/page/district_input_page.dart';
 export 'src/ui/page/media_resource_page.dart';
