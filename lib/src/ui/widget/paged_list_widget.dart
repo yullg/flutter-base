@@ -3,8 +3,9 @@ import 'package:provider/provider.dart';
 
 class PagedListWidget extends StatefulWidget {
   final ValueGetter<PagedListController> controllerBuilder;
+  final EdgeInsetsGeometry? padding;
 
-  PagedListWidget({Key? key, required this.controllerBuilder}) : super(key: key);
+  PagedListWidget({Key? key, required this.controllerBuilder, this.padding}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PagedListWidgetState();
@@ -24,6 +25,7 @@ class _PagedListWidgetState extends State<PagedListWidget> {
         value: controller,
         child: Consumer<PagedListController>(
           builder: (_, controller, child) => ListView.separated(
+            padding: widget.padding,
             itemCount: controller._attribute._datas.length + 1,
             itemBuilder: controller._itemBuilder,
             separatorBuilder: controller.separatorWidgetBuilder,
